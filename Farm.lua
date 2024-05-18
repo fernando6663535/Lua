@@ -606,12 +606,18 @@ function rebirth()
 	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
 end
 
+                      local function Fly8()
+local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+char.Humanoid.PlatformStand = true
+local torso = char:WaitForChild("LowerTorso")
+Instance.new("BodyGyro", torso).MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+Instance.new("BodyVelocity", torso).MaxForce = Vector3.new(9e9, 9e9, 9e9)
+end
 
 function iniciarJuego()
 	local player = game.Players.LocalPlayer
 	local data = game.ReplicatedStorage.Datas[player.UserId]
 	game:GetService("ReplicatedStorage").Package.Events.Start:InvokeServer()
-	game.Workspace.Gravity = Vector3.new(0, 1, 0) 
 	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	if data.Strength.Value>=8000000 then
 		wait(5)
@@ -1017,6 +1023,7 @@ function empezarFarm()
 							pcall(function ()
 								statsPlayerFarmSa()
 													stats()
+													Fly8()
 							end)
 						end)
 						spawn(function() 
@@ -1370,11 +1377,18 @@ local function loop5()
                             }
 
                             game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
+                            
                             wait()
                           end 
                         end)
 
-                        
+                      local function Fly()
+local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+char.Humanoid.PlatformStand = true
+local torso = char:WaitForChild("LowerTorso")
+Instance.new("BodyGyro", torso).MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+Instance.new("BodyVelocity", torso).MaxForce = Vector3.new(9e9, 9e9, 9e9)
+end
                         local function kiRequerimiento()
                           energya = game.Workspace.Living[player.Name].Stats.Energy.Value
                           ki = game.Workspace.Living[player.Name].Stats.Ki.Value
@@ -1710,6 +1724,7 @@ local function loop5()
                                   for i, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
                                     revisarStats()-- revisa si tienes stats
                                     autoquest()	--inicia el farm
+                                    Fly()
                                     if v.Name:lower() == SelectedMobs:lower() and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and isLoop5Active then
                                       quest()
                                       getgenv().farm = true
