@@ -1,5 +1,7 @@
 
 
+
+
 local player = game.Players.LocalPlayer
 local Players = game:GetService("Players")
 local ScreenGui = Instance.new("ScreenGui")
@@ -1809,14 +1811,13 @@ end
 
 initSwitches(MenuPanel)
             MainButton.MouseButton1Click:Connect(togglePanel)
- earthButton.MouseButton1Click:Connect(function()
-  game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
+earthButton.MouseButton1Click:Connect(function()
+  game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
 end)
-
 
 billsButton.MouseButton1Click:Connect(function()
-game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
+game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
 end)
-               showPlayerThumbnail()
 
+showPlayerThumbnail()
         
