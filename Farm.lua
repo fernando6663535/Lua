@@ -1013,7 +1013,7 @@ function empezarFarm()
 				   while isLoop1Active and  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
 					pcall(function()
 										spawn(function() 
-							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 1)) 
+							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4.6)) 
 							pcall(function ()
 								statsPlayerFarmSa()
 													stats()
@@ -1165,7 +1165,66 @@ end
 local function loop3()
     while true do
         if isLoop3Active then
-            -- Agregar código para el bucle del interruptor 3 aquí
+local yo = game:GetService('Players').LocalPlayer
+local folderData = game.ReplicatedStorage.Datas[yo.UserId]
+local events = game.ReplicatedStorage.Package.Events
+local equipRemote = game:GetService('ReplicatedStorage').Package.Events.equipskill 
+local statsPlayerFarmSa
+
+local function empezarFarm() 
+    fly()
+    while true  do
+        pcall(function()
+            if player() then
+                rebirth() 
+                while enemigo:FindFirstChild('Humanoid') and vidaEnemigo() and player()  do
+                    pcall(function()
+                    end)
+                    wait()
+                end
+            end
+        end)
+        wait()
+    end
+end
+
+spawn(function()
+    while  true do
+        if folderData and folderData.Quest.Value ~= '' and isLoop3Active then
+            pcall(function()
+                spawn(function()
+game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")                              
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")                          
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")                            
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")                             
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")                          
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")                     
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                           wait(0.1)
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                end)
+            end)
+        end
+        wait()
+    end
+end)
+
+task.wait(0.001)
+
+empezarFarm()
         end
         wait()
     end
@@ -1353,7 +1412,7 @@ local function loop5()
                         --carga y bloqueo infinito
                         _G.charge = true
                         spawn(function()
-                          while _G.charge == true and isLoop5Active do
+                          while _G.charge == true  do
 
                             local args = {
                               [1] = "Blacknwhite27"
@@ -1364,7 +1423,7 @@ local function loop5()
                         end)
                         _G.block = true
                         spawn(function ()
-                          while _G.block == true and isLoop5Active do
+                          while _G.block == true  do
                             local args = {
                               [1] = true
                             }
@@ -1421,7 +1480,7 @@ local function loop5()
 
                         -- validacion de stats
                         local  function billsplanet()
-                          while true do
+                          while isLoop5Active do 
                             local A_1 = "Earth"
                             local Event = game:GetService("ReplicatedStorage").Package.Events.TP
                             Event:InvokeServer(A_1)
@@ -1650,7 +1709,7 @@ local function loop5()
 
                         local function ataquesMultiquest()
                           kiRequerimiento()
-                          if data.Strength.Value >0 and ki > caca and data.Strength.Value <2000000000000 then
+                             if data.Strength.Value >0 and ki > caca and data.Strength.Value <2000000000000 then
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
@@ -1702,15 +1761,15 @@ local function loop5()
                         end
 
                         spawn(function()
-                          while true and wait() and isLoop5Active do
+                          while true and wait() do
                             pcall(function()
-                              while true and wait() and isLoop5Active do
+                              while true and wait() do
                                 if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")  
                                 then
                                   for i, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
                                     revisarStats()-- revisa si tienes stats
                                     autoquest()	--inicia el farm
-                                    if v.Name:lower() == SelectedMobs:lower() and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 then
+                                    if v.Name:lower() == SelectedMobs:lower() and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and isLoop5Active then
                                       quest()
                                       getgenv().farm = true
                                       repeat
