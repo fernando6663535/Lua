@@ -1462,7 +1462,19 @@ end
                           end
                         end)
 
+ local function Detruir()
+      local function makeObjectsInvisible()
+    for _, obj in ipairs(workspace:GetDescendants()) do
+        if obj:IsA("Part") and obj.Name == "Part" then
+            obj.Transparency = 1
+        elseif obj:IsA("BasePart") and (obj.Name == "Glass" or obj.Name == "ROCKY") and obj.Parent then
+            obj.Transparency = 1
+        end
+    end
+end
 
+makeObjectsInvisible()
+end
                         -- validacion de stats
                         local  function billsplanet()
                           while isLoop5Active do 
@@ -1587,7 +1599,7 @@ end
                                   SelectedMobs = SelectedQuests
                                   return
 				end
-					elseif minimo >=100000000 and minimo < 170000000 then
+					elseif minimo >=100000000 and minimo < 300000000 then
 					if v.Humanoid.Health >0 and v.Name == "SSJG Kakata" then
 						SelectedQuests = v.name
 						SelectedMobs = SelectedQuests
@@ -1597,13 +1609,13 @@ end
                                   SelectedMobs = SelectedQuests
                                   return
 				end
-				elseif minimo >=170000000 and minimo < 300000000 then
+				elseif minimo >=300000000 and minimo < 350000000 then
 					if v.Humanoid.Health >0 and v.Name == "Vegetable (GoD in-training)" then
 						SelectedQuests = v.name
 						SelectedMobs = SelectedQuests
 						return
 					end
-			elseif minimo >=300000000 and minimo < 600000000 then
+			elseif minimo >=350000000 and minimo < 600000000 then
 					if v.Humanoid.Health >0 and v.Name == "Wukong (Omen)" then
 
 						SelectedQuests = v.name
@@ -1672,7 +1684,7 @@ end
 				end
 		end
 
-                          if checkValue >= 170000000 and game.placeId ~= 5151400895  then
+                          if checkValue >= 300000000 and game.placeId ~= 5151400895  then
                             for indice, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
                               delay(0.5,mundoDeBills)
                               if v.Humanoid.Health>0 and v.Name == "SSJG Kakata" then
@@ -1694,6 +1706,7 @@ end
 
                         local function ataquesMultiquest()
                           kiRequerimiento()
+                          
                              if data.Strength.Value >0 and ki > caca and data.Strength.Value <2000000000000 then
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
@@ -1755,6 +1768,7 @@ end
                                     revisarStats()-- revisa si tienes stats
                                     autoquest()	--inicia el farm
                                     Fly()
+                                             Detruir()
                                     if v.Name:lower() == SelectedMobs:lower() and player.Character and player.Character:FindFirstChild("HumanoidRootPart") and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 and isLoop5Active then
                                       quest()
                                       getgenv().farm = true
@@ -1775,10 +1789,10 @@ end
                                         getgenv().stacked = false
                                         repeat
                                           print("in auto loop died check")
-                                          wait(0.7)
+                                          wait(1)
 
                                         until plr.Character.Humanoid.Health >= 0
-                                        wait(0.4)
+                                        wait(1)
                                       end
 
                                     end
