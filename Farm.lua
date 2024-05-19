@@ -1383,11 +1383,41 @@ local function loop5()
                         end)
 
                       local function Fly()
-local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
-char.Humanoid.PlatformStand = true
-local torso = char:WaitForChild("LowerTorso")
-Instance.new("BodyGyro", torso).MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-Instance.new("BodyVelocity", torso).MaxForce = Vector3.new(9e9, 9e9, 9e9)
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local player = Players.LocalPlayer
+local char = player.Character or player.CharacterAdded:Wait()
+
+local function toggleFly(enable)
+    char.Humanoid.PlatformStand = enable
+    local torso = char:WaitForChild("LowerTorso")
+    for _, child in ipairs(torso:GetChildren()) do
+        if child:IsA("BodyGyro") or child:IsA("BodyVelocity") then
+            child:Destroy()
+        end
+    end
+    if enable then
+        local bodyGyro = Instance.new("BodyGyro", torso)
+        bodyGyro.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        local bodyVelocity = Instance.new("BodyVelocity", torso)
+        bodyVelocity.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+    end
+end
+
+local function checkQuest()
+    toggleFly(ReplicatedStorage.Datas[player.UserId].Quest.Value ~= "")
+end
+
+checkQuest()
+
+local questValue = ReplicatedStorage.Datas[player.UserId].Quest
+questValue:GetPropertyChangedSignal("Value"):Connect(checkQuest)
+
+player.CharacterAdded:Connect(function(newChar)
+    char = newChar
+    char:WaitForChild("Humanoid")
+    checkQuest()
+end)
 end
                         local function kiRequerimiento()
                           energya = game.Workspace.Living[player.Name].Stats.Energy.Value
