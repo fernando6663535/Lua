@@ -1008,14 +1008,14 @@ function empezarFarm()
 							end)
 						end)
 						spawn(function() 
-							if valorMinimo() >= 10000 and isLoop3Active then
+							if ki() >= kiRequerido() and valorMinimo() >= 10000 and isLoop3Active then
 								Melees()
 							else
 								game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
 							end
 						end)
 						spawn(function()
-							if valorMinimo() >= 2000 and isLoop3Active then
+							if ki() >= kiRequerido() and valorMinimo() >= 2000 and isLoop3Active then
 							Melees()
 							end
 						end)
