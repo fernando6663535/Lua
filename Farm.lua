@@ -507,7 +507,11 @@ local activadaSpeed = false
 local statsPlayerFarmSa
 
 
-
+local millon = 1000000
+local arregloAtaques = {
+}
+local ataquesEnergy = {
+}
 local multiQuest = {
 	bossEarth = {
 		{nombre= "SSJG Kakata",minimo = 100500000},
@@ -584,6 +588,36 @@ end
 function rebirth()
 	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
 end
+local function Melees()
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
+                              wait(0.1)
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")                           
+                            wait(0.1)
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            wait(0.1)
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
+                             
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
+                             
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")
+                           wait(0.1)
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
+                            end
 
                       local function Fly8()
 local char = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
@@ -632,37 +666,35 @@ local function valorMinimo()
 	return valueMinimo
 end
 
+function detectarAtaque(name, subname, enemigo)
+	local args = {
+		[1] = name,
+		[2] = {
+			["FaceMouse"] = true,
+			["MouseHit"] = enemigo
+		},
+		[3] = "Blacknwhite27"
+	}
+	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild(subname):InvokeServer(unpack(args))
+end
+function ataqueMelee(vida) 
+	for i,v in pairs(arregloAtaques) do
+		if valorMinimo() > v.requerido and ki() >= kiRequerido() and vida then
+			game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(v.name, "Blacknwhite27")
+		end
+	end
+end
 
-local function Melees()
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
-                              wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")                           
-                            wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
-                             
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
-                             
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")
-                           wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            end
+function ataqueEnergy(enem, vida) 
+	for i,v in pairs(ataquesEnergy) do
+		pcall(function()
+			if valorMinimo() > v.fuerza and vida and ki() >= kiRequerido() then
+				detectarAtaque(v.name, v.subName, enem)
+			end
+		end)
+		wait()
+	end
+end
 
 function iteradorQuest(array)
 	print('Seccion iterador quest')
@@ -1008,14 +1040,19 @@ function empezarFarm()
 							end)
 						end)
 						spawn(function() 
-							if ki() >= kiRequerido() and valorMinimo() >= 10000 and isLoop3Active then
+						if ki() >= kiRequerido() and valorMinimo() >= 10000 and isLoop3Active then
+								ataqueEnergy(frameEnemigo(), vidaEnemigo())
 								Melees()
 							else
 								game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
 							end
 						end)
 						spawn(function()
+										local args = {[1] = true}
+					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
+				
 							if ki() >= kiRequerido() and valorMinimo() >= 2000 and isLoop3Active then
+								ataqueMelee(vidaEnemigo())
 							Melees()
 							end
 						end)
