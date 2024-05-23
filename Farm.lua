@@ -1,7 +1,5 @@
 
 
-
-
 local player = game.Players.LocalPlayer
 local Players = game:GetService("Players")
 local ScreenGui = Instance.new("ScreenGui")
@@ -42,6 +40,7 @@ local thumbnailType = Enum.ThumbnailType.HeadShot
 local thumbnailSize = Enum.ThumbnailSize.Size48x48
 local thumbnailUrl = Players:GetUserThumbnailAsync(userId, thumbnailType, thumbnailSize)
 local UICorner = Instance.new("UICorner")
+local Notify = loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/NotificationLibrary.lua'))()
 
 
 ScreenGui.Name = "Fernando"
@@ -316,7 +315,10 @@ earthImageLabel.Position = UDim2.new(0, 0, 0, 0)
 earthImageLabel.BackgroundTransparency = 1
 earthImageLabel.Image = "rbxassetid://17345700746"
 earthImageLabel.Name = "EarthImage"  
-earthImageLabel.Parent = earthButton
+earthImageLabel.Parent = earthButton  
+
+
+
 
 local TweenService = game:GetService("TweenService")
 local colorArray = {
