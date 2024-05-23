@@ -50,4 +50,4 @@ local function createModernNotification(title, text, duration, iconId)
 end
 
 -- Ejemplo de uso:
-createModernNotification("Farmeo/:3_V.2.12❤️", "'♻️' -👀", 5, 17418906670)
+createModernNotification("Farmeo/:3_V.2.12❤️", "'♻️' -👀", 2, 17418906670)
