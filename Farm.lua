@@ -1,4 +1,7 @@
-
+local MenuPanel = game.CoreGui:FindFirstChild("Fernando")
+if MenuPanel then
+    return  
+end
 
 local player = game.Players.LocalPlayer
 local Players = game:GetService("Players")
