@@ -40,7 +40,7 @@ local thumbnailType = Enum.ThumbnailType.HeadShot
 local thumbnailSize = Enum.ThumbnailSize.Size48x48
 local thumbnailUrl = Players:GetUserThumbnailAsync(userId, thumbnailType, thumbnailSize)
 local UICorner = Instance.new("UICorner")
-local Notify = loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/NotificationLibrary.lua'))()
+
 
 
 ScreenGui.Name = "Fernando"
@@ -631,6 +631,7 @@ function iniciarJuego()
 	local player = game.Players.LocalPlayer
 	local data = game.ReplicatedStorage.Datas[player.UserId]
 	game:GetService("ReplicatedStorage").Package.Events.Start:InvokeServer()
+	local Notify = loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/NotificationLibrary.lua'))()
 	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	if data.Strength.Value>=8000000 then
 		wait(5)
