@@ -499,10 +499,10 @@ local isLoop5Active = LoadSwitchState("Switch5")
 local function loop1()
     while true do
         if isLoop1Active then
-              		 local yo = game:GetService('Players').LocalPlayer
+local yo = game:GetService('Players').LocalPlayer
 local folderData = game.ReplicatedStorage.Datas[yo.UserId]
 local afk = game:service'VirtualUser'
-local statsRequeridosFarm = 10000
+local statsRequeridosFarm = 4000
 local events = game.ReplicatedStorage.Package.Events
 local equipRemote = game:GetService("ReplicatedStorage").Package.Events.equipskill 
 local cargaAndBloqueo = true
@@ -510,40 +510,43 @@ local activadaSpeed = false
 local statsPlayerFarmSa
 
 
+
 local millon = 1000000
 local arregloAtaques = {
+                            
 }
 local ataquesEnergy = {
+	{name = 'Soul Punisher',subName = 'Hak',fuerza = 40000000},
+	{name = 'Destruction',subName = 'Hak',fuerza = 40000000},
 }
+
 local multiQuest = {
 	bossEarth = {
 		{nombre= "SSJG Kakata",minimo = 100500000},
-		{nombre= "Broccoli",minimo = 48500000},
+		{nombre= "Broccoli",minimo = 52500000},
 		{nombre= "SSJB Wukong",minimo = 8000000},
 		{nombre= "Kai-fist Master",minimo = 6025000},
 		{nombre= "SSJ2 Wukong",minimo = 1250000},
-		{nombre= "Perfect Atom",minimo = 975000},
+		{nombre= "Perfect Atom",minimo = 875000},
 		{nombre= "Chilly",minimo = 550000},
-		{nombre= "Super Vegetable",minimo = 299500},
-		{nombre= "Mapa",minimo = 80000},
+		{nombre= "Super Vegetable",minimo = 187500},
+		{nombre= "Mapa",minimo = 50000},
 		{nombre= "Radish",minimo = 39000},
 		{nombre= "Kid Nohag",minimo = 30000},
-		{nombre= "Klirin",minimo = 10000},
+		{nombre= "Klirin",minimo = 4000},
 	},
 	bossBills = {
 		{nombre= "Vekuta (SSJBUI)",minimo = 5000000000},
 		{nombre= "Wukong Rose",minimo = 4500000000},
 		{nombre= "Vekuta (LBSSJ4)",minimo = 3700000000},
 		{nombre= "Wukong (LBSSJ4)",minimo = 3000000000},
-		{nombre= "Vegetable (LBSSJ4)",minimo = 1400000000},
-		{nombre= "Vis (20%)",minimo = 900000000},
+		{nombre= "Vegetable (LBSSJ4)",minimo = 1700000000},
+		{nombre= "Vis (20%)",minimo = 1200000000},
 		{nombre= "Vills (50%)",minimo = 600000000},
-		{nombre= "Wukong (Omen)",minimo = 170000000},
+		{nombre= "Wukong (Omen)",minimo = 300000000},
 		{nombre= "Vegetable (GoD in-training)",minimo = 170000000},
 	}
 }
-
-
 
 
 local function rebirthzzzz()
@@ -561,6 +564,7 @@ end
 local function speed()
 	return folderData.Speed.Value
 end
+
 
 function characterInvisible()
 	return yo.Character
@@ -588,8 +592,8 @@ local function ki()
 	return game.Workspace.Living[yo.Name].Stats.Ki.Value
 end
 
-function rebirth()
-end
+
+
 local function Melees()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
@@ -621,90 +625,6 @@ local function Melees()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
                             end
 
-                      local function Fly8()
-             local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local UserInputService = game:GetService("UserInputService")
-
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-local flying = true  -- Iniciar con el vuelo activado
-local flightSpeed = 50  -- Velocidad del vuelo
-
-local ctrl = {f = 0, b = 0, l = 0, r = 0}  -- Controles de dirección
-local lastCtrl = {f = 0, b = 0, l = 0, r = 0}
-local speed = 0
-
--- Habilitar vuelo
-local function enableFlight()
-    local torso = character:FindFirstChild("LowerTorso")
-    if not torso then return end
-
-    local bg = Instance.new("BodyGyro", torso)
-    bg.P = 9e4
-    bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-    bg.cframe = torso.CFrame
-
-    local bv = Instance.new("BodyVelocity", torso)
-    bv.velocity = Vector3.new(0, 0.1, 0)
-    bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-
-    humanoid.PlatformStand = true
-    RunService.Heartbeat:Connect(function()
-        if flying then
-            if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0 then
-                speed = speed + 0.5 + (speed / flightSpeed)
-                if speed > flightSpeed then
-                    speed = flightSpeed
-                end
-            else
-                speed = speed - 1
-                if speed < 0 then
-                    speed = 0
-                end
-            end
-            
-            bv.velocity = ((game.Workspace.CurrentCamera.CFrame.LookVector * (ctrl.f + ctrl.b)) +
-                ((game.Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * 0.2, 0).p) -
-                game.Workspace.CurrentCamera.CFrame.p)) * speed
-        end
-    end)
-end
-
--- Deshabilitar vuelo
-local function disableFlight()
-    humanoid.PlatformStand = false
-    flying = false
-    speed = 0
-    local torso = character:FindFirstChild("LowerTorso")
-    if not torso then return end
-
-    local bg = torso:FindFirstChildWhichIsA("BodyGyro")
-    local bv = torso:FindFirstChildWhichIsA("BodyVelocity")
-
-    if bg then bg:Destroy() end
-    if bv then bv:Destroy() end
-end
-
--- Llamar a la función enableFlight() al inicio del script
-enableFlight()
-
--- Control de dirección con teclas de movimiento
-UserInputService.InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f = 1 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b = 1 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l = 1 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r = 1 end
-end)
-
-UserInputService.InputEnded:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.W then ctrl.f = 0 end
-    if input.KeyCode == Enum.KeyCode.S then ctrl.b = 0 end
-    if input.KeyCode == Enum.KeyCode.A then ctrl.l = 0 end
-    if input.KeyCode == Enum.KeyCode.D then ctrl.r = 0 end
-end)
-end
 
 function iniciarJuego()
 	local player = game.Players.LocalPlayer
@@ -723,6 +643,7 @@ function iniciarJuego()
 	end
 	task.wait()
 end
+
 
 
 
@@ -780,11 +701,11 @@ function iteradorQuest(array)
 	print('Seccion iterador quest')
 	local enemigo
 	for _,jefe in pairs(multiQuest[array]) do 
-		if valorMinimo() > jefe.minimo and player() then
+		if valorMinimo() > jefe.minimo and player()   and isLoop1Active then
 			print('El elegigo')
 			for indice, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do 
 				print('enemigo '..v.Name)
-				if jefe.nombre == v.Name and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and yo and v.Humanoid.Health > 0 then
+				if jefe.nombre == v.Name and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and yo and v.Humanoid.Health > 0   and isLoop1Active then
 					print('Mision seleccionada y retornando enemigo')
 					return v.Name 
 				end
@@ -809,14 +730,14 @@ function validacionPlanetas()
 
 	print('Validando el planeta')
 
-	if noTierraID() then 
-			   while isLoop1Active and  valorMinimo() < billsTP and noTierraID() do 
+	if noTierraID()   and isLoop1Active then 
+			   while valorMinimo() < billsTP and noTierraID() do 
 			print('Ir a la tierra')
 			earth()
 			wait()
 		end
 	else 
-		if valorMinimo() >= billsTP  then 
+		if valorMinimo() >= billsTP   and isLoop1Active then 
 			pcall(function()
 				print('Llendo a bills')
 				mundoBills()
@@ -843,8 +764,6 @@ local function masFuerza()
     end
 end
 
-
-
 local function masEnergy()
 	if energy() < statsRequeridosFarm then
 		local args = {[1] = 1,[2] = true,[3] = CFrame.new(12, 12, 12)}
@@ -862,11 +781,6 @@ local function masDefensa()
 	else
 		print('Suficiente energy!')
 	end
-end
-local function Zom() 
-for i = 1, 26 do
-    keypress(Enum.KeyCode.O)
-end
 end
 local function masSpeed() 
 	keypress(Enum.KeyCode.LeftShift)
@@ -887,8 +801,7 @@ end
 
 local function fly()
 	local succes,fallo = pcall(function ()
-	wait()
-			Zom() 
+	wait(2)
 		keypress(Enum.KeyCode.Space)
 		task.wait()
 		keyrelease(Enum.KeyCode.Space)
@@ -897,13 +810,64 @@ local function fly()
 		task.wait()
 		keyrelease(Enum.KeyCode.Space)
 		task.wait()
-		Zom() 
 	end)
 	if fallo then
 		warn('fly error '..fallo)
 	end
 end
 
+local function Fly8()
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+local flying = true  -- Iniciar con el vuelo activado
+local flightSpeed = 50  -- Velocidad del vuelo
+
+local ctrl = {f = 0, b = 0, l = 0, r = 0}  -- Controles de dirección
+local speed = 0
+
+-- Habilitar vuelo
+local function enableFlight()
+    local torso = character:FindFirstChild("LowerTorso")
+    if not torso  then return end
+
+    local bg = Instance.new("BodyGyro", torso)
+    bg.P = 9e4
+    bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+    bg.cframe = torso.CFrame
+
+    local bv = Instance.new("BodyVelocity", torso)
+    bv.velocity = Vector3.new(0, 0.1, 0)
+    bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+
+    humanoid.PlatformStand = true
+    RunService.Heartbeat:Connect(function()
+        if flying and isLoop1Active then
+            if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0  then
+                speed = speed + 0.5 + (speed / flightSpeed)
+                if speed > flightSpeed  then
+                    speed = flightSpeed
+                end
+            else
+                speed = speed - 1
+                if speed < 0  then
+                    speed = 0
+                end
+            end
+            
+            bv.velocity = ((game.Workspace.CurrentCamera.CFrame.LookVector * (ctrl.f + ctrl.b)) +
+                ((game.Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * 0.2, 0).p) -
+                game.Workspace.CurrentCamera.CFrame.p)) * speed
+        end
+    end)
+end
+
+-- Llamar a la función enableFlight() al inicio del script
+enableFlight()
+end
 local function ataquesParaStats()
 	print('Atacando...')
 	
@@ -934,63 +898,9 @@ local function flyi()
 
 end
 
-local function stats()
-local player = game.Players.LocalPlayer
-local playerName = player.Name
-
-local s = game.Players.LocalPlayer.PlayerGui.Main.MainFrame.Frames.Stats
-s.Visible, s.Position = true, UDim2.new(0.408, 0, 0.520, 74)
-s.BackgroundColor3 = Color3.new(0, 0, 9)
-s.Size = UDim2.new(0.1, 100, 0.1, 100)
-
-
-for _, child in ipairs(s:GetChildren()) do
-    if child:IsA("TextLabel") and child.Name == "Stats" then
-        child.Text = playerName
-    end
-end
-
-local UserInputService = game:GetService("UserInputService")
-local dragging
-local dragStart
-local startPos
-s.InputBegan:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-        dragging = true
-        dragStart = input.Position
-        startPos = s.Position
-        input.Changed:Connect(function()
-            if input.UserInputState == Enum.UserInputState.End then
-                dragging = false
-            end
-        end)
-    end
-end)
-
-s.InputChanged:Connect(function(input)
-    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
-        if dragging then
-            local delta = input.Position - dragStart
-            s.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
-        end
-    end
-end)
-
-
-for _, child in ipairs(s:GetChildren()) do
-    if child:IsA("TextLabel") then
-        child.TextColor3 = Color3.new(0, 0, 0)
-        child.TextStrokeColor3 = Color3.new(0, 1, 0)
-        child.TextStrokeTransparency = 0
-    elseif child.Name == "Close" and child:IsA("TextButton") then
-        child.BackgroundColor3 = Color3.new(0, 1, 0) 
-    end
-end
-end
-
 local function esperandoCargaxd()
 
-	if (speed() >= statsRequeridosFarm and activadaSpeed) or (ki() < kiRequerido() and activadaSpeed) or (not player() and activadaSpeed) then
+	if (speed() >= statsRequeridosFarm and activadaSpeed) or (ki() < kiRequerido() and activadaSpeed) or (not player() and activadaSpeed)   and isLoop1Active then
 		cancelarSpeed() 
 		cancelarSpeed() 
 		activadaSpeed = false
@@ -1014,9 +924,11 @@ local function acumularStats()
 	until player() 
 	task.wait()
 
-		   while isLoop1Active and  valorMinimo() < statsRequeridosFarm do
+		   while  valorMinimo() < statsRequeridosFarm do
 		
 		cargaAndBloqueo = false
+
+		print('Tienes pocas estadisticas')
 
 		
 		if ki() >= kiRequerido() then
@@ -1042,7 +954,7 @@ function empezarQuest(array)
 
 	print('Enemigo seleccionado')
 
-		   while isLoop1Active and  misionSeleccionada() ~= enemigo and player() do
+		   while  misionSeleccionada() ~= enemigo and player() do
 		wait()
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
@@ -1084,10 +996,9 @@ end
 
 function empezarFarm() 
 	fly()
-		   while isLoop1Active and  true do
+		   while  true do
 		pcall(function()
 			if player() then
-				rebirth() 
 
 				warn('estadisticas elegidas '..tostring(statsRequeridosFarm))
 
@@ -1099,6 +1010,8 @@ function empezarFarm()
 
 				statsPlayerFarmSa = flyi
 
+				print('Enemigo: '..enemigo.Name)
+
 				local function frameEnemigo()
 					return enemigo.HumanoidRootPart.CFrame
 				end
@@ -1109,44 +1022,43 @@ function empezarFarm()
 					return enemigo.Humanoid.Health > 0
 				end
 
-				   while isLoop1Active and  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
+				   while  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
 					pcall(function()
-										spawn(function() 
-							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4.6)) 
+						spawn(function() 
+							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4.1)) 
 							pcall(function ()
-								statsPlayerFarmSa()
-													stats()
-													Fly8()
+								statsPlayerFarmSa() 
+								Fly8()
 							end)
 						end)
 						spawn(function() 
-						if ki() >= kiRequerido() and valorMinimo() >= 10000 and isLoop3Active then
+							if ki() >= kiRequerido() and valorMinimo() >= 4000 and isLoop3Active then
 								ataqueEnergy(frameEnemigo(), vidaEnemigo())
-								Melees()
+								wait()
 							else
 								game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
 							end
 						end)
 						spawn(function()
-										local args = {[1] = true}
+								local args = {[1] = true}
 					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
 				
-							if ki() >= kiRequerido() and valorMinimo() >= 2000 and isLoop3Active then
+							if ki() >= kiRequerido() and valorMinimo() >= 4000 and isLoop3Active then
 								ataqueMelee(vidaEnemigo())
-							Melees()
+								Melees()
 							end
 						end)
 					end)
 					wait()
 				end
-				if misionSeleccionada() == '' then
-					wait(1)
+				if misionSeleccionada() == ''  and isLoop1Active then
+					wait(3)
 				end
-				if yo.Character.Humanoid.Health <= 0 then
+				if yo.Character.Humanoid.Health <= 0   and isLoop1Active  then
 					repeat
-						wait()
+						wait(2)
 					until yo.Character.Humanoid.Health > 0
-					wait(1)
+					wait(3)
 					fly()
 				end
 			end
@@ -1154,7 +1066,6 @@ function empezarFarm()
 		wait()
 	end
 end
-
 
 
 yo.Idled:Connect(function() 
@@ -1165,8 +1076,8 @@ iniciarJuego()
 task.wait()
 
 spawn(function()
-	while isLoop1Active and true do
-		if cargaAndBloqueo then
+	while  true do
+		if cargaAndBloqueo and isLoop1Active then
 			pcall(function()
 				spawn(function()
 					local args = {[1] = "Blacknwhite27"}
@@ -1175,10 +1086,6 @@ spawn(function()
 				spawn(function()
 					local args = {[1] = true}
 					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
-				end)
-								spawn(function()
-		local args = {[1] = "Blacknwhite27",[2] = 1}
-		game:GetService("ReplicatedStorage").Package.Events.p:FireServer(unpack(args))
 				end)
 			end)
 		end
@@ -1197,8 +1104,8 @@ end
 local function loop2()
     while true do
         if isLoop2Active then
-         wait(8)
-if (game.PlaceId ~= 5151400895) then
+                  wait(8)
+if (game.PlaceId ~= 5151400895) and isLoop2Active then
     repeat
         wait()
     until game.Players.LocalPlayer.CharacterAdded and
@@ -1236,13 +1143,13 @@ local Forms = {'Beast','Ultra Ego','SSJB4','True God of Creation','True God of D
 local function transform()
     pcall(function()
         for i, v in pairs(Forms) do
-            if equipRemote:InvokeServer(v) then
+            if equipRemote:InvokeServer(v) and isLoop2Active then
                 break
             end
         end
         repeat
             wait()
-            if player.Status.SelectedTransformation.Value ~= player.Status.Transformation.Value then
+            if player.Status.SelectedTransformation.Value ~= player.Status.Transformation.Value and isLoop2Active then
                 game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
             end
         until game.Players.LocalPlayer.Status.SelectedTransformation.Value ==
@@ -1251,9 +1158,9 @@ local function transform()
 end
 
 
-while isLoop2Active and  true and wait() do
-    if (stats.Strength.Value > 5000 and stats.Defense.Value > 5000 and stats.Energy.Value > 5000 and stats.Speed.Value >
-        5000) then
+while  true and wait() do
+    if (stats.Strength.Value > 5000 and stats.Defense.Value > 5000 and   stats.Energy.Value > 5000 and stats.Speed.Value >
+        5000) and isLoop2Active  then
         transform()
   game:GetService("ReplicatedStorage").Package.Events.AuraTrigger:InvokeServer()
     end
@@ -1275,27 +1182,7 @@ end
 local function loop4()
     while true do
         if isLoop4Active then
-            local player = game.Players.LocalPlayer 
-local npcPosition = CFrame.new(0, 0, 4.6) 
 
-function returnQuest(useObjective)
-    return game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
-end
-
-repeat
-    local questValue = returnQuest(true)
-    if questValue ~= "" then
-        for _, boss in ipairs(game.Workspace.Living:GetChildren()) do
-            if boss.Name == questValue and
-               not player.PlayerGui.Main.MainFrame.Frames.Quest.Nop.Visible and
-               boss:FindFirstChild('Humanoid') and
-               boss:FindFirstChild('HumanoidRootPart') and isLoop4Active then
-                player.Character.HumanoidRootPart.CFrame = boss.HumanoidRootPart.CFrame * npcPosition
-            end
-        end
-    end
-    wait() 
-until false 
         end
         wait() 
     end
@@ -1304,7 +1191,10 @@ end
 local function loop5()
     while true do
         if isLoop5Active then
-        	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
+        	function rebirth()
+	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
+end
+rebirth() 
         end
     wait()
     end
