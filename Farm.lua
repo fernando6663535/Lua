@@ -632,6 +632,7 @@ function iniciarJuego()
 	local data = game.ReplicatedStorage.Datas[player.UserId]
 	game:GetService("ReplicatedStorage").Package.Events.Start:InvokeServer()
 	game.Workspace.Gravity = Vector3.new(1, 0, 0)
+	loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/NotificationLibrary.lua'))()
 	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	if data.Strength.Value>=8000000 then
 		wait(5)
