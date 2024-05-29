@@ -846,7 +846,7 @@ local function aver(enlace)
 end
 
 local function flyi()
-wait(9.4)
+wait(7.4)
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
