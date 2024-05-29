@@ -810,64 +810,15 @@ local function fly()
 		task.wait()
 		keyrelease(Enum.KeyCode.Space)
 		task.wait()
+		fly()
 	end)
 	if fallo then
 		warn('fly error '..fallo)
 	end
 end
 
-local function Fly8()
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-local flying = true  -- Iniciar con el vuelo activado
-local flightSpeed = 50  -- Velocidad del vuelo
 
-local ctrl = {f = 0, b = 0, l = 0, r = 0}  -- Controles de dirección
-local speed = 0
-
--- Habilitar vuelo
-local function enableFlight()
-    local torso = character:FindFirstChild("LowerTorso")
-    if not torso  then return end
-
-    local bg = Instance.new("BodyGyro", torso)
-    bg.P = 9e4
-    bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-    bg.cframe = torso.CFrame
-
-    local bv = Instance.new("BodyVelocity", torso)
-    bv.velocity = Vector3.new(0, 0.1, 0)
-    bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-
-    humanoid.PlatformStand = true
-    RunService.Heartbeat:Connect(function()
-        if flying and isLoop1Active then
-            if ctrl.l + ctrl.r ~= 0 or ctrl.f + ctrl.b ~= 0  then
-                speed = speed + 0.5 + (speed / flightSpeed)
-                if speed > flightSpeed  then
-                    speed = flightSpeed
-                end
-            else
-                speed = speed - 1
-                if speed < 0  then
-                    speed = 0
-                end
-            end
-            
-            bv.velocity = ((game.Workspace.CurrentCamera.CFrame.LookVector * (ctrl.f + ctrl.b)) +
-                ((game.Workspace.CurrentCamera.CFrame * CFrame.new(ctrl.l + ctrl.r, (ctrl.f + ctrl.b) * 0.2, 0).p) -
-                game.Workspace.CurrentCamera.CFrame.p)) * speed
-        end
-    end)
-end
-
--- Llamar a la función enableFlight() al inicio del script
-enableFlight()
-end
 local function ataquesParaStats()
 	print('Atacando...')
 	
@@ -895,7 +846,33 @@ local function aver(enlace)
 end
 
 local function flyi()
+wait(9.4)
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
 
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:FindFirstChildWhichIsA("Humanoid")
+local flying = true  -- Iniciar con el vuelo activado
+
+local torso = character:FindFirstChild("LowerTorso")
+local bg = Instance.new("BodyGyro", torso)
+bg.P = 9e4
+bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
+bg.cframe = torso.CFrame
+
+local bv = Instance.new("BodyVelocity", torso)
+bv.velocity = Vector3.new(0, 0, 0)
+bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
+
+humanoid.PlatformStand = true
+
+RunService.Heartbeat:Connect(function()
+    if flying then
+        bg.cframe = CFrame.new(torso.Position, torso.Position + Vector3.new(0, -1, 0))  -- Mantener el torso recto
+        bv.velocity = Vector3.new(0, 0, 0)  -- Mantener la velocidad en cero
+    end
+end)
 end
 
 local function esperandoCargaxd()
@@ -995,7 +972,6 @@ function misionRival()
 end
 
 function empezarFarm() 
-	fly()
 		   while  true do
 		pcall(function()
 			if player() then
@@ -1025,10 +1001,9 @@ function empezarFarm()
 				   while  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
 					pcall(function()
 						spawn(function() 
-							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4.1)) 
+							sigueEnemigo(frameEnemigo() * CFrame.new(0, 7, 0)) 
 							pcall(function ()
-								statsPlayerFarmSa() 
-								Fly8()
+								statsPlayerFarmSa() 							
 							end)
 						end)
 						spawn(function() 
