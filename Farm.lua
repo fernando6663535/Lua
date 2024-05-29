@@ -499,7 +499,8 @@ local isLoop5Active = LoadSwitchState("Switch5")
 local function loop1()
     while true do
         if isLoop1Active then
-local yo = game:GetService('Players').LocalPlayer
+
+		 local yo = game:GetService('Players').LocalPlayer
 local folderData = game.ReplicatedStorage.Datas[yo.UserId]
 local afk = game:service'VirtualUser'
 local statsRequeridosFarm = 4000
@@ -513,7 +514,7 @@ local statsPlayerFarmSa
 
 local millon = 1000000
 local arregloAtaques = {
-                            
+
 }
 local ataquesEnergy = {
 	{name = 'Soul Punisher',subName = 'Hak',fuerza = 40000000},
@@ -526,12 +527,12 @@ local multiQuest = {
 		{nombre= "Broccoli",minimo = 52500000},
 		{nombre= "SSJB Wukong",minimo = 8000000},
 		{nombre= "Kai-fist Master",minimo = 6025000},
-		{nombre= "SSJ2 Wukong",minimo = 1250000},
-		{nombre= "Perfect Atom",minimo = 875000},
-		{nombre= "Chilly",minimo = 550000},
-		{nombre= "Super Vegetable",minimo = 187500},
-		{nombre= "Mapa",minimo = 50000},
-		{nombre= "Radish",minimo = 39000},
+		{nombre= "SSJ2 Wukong",minimo = 2950000},
+		{nombre= "Perfect Atom",minimo = 1375000},
+		{nombre= "Chilly",minimo = 950000},
+		{nombre= "Super Vegetable",minimo = 287500},
+		{nombre= "Mapa",minimo = 90000},
+		{nombre= "Radish",minimo = 69000},
 		{nombre= "Kid Nohag",minimo = 30000},
 		{nombre= "Klirin",minimo = 4000},
 	},
@@ -565,7 +566,6 @@ local function speed()
 	return folderData.Speed.Value
 end
 
-
 function characterInvisible()
 	return yo.Character
 end
@@ -592,7 +592,9 @@ local function ki()
 	return game.Workspace.Living[yo.Name].Stats.Ki.Value
 end
 
+function rebirth()
 
+end
 
 local function Melees()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
@@ -625,12 +627,11 @@ local function Melees()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
                             end
 
-
 function iniciarJuego()
 	local player = game.Players.LocalPlayer
 	local data = game.ReplicatedStorage.Datas[player.UserId]
 	game:GetService("ReplicatedStorage").Package.Events.Start:InvokeServer()
-	local Notify = loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/NotificationLibrary.lua'))()
+	game.Workspace.Gravity = Vector3.new(1, 0, 0)
 	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	if data.Strength.Value>=8000000 then
 		wait(5)
@@ -643,8 +644,6 @@ function iniciarJuego()
 	end
 	task.wait()
 end
-
-
 
 
 function noTierraID()
@@ -701,11 +700,11 @@ function iteradorQuest(array)
 	print('Seccion iterador quest')
 	local enemigo
 	for _,jefe in pairs(multiQuest[array]) do 
-		if valorMinimo() > jefe.minimo and player()   and isLoop1Active then
+		if valorMinimo() > jefe.minimo and player() then
 			print('El elegigo')
 			for indice, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do 
 				print('enemigo '..v.Name)
-				if jefe.nombre == v.Name and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and yo and v.Humanoid.Health > 0   and isLoop1Active then
+				if jefe.nombre == v.Name and v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and yo and v.Humanoid.Health > 0 and isLoop1Active then
 					print('Mision seleccionada y retornando enemigo')
 					return v.Name 
 				end
@@ -730,14 +729,14 @@ function validacionPlanetas()
 
 	print('Validando el planeta')
 
-	if noTierraID()   and isLoop1Active then 
-			   while valorMinimo() < billsTP and noTierraID() do 
+	if noTierraID() then 
+			   while  valorMinimo() < billsTP and noTierraID() do 
 			print('Ir a la tierra')
 			earth()
 			wait()
 		end
 	else 
-		if valorMinimo() >= billsTP   and isLoop1Active then 
+		if valorMinimo() >= billsTP  then 
 			pcall(function()
 				print('Llendo a bills')
 				mundoBills()
@@ -810,14 +809,11 @@ local function fly()
 		task.wait()
 		keyrelease(Enum.KeyCode.Space)
 		task.wait()
-		fly()
 	end)
 	if fallo then
 		warn('fly error '..fallo)
 	end
 end
-
-
 
 local function ataquesParaStats()
 	print('Atacando...')
@@ -846,38 +842,12 @@ local function aver(enlace)
 end
 
 local function flyi()
-wait(7.4)
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:FindFirstChildWhichIsA("Humanoid")
-local flying = true  -- Iniciar con el vuelo activado
-
-local torso = character:FindFirstChild("LowerTorso")
-local bg = Instance.new("BodyGyro", torso)
-bg.P = 9e4
-bg.maxTorque = Vector3.new(9e9, 9e9, 9e9)
-bg.cframe = torso.CFrame
-
-local bv = Instance.new("BodyVelocity", torso)
-bv.velocity = Vector3.new(0, 0, 0)
-bv.maxForce = Vector3.new(9e9, 9e9, 9e9)
-
-humanoid.PlatformStand = true
-
-RunService.Heartbeat:Connect(function()
-    if flying then
-        bg.cframe = CFrame.new(torso.Position, torso.Position + Vector3.new(0, -1, 0))  -- Mantener el torso recto
-        bv.velocity = Vector3.new(0, 0, 0)  -- Mantener la velocidad en cero
-    end
-end)
 end
 
 local function esperandoCargaxd()
 
-	if (speed() >= statsRequeridosFarm and activadaSpeed) or (ki() < kiRequerido() and activadaSpeed) or (not player() and activadaSpeed)   and isLoop1Active then
+	if (speed() >= statsRequeridosFarm and activadaSpeed) or (ki() < kiRequerido() and activadaSpeed) or (not player() and activadaSpeed) then
 		cancelarSpeed() 
 		cancelarSpeed() 
 		activadaSpeed = false
@@ -972,12 +942,15 @@ function misionRival()
 end
 
 function empezarFarm() 
+	fly()
 		   while  true do
 		pcall(function()
 			if player() then
+				rebirth() 
 
 				warn('estadisticas elegidas '..tostring(statsRequeridosFarm))
 
+			
 				mision()
 
 				print('Mision seleccionada')
@@ -1001,15 +974,16 @@ function empezarFarm()
 				   while  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
 					pcall(function()
 						spawn(function() 
-							sigueEnemigo(frameEnemigo() * CFrame.new(0, 7, 0)) 
+							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4))
 							pcall(function ()
-								statsPlayerFarmSa() 							
+								statsPlayerFarmSa()
 							end)
 						end)
 						spawn(function() 
 							if ki() >= kiRequerido() and valorMinimo() >= 4000 and isLoop3Active then
 								ataqueEnergy(frameEnemigo(), vidaEnemigo())
-								wait()
+								Melees()
+								wait(1)
 							else
 								game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
 							end
@@ -1018,7 +992,7 @@ function empezarFarm()
 								local args = {[1] = true}
 					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
 				
-							if ki() >= kiRequerido() and valorMinimo() >= 4000 and isLoop3Active then
+							if ki() >= kiRequerido() and valorMinimo() >= 2000 and isLoop1Active then
 								ataqueMelee(vidaEnemigo())
 								Melees()
 							end
@@ -1026,10 +1000,10 @@ function empezarFarm()
 					end)
 					wait()
 				end
-				if misionSeleccionada() == ''  and isLoop1Active then
+				if misionSeleccionada() == '' and isLoop1Active then
 					wait(3)
 				end
-				if yo.Character.Humanoid.Health <= 0   and isLoop1Active  then
+				if yo.Character.Humanoid.Health <= 0 and isLoop1Active then
 					repeat
 						wait(2)
 					until yo.Character.Humanoid.Health > 0
@@ -1043,6 +1017,7 @@ function empezarFarm()
 end
 
 
+
 yo.Idled:Connect(function() 
 	afk:CaptureController()
 	afk:ClickButton2(Vector2.new())
@@ -1051,13 +1026,14 @@ iniciarJuego()
 task.wait()
 
 spawn(function()
-	while  true do
-		if cargaAndBloqueo and isLoop1Active then
+	while true do
+		if cargaAndBloqueo  and isLoop1Active then
 			pcall(function()
 				spawn(function()
 					local args = {[1] = "Blacknwhite27"}
 					game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer(unpack(args))
 				end)
+	
 				spawn(function()
 					local args = {[1] = true}
 					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
@@ -1071,6 +1047,7 @@ task.wait()
 
 
 empezarFarm()
+
         end
         wait()
     end
