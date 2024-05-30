@@ -1143,6 +1143,7 @@ end
 local function loop3()
     while true do
         if isLoop3Active then
+        wait(14)
         local function koko()
 local s = game.Players.LocalPlayer.PlayerGui.Main.MainFrame.Frames.Stats
 s.Visible, s.Position = true, UDim2.new(0.3, 0, 0.2, 22)
