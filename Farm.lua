@@ -1158,7 +1158,11 @@ local function formatNumber(number)
         suffix_index = suffix_index + 1
     end
 
-    return string.format("%.2f%s", number, suffixes[suffix_index])
+    if suffix_index == 1 and number >= 100 and number < 1000 then
+        return string.format("%.0f", number)  -- No muestra decimales si el número está entre 100 y 999
+    else
+        return string.format("%.2f%s", number, suffixes[suffix_index])
+    end
 end
 
 -- Función para actualizar los números originales y hacerlos invisibles
