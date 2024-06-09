@@ -925,18 +925,7 @@ end
 
 
 local function golo()
-local RunService = game:GetService("RunService")
-local hasExecuted = false  -- Variable de control
 
-RunService.Heartbeat:Connect(function()
-    if not hasExecuted then  -- Verificar si ya se ejecutó
-        local args = {[1] = "Blacknwhite27"}
-        game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer(unpack(args))
-        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
-        
-        hasExecuted = true  -- Marcar como ejecutado
-    end
-end)
 end
 
 
