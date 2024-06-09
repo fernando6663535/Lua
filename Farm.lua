@@ -781,6 +781,7 @@ local function fly()
 		task.wait()
 		keyrelease(Enum.KeyCode.Space)
 		task.wait()
+		
 	end)
 	if fallo then
 		warn('fly error '..fallo)
@@ -923,41 +924,35 @@ s.Visible, s.Position = true, UDim2.new(0.3, 0, 0.2, 22)
 end
 
 
+local function golo()
+local RunService = game:GetService("RunService")
+local hasExecuted = false  -- Variable de control
 
+RunService.Heartbeat:Connect(function()
+    if not hasExecuted then  -- Verificar si ya se ejecutó
+        local args = {[1] = "Blacknwhite27"}
+        game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer(unpack(args))
+        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)
+        
+        hasExecuted = true  -- Marcar como ejecutado
+    end
+end)
+end
 
 
 local function Melees()
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
+                         game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
-                              wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")                           
-                            wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
-                             
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
-                             
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")
-                           wait(0.1)
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            end
-                            
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")      
+                            game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)                     
 
+                           
+                           
+                            end
 function empezarFarm() 
 	fly()
 		   while  true do
@@ -994,6 +989,7 @@ function empezarFarm()
 							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4))
 							pcall(function ()
 								statsPlayerFarmSa()
+								golo()
 							end)
 						end)
 						spawn(function() 
