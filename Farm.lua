@@ -33,8 +33,8 @@ local ButtonCorner = Instance.new("UICorner")
 local TweenService = game:GetService("TweenService")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Panel = Instance.new("ImageLabel")
-local sound = Instance.new("Sound", game.Workspace)
 local panelExpanded = false
+local sound = Instance.new("Sound", game.Workspace)
 local imageLabel = Instance.new("ImageLabel")
 local billsImageLabel = Instance.new("ImageLabel")
 local earthImageLabel = Instance.new("ImageLabel")
@@ -242,18 +242,6 @@ Reb.TextScaled = true
 Reb.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
 Reb.TextStrokeTransparency = 0
 
-UICorner.CornerRadius = UDim.new(0, 13) 
-UICorner.Parent = MainButton
-MainButton.Parent = ScreenGui
-MainButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MainButton.BorderSizePixel = 0
-MainButton.Position = UDim2.new(0.1, 39, 0, -32)
-MainButton.Size = UDim2.new(0, 70, 0, 30)
-MainButton.Font = Enum.Font.SourceSans
-MainButton.Text = "Creador"
-MainButton.TextColor3 = Color3.fromRGB(0, 0, 255)
-MainButton.TextSize = 18
-
 Panel.Parent = ScreenGui
 Panel.BackgroundTransparency = 1
 Panel.Position = UDim2.new(0.1, 39, 0, 60)
@@ -319,6 +307,7 @@ earthImageLabel.BackgroundTransparency = 1
 earthImageLabel.Image = "rbxassetid://17345700746"
 earthImageLabel.Name = "EarthImage"  
 earthImageLabel.Parent = earthButton  
+
 
 
 
@@ -406,24 +395,6 @@ updateMissionName()
 ReplicatedStorage.Datas[Players.LocalPlayer.UserId].Quest:GetPropertyChangedSignal("Value"):Connect(updateMissionName)
 
 
---funcion de id del avatar
-local function togglePanel()
-    panelExpanded = not panelExpanded
-    local targetSize = panelExpanded and UDim2.new(0, 150, 0, 100) or UDim2.new(0, 100, 0, 0)
-    local targetPosition = panelExpanded and UDim2.new(0.1, 0, 0, -6) or UDim2.new(0.1, 39, 0, -32)
-    local targetText = panelExpanded and "Creador" or "Creador"
-    
-    local playerId = 4527490574
-    local thumbnailType = Enum.ThumbnailType.AvatarThumbnail
-    local thumbnailSize = Enum.ThumbnailSize.Size420x420
-    local thumbnailUrl = Players:GetUserThumbnailAsync(playerId, thumbnailType, thumbnailSize)
-    
-    Panel.Image = thumbnailUrl
-    
-    local panelTween = TweenService:Create(Panel, TweenInfo.new(0.2), {Size = targetSize, Position = targetPosition})
-    panelTween:Play()
-    MainButton.Text = targetText
-end
 
 local function initSwitches(MenuPanel)
 local function createSwitchModel(parent, position, switchName)
@@ -598,6 +569,7 @@ end
 
 
                    
+
 
 function iniciarJuego()
 	local player = game.Players.LocalPlayer
@@ -818,7 +790,6 @@ local function flyi()
 end
 
 
-
 local function esperandoCargaxd()
 
 	if (speed() >= statsRequeridosFarm and activadaSpeed) or (ki() < kiRequerido() and activadaSpeed) or (not player() and activadaSpeed) then
@@ -917,8 +888,6 @@ function misionRival()
 end
 
 function Fhjo()
-local s = game.Players.LocalPlayer.PlayerGui.Main.MainFrame.Frames.Stats
-s.Visible, s.Position = true, UDim2.new(0.3, 0, 0.2, 22)
 
 end
 
@@ -1088,6 +1057,10 @@ local Forms = {'Beast','Ultra Ego','SSJB4','True God of Creation','True God of D
                 'SSJ Rage','SSJG','SSJ4','Mystic','LSSJ','SSJ3','Spirit SSJ','SSJ2 Majin','SSJ2','SSJ Kaioken','SSJ','FSSJ','Kaioken'}
 
 
+local function hju()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/De%20reB-STATS.Lua"))()
+
+end
 
 
 local function transform()
@@ -1112,6 +1085,7 @@ while  true and wait() do
     if (stats.Strength.Value > 5000 and stats.Defense.Value > 5000 and   stats.Energy.Value > 5000 and stats.Speed.Value >
         5000) and isLoop2Active  then
         transform()
+        hju()
   game:GetService("ReplicatedStorage").Package.Events.AuraTrigger:InvokeServer()
     end
 end
@@ -1123,106 +1097,6 @@ end
 local function loop3()
     while true do
         if isLoop3Active then
-        wait(14)
-        local function koko()
-local s = game.Players.LocalPlayer.PlayerGui.Main.MainFrame.Frames.Stats
-s.Visible, s.Position = true, UDim2.new(0.3, 0, 0.2, 22)
-s.BackgroundColor3 = Color3.new(0, 0, 0)
-
-local function formatNumber(number)
-    local suffixes = {"", "K", "M", "B", "T", "QD"}
-    local suffix_index = 1
-
-    while math.abs(number) >= 1000 and suffix_index < #suffixes do
-        number = number / 1000.0
-        suffix_index = suffix_index + 1
-    end
-
-    if suffix_index == 1 and number >= 100 and number < 1000 then
-        return string.format("%.0f", number)  -- No muestra decimales si el número está entre 100 y 999
-    else
-        return string.format("%.2f%s", number, suffixes[suffix_index])
-    end
-end
-
--- Función para actualizar los números originales y hacerlos invisibles
-local function updateOriginalNumbers()
-    for _, child in ipairs(s:GetChildren()) do
-        if child:IsA("TextLabel") then
-            local numbers = tonumber(child.Text:match("%d+"))
-            if numbers then
-                local formattedNumber = formatNumber(numbers)
-                child.Text = formattedNumber
-                child.Visible = false -- Hacer invisible el número original
-            end
-        end
-    end
-end
-
--- Función para actualizar los números clonados
-local function updateClonedNumbers()
-    for _, child in ipairs(s:GetChildren()) do
-        if child:IsA("TextLabel") and string.find(child.Name, "Cloned") then
-            local original = s:FindFirstChild(child.Name:gsub("Cloned", ""))
-            if original then
-                local numbers = tonumber(original.Text:match("%d+"))
-                if numbers then
-                    local formattedNumber = formatNumber(numbers)
-                    local prefix = ""  -- Inicializar el prefijo como una cadena vacía
-                    if string.find(child.Name, "Strength") then
-                        prefix = "Strength: "
-                    elseif string.find(child.Name, "Speed") then
-                        prefix = "Speed: "
-                    elseif string.find(child.Name, "Defense") then
-                        prefix = "Defense: "
-                    elseif string.find(child.Name, "Energy") then
-                        prefix = "Energy: "
-                    elseif string.find(child.Name, "Rebirth") then
-                        prefix = "Rebirth: "
-                        child.TextColor3 = Color3.new(1, 1, 0)  -- Cambiar el color a amarillo
-                    end
-                    child.Text = prefix .. formattedNumber
-                end
-            end
-        end
-    end
-end
-
--- Actualizar los números originales y hacerlos invisibles
-updateOriginalNumbers()
-
--- Clonar números formateados dentro del guion Stats
-for _, child in ipairs(s:GetChildren()) do
-    if child:IsA("TextLabel") then
-        local numbers = tonumber(child.Text:match("%d+"))
-        if numbers then
-            local formattedNumber = formatNumber(numbers)
-            local clonedLabel = Instance.new("TextLabel", s)
-            clonedLabel.Name = "Cloned" .. child.Name
-            clonedLabel.Text = child.Name .. " " .. formattedNumber  -- Agregar las palabras al inicio del número clonado
-            clonedLabel.Font = Enum.Font.SourceSansBold -- Cambiar la fuente a SourceSansBold
-            clonedLabel.TextSize = 45 -- Ajustar el tamaño del texto
-            clonedLabel.TextColor3 = Color3.new(1, 1, 1)
-            clonedLabel.BackgroundTransparency = 1
-            clonedLabel.Position = child.Position
-            clonedLabel.Size = child.Size
-            if string.find(child.Name, "Rebirth") then
-                clonedLabel.TextColor3 = Color3.new(1, 1, 0)  -- Cambiar el color a amarillo
-            end
-        end 
-    end
-end
-
--- Actualizar los números clonados cada segundo
-while true do
-    updateClonedNumbers()
-    wait(0.4)
-end
-end
-while true do
-wait(2)
-koko()
-end
         end
         wait()
     end
@@ -1303,4 +1177,6 @@ game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
 end)
 
 showPlayerThumbnail()
+        
+        
         
