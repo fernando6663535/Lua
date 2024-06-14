@@ -847,9 +847,10 @@ function empezarQuest(array)
 	print('Enemigo seleccionado')
 
 		   while  misionSeleccionada() ~= enemigo and player() do
-		wait(2)
+
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
+		wait(0.7)
 	end
 end
 
@@ -860,6 +861,7 @@ function rival(array)
 		if enemigo == v.Name then
 			return v
 		end
+				wait(2)
 	end
 end
 
