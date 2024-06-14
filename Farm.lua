@@ -859,6 +859,7 @@ function rival(array)
 		if enemigo == v.Name then
 			return v
 		end
+		wait(2)
 	end
 end
 
