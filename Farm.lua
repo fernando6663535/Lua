@@ -850,7 +850,7 @@ function empezarQuest(array)
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
 	end
-	wait(0.6)
+	wait(1)
 end
 
 function rival(array)
