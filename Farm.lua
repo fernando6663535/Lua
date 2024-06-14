@@ -847,7 +847,6 @@ function empezarQuest(array)
 	print('Enemigo seleccionado')
 
 		   while  misionSeleccionada() ~= enemigo and player() do
-		wait(1)
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
 	end
@@ -1058,6 +1057,7 @@ local Forms = {'Beast','Ultra Ego','SSJB4','True God of Creation','True God of D
 
 
 local function hju()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/De%20reB-STATS.Lua"))()
 
 end
 
@@ -1178,4 +1178,4 @@ end)
 showPlayerThumbnail()
         
         
-        
+         
