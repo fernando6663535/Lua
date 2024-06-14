@@ -850,11 +850,11 @@ function empezarQuest(array)
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
 	end
+	wait(1)
 end
 
 function rival(array)
 	local enemigo = iteradorQuest(array)
-
 	for indice, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
 		if enemigo == v.Name then
 			return v
@@ -1057,7 +1057,6 @@ local Forms = {'Beast','Ultra Ego','SSJB4','True God of Creation','True God of D
 
 
 local function hju()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/De%20reB-STATS.Lua"))()
 
 end
 
