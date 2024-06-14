@@ -847,6 +847,7 @@ function empezarQuest(array)
 	print('Enemigo seleccionado')
 
 		   while  misionSeleccionada() ~= enemigo and player() do
+		wait()
 		print('Ejecutando quest')
 		events.Qaction:InvokeServer(game:GetService("Workspace").Others.NPCs[enemigo])
 	end
@@ -858,7 +859,6 @@ function rival(array)
 		if enemigo == v.Name then
 			return v
 		end
-		wait(2)
 	end
 end
 
@@ -971,14 +971,14 @@ function empezarFarm()
 				end
 				if yo.Character.Humanoid.Health <= 0 and isLoop1Active then
 					repeat
-						wait(2)
+						wait()
 					until yo.Character.Humanoid.Health > 0
-					wait(3)
+					wait(2)
 					fly()
 				end
 			end
 		end)
-		wait()
+		wait(2)
 	end
 end
 
