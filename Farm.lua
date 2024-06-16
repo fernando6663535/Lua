@@ -554,7 +554,7 @@ local function sigueEnemigo(enemigo)
 end
 
 local function kiRequerido()
-	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 5
+	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 4
 end
 local function kiTotal()
 	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 1
@@ -734,7 +734,7 @@ local function cancelarSpeed()
 	print('Cancelando Speed!')
 end
 local function masCarga() 
-	game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
+	keypress(Enum.KeyCode.C)
 	print('Carga!')
 end
 local function cancelarCarga() 
