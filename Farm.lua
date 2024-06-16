@@ -499,12 +499,12 @@ local multiQuest = {
 		{nombre= "SSJB Wukong",minimo = 8000000},
 		{nombre= "Kai-fist Master",minimo = 6025000},
 		{nombre= "SSJ2 Wukong",minimo = 2950000},
-		{nombre= "Perfect Atom",minimo = 1375000},
+		{nombre= "Perfect Atom",minimo = 1575000},
 		{nombre= "Chilly",minimo = 950000},
-		{nombre= "Super Vegetable",minimo = 287500},
-		{nombre= "Mapa",minimo = 90000},
-		{nombre= "Radish",minimo = 69000},
-		{nombre= "Kid Nohag",minimo = 30000},
+		{nombre= "Super Vegetable",minimo = 387500},
+		{nombre= "Mapa",minimo = 190000},
+		{nombre= "Radish",minimo = 99000},
+		{nombre= "Kid Nohag",minimo = 50000},
 		{nombre= "Klirin",minimo = 4000},
 	},
 	bossBills = {
@@ -557,7 +557,7 @@ local function kiRequerido()
 	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 10
 end
 local function kiTotal()
-	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 2
+	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 1
 end
 local function ki()
 	return game.Workspace.Living[yo.Name].Stats.Ki.Value
