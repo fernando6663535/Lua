@@ -557,7 +557,7 @@ local function kiRequerido()
 	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 10
 end
 local function kiTotal()
-	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 2
+	return game:GetService("Players").LocalPlayer.Character.Stats.Ki.MaxValue / 0.1
 end
 local function ki()
 	return game.Workspace.Living[yo.Name].Stats.Ki.Value
@@ -949,7 +949,7 @@ function empezarFarm()
 				   while  enemigo:FindFirstChild("Humanoid") and vidaEnemigo() and player() and isLoop4Active do
 					pcall(function()
 						spawn(function() 
-							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 4))
+							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 5))
 							pcall(function ()
 								statsPlayerFarmSa()
 							end)
