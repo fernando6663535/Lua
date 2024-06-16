@@ -895,13 +895,23 @@ end
 
 
 local function Melees()
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")
+            
+                         
+                            game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")                          
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")     
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")  
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Flash Kick", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Breaking Cannon", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Meteor Strike", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vanish Strike", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Bone Charge", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Uppercut", "Blacknwhite27")  
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Sledgehammer", "Blacknwhite27")      
+                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vital Strike", "Blacknwhite27")      
                             game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)                     
                             end
                             
