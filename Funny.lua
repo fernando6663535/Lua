@@ -651,12 +651,12 @@ local quests = {{
     name = "Chilly",
     nickname = "Chilly",
     requiredValue = 100001,
-    endRange = 3000000,
+    endRange = 5000000,
     planet = "Earth"
 }, {
     name = "Perfect Atom",
     nickname = "Perfect Atom",
-    requiredValue = 3000001,
+    requiredValue = 5000001,
     endRange = 8100000,
     planet = "Earth"
 }, {
@@ -705,36 +705,36 @@ local quests = {{
     name = "Vis (20%)",
     nickname = "Vis (20%)",
     requiredValue = 500000001,
-    endRange = 900000000,
+    endRange = 1000000000,
     planet = "Bills"
 }, {
     name = "Vegetable (LBSSJ4)",
     nickname = "Vegetable (LBSSJ4)",
-    requiredValue = 900000001,
-    endRange = 1400000000,
+    requiredValue = 1000000001,
+    endRange = 1600000000,
     planet = "Bills"
 }, {
     name = "Wukong (LBSSJ4)",
     nickname = "Wukong (LBSSJ4)",
-    requiredValue = 1400000001,
-    endRange = 2700000000,
+    requiredValue = 1600000001,
+    endRange = 3700000000,
     planet = "Bills"
 }, {
     name = "Vekuta (LBSSJ4)",
     nickname = "Vekuta (LBSSJ4)",
-    requiredValue = 2700000001,
-    endRange = 3500000000,
+    requiredValue = 3700000001,
+    endRange = 4500000000,
     planet = "Bills"
 }, {
     name = "Wukong Rose",
     nickname = "Wukong Rose",
-    requiredValue = 3500000001,
-    endRange = 4250000000,
+    requiredValue = 4500000001,
+    endRange = 6250000000,
     planet = "Bills"
 }, {
     name = "Vekuta (SSJBUI)",
     nickname = "Vekuta (SSJBUI)",
-    requiredValue = 4250000001,
+    requiredValue = 6250000001,
     endRange = 2000000000000000000,
     planet = "Bills"
 }}
