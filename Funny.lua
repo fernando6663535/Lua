@@ -745,7 +745,7 @@ local function check1()
     pcall(function()
     local checkValue = getCheckValue()
 
-    if checkValue >= 200000000 and game.placeId ~= 5151400895 then
+    if checkValue >= 150000000 and game.placeId ~= 5151400895 then
         data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
         if data.Zeni.Value >= 15000 then
 
@@ -764,9 +764,9 @@ local function check1()
         end
     end
 
-    if checkValue <= 200000000 and game.placeId == 5151400895 then
+    if checkValue <= 150000000 and game.placeId == 5151400895 then
 
-        if checkValue < 200000000 and game.placeId ~= 3311165597 then
+        if checkValue < 150000000 and game.placeId ~= 3311165597 then
             local A_1 = "Earth"
             local Event = game:GetService("ReplicatedStorage").Package.Events.TP
             Event:InvokeServer(A_1)
@@ -1322,7 +1322,7 @@ check1()
                                 SelectedMobs1 = SelectedMobs
 
                                 checkValue = getCheckValue()
-                                if checkValue >= 200000000 and game.placeId ~= 5151400895 then
+                                if checkValue >= 150000000 and game.placeId ~= 5151400895 then
                                     SelectedQuests, SelectedMobs1 = "SSJG Kakata", "SSJG Kakata"
                                     local A_1 = "Vills Planet"
                                     local Event = game:GetService("ReplicatedStorage").Package.Events.TP
