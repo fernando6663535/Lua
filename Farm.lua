@@ -669,7 +669,7 @@ function mundoBills()
 end
 
 function validacionPlanetas()
-	local billsTP = 300000000
+	local billsTP = 190000000
 
 	print('Validando el planeta')
 
