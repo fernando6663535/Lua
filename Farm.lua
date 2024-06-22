@@ -199,7 +199,7 @@ local function CreatePlayerButton(player, index)
     local PlayerButton = Instance.new("TextButton")
     
     local icons = {
-        [1] = "ðŸ˜Ž",  -- Primer puesto
+        [1] = "😎",  -- Primer puesto
         [2] = "2",  -- Segundo puesto
         [3] = "2",  -- Tercer puesto
     }
