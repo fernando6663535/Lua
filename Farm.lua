@@ -1644,24 +1644,24 @@ local quests = {{
     name = "Perfect Atom",
     nickname = "Perfect Atom",
     requiredValue = 3000001,
-    endRange = 8100000,
+    endRange = 5100000,
     planet = "Earth"
 }, {
     name = "SSJ2 Wukong",
     nickname = "SSJ2 Wukong",
-    requiredValue = 8100001,
-    endRange = 10000000,
+    requiredValue = 5100001,
+    endRange = 6000000,
     planet = "Earth"
 }, {
     name = "SSJB Wukong",
     nickname = "SSJB Wukong",
-    requiredValue = 10000001,
-    endRange = 50500000,
+    requiredValue = 6000001,
+    endRange = 30500000,
     planet = "Earth"
 }, {
     name = "Broccoli",
     nickname = "Broccoli",
-    requiredValue = 50500001,
+    requiredValue = 30500001,
     endRange = 100000000,
     planet = "Earth"
 }, {
@@ -1674,54 +1674,54 @@ local quests = {{
     name = "Vegetable (GoD in-training)",
     nickname = "Vegetable (GoD in-training)",
     requiredValue = 150000001,
-    endRange = 310000000,
+    endRange = 250000000,
     planet = "Bills"
 }, {
     name = "Wukong (Omen)",
     nickname = "Wukong (Omen)",
-    requiredValue = 310000001,
-    endRange = 600000000,
+    requiredValue = 250000001,
+    endRange = 320000000,
     planet = "Bills"
 }, {
     name = "Vills (50%)",
     nickname = "Vills (50%)",
-    requiredValue = 600000001,
-    endRange = 900000000,
+    requiredValue = 320000001,
+    endRange = 500000000,
     planet = "Bills"
 }, {
     name = "Vis (20%)",
     nickname = "Vis (20%)",
-    requiredValue = 900000001,
-    endRange = 1700000000,
+    requiredValue = 500000001,
+    endRange = 1000000000,
     planet = "Bills"
 }, {
     name = "Vegetable (LBSSJ4)",
     nickname = "Vegetable (LBSSJ4)",
-    requiredValue = 1700000001,
-    endRange = 3000000000,
+    requiredValue = 1000000001,
+    endRange = 1900000000,
     planet = "Bills"
 }, {
     name = "Wukong (LBSSJ4)",
     nickname = "Wukong (LBSSJ4)",
-    requiredValue = 3000000001,
-    endRange = 3900000000,
+    requiredValue = 1500000001,
+    endRange = 3000000000,
     planet = "Bills"
 }, {
     name = "Vekuta (LBSSJ4)",
     nickname = "Vekuta (LBSSJ4)",
-    requiredValue = 3900000001,
-    endRange = 4800000000,
+    requiredValue = 3000000001,
+    endRange = 3500000000,
     planet = "Bills"
 }, {
     name = "Wukong Rose",
     nickname = "Wukong Rose",
-    requiredValue = 4800000001,
-    endRange = 6250000000,
+    requiredValue = 3500000001,
+    endRange = 5250000000,
     planet = "Bills"
 }, {
     name = "Vekuta (SSJBUI)",
     nickname = "Vekuta (SSJBUI)",
-    requiredValue = 6250000001,
+    requiredValue = 4450000001,
     endRange = 2000000000000000000,
     planet = "Bills"
 }}
@@ -2372,7 +2372,7 @@ end
                                                 local myChar = game.Players.LocalPlayer.Character
                                                 
                                                 myChar.HumanoidRootPart.CFrame =
-                                                    Echar:GetPrimaryPartCFrame() * CFrame.new(0, 0, 2)
+                                                    Echar:GetPrimaryPartCFrame() * CFrame.new(0, 0, 5)
 
                                                 task.wait()
                                             until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
@@ -2567,7 +2567,7 @@ local function formatNumber(number)
         suffix_index = suffix_index + 1
     end
 
-    return string.format("%.3f%s", number, suffixes[suffix_index])
+    return string.format("%.2f%s", number, suffixes[suffix_index])
 end
 
 local function updateNumbers()
@@ -2704,81 +2704,95 @@ local function loop7()
     while true do
         if isLoop7Active then
             spawn(function()
-                repeat
-                    local success, err = pcall(function()
-                                                game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
-game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")                          
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")     
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")  
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Super Dragon Fist", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Flash Kick", "Blacknwhite27")      
-                                                        game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Breaking Cannon", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Meteor Strike", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vanish Strike", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Bone Charge", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Uppercut", "Blacknwhite27")  
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Sledgehammer", "Blacknwhite27")      
-                            game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vital Strike", "Blacknwhite27")      
-                            game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)                     
-                            game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
+                local success, err = pcall(function()
+                    local replicatedStorage = game:GetService("ReplicatedStorage")
+                    local events = replicatedStorage.Package.Events
+                    local target = "Blacknwhite27"
+
+                    -- Llamadas agrupadas para reducir overhead
+                    pcall(function()
+                    
+                        events.cha:InvokeServer(target)
+                        events.voleys:InvokeServer("Energy Volley", { FaceMouse = false, MouseHit = CFrame.new() }, target)
+                        events.mel:InvokeServer("High Power Rush", target)
+                        events.cha:InvokeServer(target)
+                        events.mel:InvokeServer("Mach Kick", target)
+                        events.mel:InvokeServer("Wolf Fang Fist", target)
+                        events.mel:InvokeServer("Super Dragon Fist", target)
+                        events.mel:InvokeServer("Spirit Barrage", target)
+                        events.mel:InvokeServer("God Slicer", target)
+                        events.mel:InvokeServer("Flash Kick", target)
+                        events.mel:InvokeServer("Spirit Breaking Cannon", target)
+                        events.mel:InvokeServer("Meteor Strike", target)
+                        events.mel:InvokeServer("Vanish Strike", target)
+                        events.mel:InvokeServer("Bone Charge", target)
+                        events.mel:InvokeServer("Uppercut", target)
+                        events.mel:InvokeServer("Sledgehammer", target)
+                        events.mel:InvokeServer("Vital Strike", target)
+                        events.cha:InvokeServer(target)
+                        local args = {
+                [1] = true
+            }
+            game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
+  game.Players.LocalPlayer.Status.Blocking.Value = true
+                        events.p:FireServer(target, 1)
                     end)
 
-                    task.wait()
-                until not success or err
+                    -- Espera antes de la siguiente iteración para reducir carga
+                    task.wait(0.2)
+                end)
 
-                -- Manejo de error
+                -- Manejo de errores
                 if not success then
                     warn("Error en loop7:", err)
                 end
             end)
         end
-        task.wait()
+        task.wait(0.2) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
     end
 end
 
+-- Bucle para manejo de muerte y otros eventos
 spawn(function()
     while true do
         pcall(function()
             spawn(function()
                 repeat
                     local success1, err1 = pcall(function()
-                        task.wait()
+                        task.wait(0.1) -- Aumentar la espera para verificar menos frecuentemente
                         deadcheck(false)
                     end)
-
-                    task.wait()
                 until not success1 or err1
 
-                -- Manejo de error
+                -- Manejo de errores
                 if not success1 then
                     warn("Error en el manejo de muerte:", err1)
                 end
+
+                task.wait(0.2) -- Aumentar la espera entre iteraciones para reducir la carga
             end)
         end)
-        wait()
+        task.wait(0.1) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
     end
 end)
 
+-- Bucle para manejo de spam
 spawn(function()
     while true do
         local spam = 0
         repeat
             local success, err = pcall(function()
                 spam = spam + 1
-                wait(0.1)
+                task.wait(0.5) -- Aumentar la espera entre iteraciones para reducir la frecuencia del spam
             end)
-        until spam == 10 or not success
+        until spam == 12 or not success
 
-        -- Manejo de error
+        -- Manejo de errores
         if not success then
             warn("Error en el spam:", err)
         end
 
-        task.wait()
+        task.wait(2) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
     end
 end)
 
