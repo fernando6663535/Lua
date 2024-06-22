@@ -2704,9 +2704,10 @@ local function loop7()
     while true do
         if isLoop7Active then
             spawn(function()
-                pcall(function()
-                game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
-                    game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")                          
+                repeat
+                    local success, err = pcall(function()
+                                                game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
+game.ReplicatedStorage.Package.Events.voleys:InvokeServer("Energy Volley", {FaceMouse = false, MouseHit = CFrame.new()}, "Blacknwhite27")                          
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")     
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Mach Kick", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Wolf Fang Fist", "Blacknwhite27")  
@@ -2714,6 +2715,7 @@ local function loop7()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Barrage", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("God Slicer", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Flash Kick", "Blacknwhite27")      
+                                                        game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Spirit Breaking Cannon", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Meteor Strike", "Blacknwhite27")      
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vanish Strike", "Blacknwhite27")      
@@ -2723,10 +2725,15 @@ local function loop7()
                             game.ReplicatedStorage.Package.Events.mel:InvokeServer("Vital Strike", "Blacknwhite27")      
                             game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27", 1)                     
                             game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
-                    wait()
-                    game.ReplicatedStorage.Package.Events.mel:InvokeServer("High Power Rush", "Blacknwhite27")
-                    game.ReplicatedStorage.Package.Events.cha:InvokeServer("Blacknwhite27")
-                end)
+                    end)
+
+                    task.wait()
+                until not success or err
+
+                -- Manejo de error
+                if not success then
+                    warn("Error en loop7:", err)
+                end
             end)
         end
         task.wait()
@@ -2737,10 +2744,41 @@ spawn(function()
     while true do
         pcall(function()
             spawn(function()
-                task.wait()
+                repeat
+                    local success1, err1 = pcall(function()
+                        task.wait()
+                        deadcheck(false)
+                    end)
+
+                    task.wait()
+                until not success1 or err1
+
+                -- Manejo de error
+                if not success1 then
+                    warn("Error en el manejo de muerte:", err1)
+                end
             end)
         end)
         wait()
+    end
+end)
+
+spawn(function()
+    while true do
+        local spam = 0
+        repeat
+            local success, err = pcall(function()
+                spam = spam + 1
+                wait(0.1)
+            end)
+        until spam == 10 or not success
+
+        -- Manejo de error
+        if not success then
+            warn("Error en el spam:", err)
+        end
+
+        task.wait()
     end
 end)
 
