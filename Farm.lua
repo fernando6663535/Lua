@@ -2548,9 +2548,10 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 
--- Suponiendo que la fuerza está almacenada en un objeto llamado "Stats"
+-- Suponiendo que la fuerza, rebirths y misión están almacenados en un objeto llamado "Stats"
 local stats = character:FindFirstChild("Stats")
 local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
+local rebirths = stats and stats:FindFirstChild("Rebirths") and stats.Rebirths.Value or 0 -- Obtén el valor de rebirths
 
 -- Obtén la misión actual del jugador
 local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
@@ -2572,8 +2573,8 @@ else
 end
 
 -- Determina si el jugador está en el aire o en el suelo
-local playerStatus = "Esta en Farm o caminando xd"
-if humanoidRootPart and humanoidRootPart.Position.Y > 26 then -- Ajusta el valor 50 según la altura deseada
+local playerStatus = "Está en Farm o caminando xd"
+if humanoidRootPart and humanoidRootPart.Position.Y > 26 then -- Ajusta el valor según la altura deseada
     playerStatus = "Está en vuelo"
 end
 
@@ -2583,6 +2584,7 @@ local serverId = game.JobId
 local dataToSend = {
     name = player.Name,
     strength = strength,
+    rebirths = rebirths, -- Añadir el número de rebirths al cuerpo de datos
     quest = quest,
     timestamp = currentDateTime,
     serverLocation = serverLocation,
@@ -2605,7 +2607,7 @@ if response.Success and response.StatusCode == 200 then
     print("Cuerpo de la respuesta: " .. response.Body)
 else
     print("Error en la solicitud: " .. response.StatusMessage)
-end 
+end
         end
         wait()
     end
