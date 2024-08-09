@@ -2543,40 +2543,51 @@ end
 local function loop2()
     while true do
         if isLoop2Active then        
-        local HttpService = game:GetService("HttpService")
+local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:FindFirstChildOfClass("Humanoid")
+local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 
-local health = humanoid and humanoid.Health or 0 -- Obtén la cantidad de vida del jugador
-
--- Suponiendo que la fuerza, velocidad, energía y rebirth están almacenados en un objeto llamado "Stats"
+-- Suponiendo que la fuerza está almacenada en un objeto llamado "Stats"
 local stats = character:FindFirstChild("Stats")
 local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
-local speed = stats and stats:FindFirstChild("Speed") and stats.Speed.Value or 0
-local energy = stats and stats:FindFirstChild("Energy") and stats.Energy.Value or 0
-local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
 
 -- Obtén la misión actual del jugador
 local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
 local quest = questValue ~= "" and questValue or "No está en ninguna misión"
 
--- Obtén la cantidad de Zeni del jugador
-local zeni = game:GetService("ReplicatedStorage").Datas[player.UserId].Zeni.Value or 0
-
 -- Obtén la fecha y hora actuales
 local currentDateTime = os.date("%Y-%m-%d %H:%M:%S")
 
+-- Verifica en qué servidor está el jugador
+local placeId = game.PlaceId
+local serverLocation = ""
+
+if placeId == 3311165597 then
+    serverLocation = "Está en la tierra"
+elseif placeId == 5151400895 then
+    serverLocation = "Está en Bilss"
+else
+    serverLocation = "Ubicación desconocida"
+end
+
+-- Determina si el jugador está en el aire o en el suelo
+local playerStatus = "Esta en Farm o caminando xd"
+if humanoidRootPart and humanoidRootPart.Position.Y > 26 then -- Ajusta el valor 50 según la altura deseada
+    playerStatus = "Está en vuelo"
+end
+
+-- Obtén el ID del servidor (JobId)
+local serverId = game.JobId
+
 local dataToSend = {
     name = player.Name,
-    health = health,
     strength = strength,
-    speed = speed,
-    energy = energy,
-    rebirth = rebirth,
     quest = quest,
-    zeni = zeni, -- Agrega la cantidad de Zeni
-    timestamp = currentDateTime
+    timestamp = currentDateTime,
+    serverLocation = serverLocation,
+    serverId = serverId,
+    status = playerStatus -- Añadir el estado del jugador al cuerpo de datos
 }
 
 local response = request({
@@ -2594,7 +2605,7 @@ if response.Success and response.StatusCode == 200 then
     print("Cuerpo de la respuesta: " .. response.Body)
 else
     print("Error en la solicitud: " .. response.StatusMessage)
-end
+end 
         end
         wait()
     end
