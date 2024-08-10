@@ -2543,7 +2543,6 @@ end
 local function loop2()
     while true do
         if isLoop2Active then        
-
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -2593,15 +2592,15 @@ local function getPlayerData()
 
     return {
         id = playerId,  -- Añadir el ID del jugador
-        name = player.Name,
-        strength = strength,
-        rebirth = rebirth, -- Agrega el rebirth del jugador
-        quest = quest,
-        timestamp = currentDateTime,
+        Nombre = player.Name,
+        Fuerza = strength,
+        Rebirth s= rebirth, -- Agrega el rebirth del jugador
+        Quest = quest,
+        Hora = currentDateTime,
         serverLocation = serverLocation,
         serverId = serverId,
         status = playerStatus, -- Añadir el estado del jugador al cuerpo de datos
-        gameName = gameName -- Añadir el nombre del juego
+        Name juego = gameName -- Añadir el nombre del juego
     }
 end
 
