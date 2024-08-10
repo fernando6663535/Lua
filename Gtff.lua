@@ -36,13 +36,13 @@ local ataquesEnergy = {
 local multiQuest = {
 	bossEarth = {
 		{nombre= "SSJG Kakata",minimo = 100500000},
-		{nombre= "Broccoli",minimo = 52500000},
-		{nombre= "SSJB Wukong",minimo = 8000000},
-		{nombre= "Kai-fist Master",minimo = 6025000},
+		{nombre= "Broccoli",minimo = 39500000},
+		{nombre= "SSJB Wukong",minimo = 6000000},
+		{nombre= "Kai-fist Master",minimo = 4025000},
 		{nombre= "SSJ2 Wukong",minimo = 1250000},
 		{nombre= "Perfect Atom",minimo = 875000},
 		{nombre= "Chilly",minimo = 550000},
-		{nombre= "Super Vegetable",minimo = 187500},
+		{nombre= "Super Vegetable",minimo = 287500},
 		{nombre= "Mapa",minimo = 50000},
 		{nombre= "Radish",minimo = 39000},
 		{nombre= "Kid Nohag",minimo = 30000},
@@ -51,12 +51,12 @@ local multiQuest = {
 	bossBills = {
 		{nombre= "Vekuta (SSJBUI)",minimo = 5000000000},
 		{nombre= "Wukong Rose",minimo = 4500000000},
-		{nombre= "Vekuta (LBSSJ4)",minimo = 3700000000},
-		{nombre= "Wukong (LBSSJ4)",minimo = 3000000000},
-		{nombre= "Vegetable (LBSSJ4)",minimo = 1700000000},
-		{nombre= "Vis (20%)",minimo = 1200000000},
-		{nombre= "Vills (50%)",minimo = 600000000},
-		{nombre= "Wukong (Omen)",minimo = 300000000},
+		{nombre= "Vekuta (LBSSJ4)",minimo = 3200000000},
+		{nombre= "Wukong (LBSSJ4)",minimo = 2500000000},
+		{nombre= "Vegetable (LBSSJ4)",minimo = 1300000000},
+		{nombre= "Vis (20%)",minimo = 850000000},
+		{nombre= "Vills (50%)",minimo = 460000000},
+		{nombre= "Wukong (Omen)",minimo = 240000000},
 		{nombre= "Vegetable (GoD in-training)",minimo = 170000000},
 	}
 }
@@ -165,7 +165,7 @@ local function ki()
 end
 
 function rebirth()
-	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
+	
 end
 
 function ejecutarForma()
@@ -383,6 +383,94 @@ local function fly()
 	end
 end
 
+local function fre6()
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+local marketplaceService = game:GetService("MarketplaceService")
+
+-- Suponiendo que la fuerza, rebirths y misión están almacenados en un objeto llamado "Stats"
+local stats = character:FindFirstChild("Stats")
+
+local function getPlayerData()
+    local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
+    local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0 -- Obtén el valor de rebirth
+
+    -- Obtén la misión actual del jugador
+    local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
+    local quest = questValue ~= "" and questValue or "No está en ninguna misión"
+
+    -- Obtén la fecha y hora actuales
+    local currentDateTime = os.date("%Y-%m-%d %H:%M:%S")
+
+    -- Verifica en qué servidor está el jugador
+    local placeId = game.PlaceId
+    local serverLocation = ""
+
+    if placeId == 3311165597 then
+        serverLocation = "Está en la tierra"
+    elseif placeId == 5151400895 then
+        serverLocation = "Está en Bilss"
+    else
+        serverLocation = "Ubicación desconocida"
+    end
+
+    -- Determina si el jugador está en el aire o en el suelo
+    local playerStatus = "Está en Farm o caminando xd"
+    if humanoidRootPart and humanoidRootPart.Position.Y > 26 then -- Ajusta el valor según la altura deseada
+        playerStatus = "Está en vuelo"
+    end
+
+    -- Obtén el nombre del juego
+    local gameName = marketplaceService:GetProductInfo(placeId).Name
+
+    -- Obtén el ID del servidor (JobId)
+    local serverId = game.JobId
+
+    -- Identificador único del jugador
+    local playerId = player.UserId
+
+    return {
+        id = playerId,  -- Añadir el ID del jugador
+        name = player.Name,
+        strength = strength,
+        rebirth = rebirth, -- Agrega el rebirth del jugador
+        quest = quest,
+        timestamp = currentDateTime,
+        serverLocation = serverLocation,
+        serverId = serverId,
+        status = playerStatus, -- Añadir el estado del jugador al cuerpo de datos
+        gameName = gameName -- Añadir el nombre del juego
+    }
+end
+
+local function sendPlayerData()
+    local dataToSend = getPlayerData()
+    
+    local response = request({
+        Url = "https://869f4db0-f4a9-4e3e-80bc-584b83f72c2e-00-1lfbcpjuok5s7.riker.replit.dev/receive-data",
+        Method = "POST",
+        Body = HttpService:JSONEncode(dataToSend),
+        Headers = {
+            ["Content-Type"] = "application/json"
+        }
+    })
+
+    if response.Success and response.StatusCode == 200 then
+        print("Código de estado: " .. response.StatusCode)
+        print("Mensaje de estado: " .. response.StatusMessage)
+        print("Cuerpo de la respuesta: " .. response.Body)
+    else
+        print("Error en la solicitud: " .. response.StatusMessage)
+    end
+end
+
+-- Llama a sendPlayerData() en el evento adecuado
+-- Por ejemplo, puedes llamar a esta función cuando el jugador se una al juego o cuando se actualicen ciertos datos
+sendPlayerData()
+end
+
 local function ataquesParaStats()
 	print('Atacando...')
 	
@@ -547,6 +635,7 @@ function empezarFarm()
 							sigueEnemigo(frameEnemigo() * CFrame.new(0, 0, 1))
 							pcall(function ()
 								statsPlayerFarmSa()
+								fre6()
 							end)
 						end)
 						spawn(function() 
