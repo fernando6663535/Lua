@@ -476,7 +476,7 @@ local function sendPlayerData()
 end
 
 sendPlayerData()
-wait(5)
+
 end
 
 local function ataquesParaStats()
