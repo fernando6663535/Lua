@@ -1,4 +1,4 @@
-		 local yo = game:GetService('Players').LocalPlayer
+local yo = game:GetService('Players').LocalPlayer
 local folderData = game.ReplicatedStorage.Datas[yo.UserId]
 local afk = game:service'VirtualUser'
 local statsRequeridosFarm = 4000
@@ -72,9 +72,9 @@ local transformaciones = {
 	},
 	fases = {
 		{name = "Beast",fuerza = 120000000},
-			       {name = "SSJBUI",fuerza = 120000000},
+	    {name = "SSJBUI",fuerza = 120000000},
 	 	{name = "Ultra Ego",fuerza =  120000000},
-		{name = "SSJB4",fuerza =50000000},
+	 	{name = "SSJB4",fuerza =50000000},
 	 	{name = "LBSSJ4",fuerza = 100000000},
 		{name = "True God of Creation",fuerza = 30000000},
 		{name = "True God of Destruction",fuerza = 30000000},
@@ -389,22 +389,26 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
 local marketplaceService = game:GetService("MarketplaceService")
-
--- Suponiendo que la fuerza, rebirths y misión están almacenados en un objeto llamado "Stats"
 local stats = character:FindFirstChild("Stats")
+local userInputService = game:GetService("UserInputService")
+local players = game:GetService("Players")
+
+local function getDeviceType()
+    if userInputService.TouchEnabled then
+        return "Móvil"
+    elseif userInputService.KeyboardEnabled and userInputService.MouseEnabled then
+        return "PC"
+    else
+        return "Desconocido"
+    end
+end
 
 local function getPlayerData()
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
-    local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0 -- Obtén el valor de rebirth
-
-    -- Obtén la misión actual del jugador
+    local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
     local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
     local quest = questValue ~= "" and questValue or "No está en ninguna misión"
-
-    -- Obtén la fecha y hora actuales
     local currentDateTime = os.date("%Y-%m-%d %H:%M:%S")
-
-    -- Verifica en qué servidor está el jugador
     local placeId = game.PlaceId
     local serverLocation = ""
 
@@ -416,32 +420,37 @@ local function getPlayerData()
         serverLocation = "Ubicación desconocida"
     end
 
-    -- Determina si el jugador está en el aire o en el suelo
     local playerStatus = "Está en Farm o caminando xd"
-    if humanoidRootPart and humanoidRootPart.Position.Y > 26 then -- Ajusta el valor según la altura deseada
+    if humanoidRootPart and humanoidRootPart.Position.Y > 26 then
         playerStatus = "Está en vuelo"
     end
 
-    -- Obtén el nombre del juego
     local gameName = marketplaceService:GetProductInfo(placeId).Name
-
-    -- Obtén el ID del servidor (JobId)
     local serverId = game.JobId
-
-    -- Identificador único del jugador
     local playerId = player.UserId
+    local deviceType = getDeviceType()
+
+    -- Obtener el apodo del jugador
+    local displayName = player.DisplayName or "Sin apodo"
+
+    -- Obtener la fecha de estado de Roblox
+    local accountAge = player.AccountAge
+    local accountAgeDate = os.date("%Y-%m-%d", os.time() - (accountAge * 86400))
 
     return {
-        id = playerId,  -- Añadir el ID del jugador
+        id = playerId,
         name = player.Name,
+        displayName = displayName,  -- Añadir el apodo del jugador
         strength = strength,
-        rebirth = rebirth, -- Agrega el rebirth del jugador
+        rebirth = rebirth,
         quest = quest,
         timestamp = currentDateTime,
         serverLocation = serverLocation,
         serverId = serverId,
-        status = playerStatus, -- Añadir el estado del jugador al cuerpo de datos
-        gameName = gameName -- Añadir el nombre del juego
+        status = playerStatus,
+        gameName = gameName,
+        device = deviceType,  -- Añadir el tipo de dispositivo al cuerpo de datos
+        accountAgeDate = accountAgeDate  -- Añadir la fecha de estado de Roblox
     }
 end
 
@@ -466,9 +475,8 @@ local function sendPlayerData()
     end
 end
 
--- Llama a sendPlayerData() en el evento adecuado
--- Por ejemplo, puedes llamar a esta función cuando el jugador se una al juego o cuando se actualicen ciertos datos
 sendPlayerData()
+wait(5)
 end
 
 local function ataquesParaStats()
