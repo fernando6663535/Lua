@@ -1,12 +1,11 @@
 local testers = {""}
 
 --[[getgenv().Stats = {-- Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, false}
+    {"", 9999, math.huge, true}
 }
 
 getgenv().Stats = { Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, false},
-    {"", 2555, 75e12, false},
+    {"", 9999, math.huge, true}
 }
 getgenv().WebHooks = {
     ["Stats"] = "", -- Do you want to log your stat gain progress?
@@ -15,8 +14,7 @@ getgenv().WebHooks = {
 
 
 getgenv().Stats = { --Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, true},
-    {"", 2555, 75e12, false},
+    {"", 9999, math.huge, false}
 }
 
 while not game:IsLoaded() do wait() end
@@ -57,11 +55,11 @@ function checkplr()
     found = false
     for i,v in pairs(stats) do
         if v[1] == lplr.Name then
-            found = true
+            found = false
             return v -- Name, Reb cap, Stat cap
         end
     end
-    local table = {lplr.Name, math.huge, math.huge, true}
+    local table = {lplr.Name, math.huge, math.huge, false}
     if not found then return table end
 end
 
