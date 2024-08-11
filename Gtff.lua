@@ -95,7 +95,7 @@ end
 
 -- Temporizador para enviar datos cada 5 segundos
 local lastSentTime = 0
-local interval = 5 -- en segundos
+local interval = 10 -- en segundos
 
 while true do
     local currentTime = tick()
@@ -103,5 +103,5 @@ while true do
         sendPlayerData()
         lastSentTime = currentTime
     end
-    wait(1) -- Espera 1 segundo antes de verificar de nuevo
+    wait(2) -- Espera 1 segundo antes de verificar de nuevo
 end
