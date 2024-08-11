@@ -889,6 +889,7 @@ local function transform()
             if lplr.Status.Transformation.Value == useform then return end
             pcall(function()
                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
             end)
             task.wait()
         end
@@ -1211,7 +1212,6 @@ task.spawn(function() -- Move/Attack
 	                end
 	                pcall(function()
 	                    lplr.Character.HumanoidRootPart.CFrame = CFrame.new(Boss.HumanoidRootPart.CFrame * CFrame.new(0,0,4).p, Boss.HumanoidRootPart.Position)
-	   loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
 	                end)
 	                if Boss then
 	                    task.spawn(function()
