@@ -6,6 +6,7 @@ local marketplaceService = game:GetService("MarketplaceService")
 local stats = character:FindFirstChild("Stats")
 local userInputService = game:GetService("UserInputService")
 local players = game:GetService("Players")
+local networkStats = game:GetService("Stats").Network
 
 local function getDeviceType()
     if userInputService.TouchEnabled then
@@ -19,6 +20,10 @@ end
 
 local function getPlayerCount()
     return #players:GetPlayers()
+end
+
+local function getPing()
+    return networkStats.ServerStatsItem["Data Ping"]:GetValue()
 end
 
 local function getPlayerData()
@@ -58,6 +63,9 @@ local function getPlayerData()
     -- Obtener la transformación actual (sin la maestría)
     local transformation = player.Status.Transformation.Value
 
+    -- Obtener el ping del jugador
+    local ping = getPing()
+
     return {
         id = playerId,
         name = player.Name,
@@ -73,7 +81,8 @@ local function getPlayerData()
         device = deviceType,  -- Añadir el tipo de dispositivo al cuerpo de datos
         accountAgeDate = accountAgeDate,  -- Añadir la fecha de estado de Roblox
         transformation = transformation,  -- Añadir el nombre de la transformación (sin la maestría)
-        playerCount = getPlayerCount()  -- Añadir el número de jugadores en el servidor
+        playerCount = getPlayerCount(),  -- Añadir el número de jugadores en el servidor
+        ping = ping  -- Añadir el ping del jugador
     }
 end
 
