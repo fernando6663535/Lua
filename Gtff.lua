@@ -17,6 +17,10 @@ local function getDeviceType()
     end
 end
 
+local function getPlayerCount()
+    return #players:GetPlayers()
+end
+
 local function getPlayerData()
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
     local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
@@ -68,7 +72,8 @@ local function getPlayerData()
         gameName = gameName,
         device = deviceType,  -- Añadir el tipo de dispositivo al cuerpo de datos
         accountAgeDate = accountAgeDate,  -- Añadir la fecha de estado de Roblox
-        transformation = transformation  -- Añadir el nombre de la transformación (sin la maestría)
+        transformation = transformation,  -- Añadir el nombre de la transformación (sin la maestría)
+        playerCount = getPlayerCount()  -- Añadir el número de jugadores en el servidor
     }
 end
 
