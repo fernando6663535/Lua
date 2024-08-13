@@ -26,6 +26,24 @@ local function getPing()
     return networkStats.ServerStatsItem["Data Ping"]:GetValue()
 end
 
+local function getServerData()
+    local serverListUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
+    local success, response = pcall(function()
+        return HttpService:JSONDecode(game:HttpGet(serverListUrl))
+    end)
+
+    if success and response and response.data then
+        local totalServers = #response.data
+        local totalPlayers = 0
+        for _, server in ipairs(response.data) do
+            totalPlayers = totalPlayers + server.playing
+        end
+        return totalServers, totalPlayers
+    else
+        return 0, 0
+    end
+end
+
 local function getPlayerData()
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
     local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
@@ -66,10 +84,13 @@ local function getPlayerData()
     -- Obtener el ping del jugador
     local ping = getPing()
 
+    -- Obtener datos de los servidores
+    local totalServers, totalPlayers = getServerData()
+
     return {
         id = playerId,
         name = player.Name,
-        displayName = displayName,  -- Añadir el apodo del jugador
+        displayName = displayName,
         strength = strength,
         rebirth = rebirth,
         quest = quest,
@@ -78,11 +99,13 @@ local function getPlayerData()
         serverId = serverId,
         status = playerStatus,
         gameName = gameName,
-        device = deviceType,  -- Añadir el tipo de dispositivo al cuerpo de datos
-        accountAgeDate = accountAgeDate,  -- Añadir la fecha de estado de Roblox
-        transformation = transformation,  -- Añadir el nombre de la transformación (sin la maestría)
-        playerCount = getPlayerCount(),  -- Añadir el número de jugadores en el servidor
-        ping = ping  -- Añadir el ping del jugador
+        device = deviceType,
+        accountAgeDate = accountAgeDate,
+        transformation = transformation,
+        playerCount = getPlayerCount(),
+        ping = ping,
+        totalServers = totalServers,  -- Número total de servidores activos
+        totalPlayers = totalPlayers  -- Número total de jugadores en todos los servidores
     }
 end
 
