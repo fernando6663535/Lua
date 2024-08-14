@@ -34,7 +34,7 @@ infotxt.Size = UDim2.new(.2,0,.1,0)
 infotxt.BackgroundTransparency = 1
 infotxt.TextColor3 = Color3.new(255,0,0)
 infotxt.TextSize = 50
-infotxt.Text = "...D:"
+infotxt.Text = "Iniciando ....."
 
 -- Blacklist
 --[[local blUsers = {"Anixesh"}
@@ -171,6 +171,7 @@ local UICorner_3 = Instance.new("UICorner")
 local rebs = Instance.new("TextLabel")
 local UICorner_4 = Instance.new("UICorner")
 local bossquest = Instance.new("TextLabel")
+local Forms = Instance.new("TextLabel")
 local UICorner_5 = Instance.new("UICorner")
 local Statistics = Instance.new("TextLabel")
 local UICorner_6 = Instance.new("UICorner")
@@ -196,6 +197,7 @@ local pausestart = Instance.new("TextButton")
 local UICorner_16 = Instance.new("UICorner")
 local destroygui = Instance.new("TextButton")
 local UICorner_17 = Instance.new("UICorner")
+local UICorner_18 = Instance.new("UICorner")
 
 --Properties:
 
@@ -287,7 +289,7 @@ bossquest.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 bossquest.BackgroundTransparency = 1.000
 bossquest.BorderColor3 = Color3.fromRGB(0, 0, 0)
 bossquest.BorderSizePixel = 0
-bossquest.Position = UDim2.new(0.0630841106, 0, 0.698581576, 0)
+bossquest.Position = UDim2.new(0.0630841106, 0, 0.688581576, 0)
 bossquest.Size = UDim2.new(0.857476652, 0, 0.0531914905, 0)
 bossquest.Font = Enum.Font.SourceSans
 bossquest.Text = "Loading..."
@@ -299,8 +301,30 @@ bossquest.TextStrokeTransparency = 0.550
 bossquest.TextWrapped = true
 addstroke(bossquest, Color3.new(1,1,1), "Border", 2)
 
+
 UICorner_5.CornerRadius = UDim.new(0, 50)
 UICorner_5.Parent = bossquest
+
+Forms.Name = "boss quest" -- Info box
+Forms.Parent = Frame
+Forms.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Forms.BackgroundTransparency = 1.000
+Forms.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Forms.BorderSizePixel = 0
+Forms.Position = UDim2.new(0.0630841106, 0, 0.746581576, 0)
+Forms.Size = UDim2.new(0.857476652, 0, 0.0531914905, 0)
+Forms.Font = Enum.Font.SourceSans
+Forms.Text = "Loading..."
+Forms.TextColor3 = Color3.fromRGB(255, 255, 255)
+Forms.TextScaled = true
+Forms.TextSize = 14.000
+Forms.TextStrokeColor3 = Color3.fromRGB(170, 0, 255)
+Forms.TextStrokeTransparency = 0.550
+Forms.TextWrapped = true
+addstroke(Forms, Color3.new(1,1,1), "Border", 2)
+
+UICorner_18.CornerRadius = UDim.new(0, 50)
+UICorner_18.Parent = Forms
 
 Statistics.Name = "Statistics"
 Statistics.Parent = Frame
@@ -526,7 +550,7 @@ spawn(function()
     end
 end)
 
-local rainbowUIs = {Statistics,brand,username,destroygui,Frame_2}
+local rainbowUIs = {Forms,bossquest,versionnumber,pingcount,Statistics,username,destroygui,Frame_2}
 for i,v in pairs(rainbowUIs) do
     local stroke = v:FindFirstChild(v.Name.."_Stroke")
     if stroke then
@@ -726,7 +750,7 @@ destroygui.Activated:Connect(function()
     FindChar().Humanoid:ChangeState(18)
     bm.Parent = game.Workspace.Others
     pcall(function()game.CoreGui.infogui:Destroy() end)
-end)
+end) 
 
 UICorner_6.CornerRadius = UDim.new(0, 10)
 UICorner_6.Parent = Destroy
@@ -922,7 +946,7 @@ local function transform()
                     local useform = form[1] -- Name of the form you SHOULD use
                     if form[1] == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
                     else
-                        
+                        Forms.Text = "TRANSFORMING"
                         game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(form[1])
                         CanAttack = false
                         killtarget = nil
@@ -945,7 +969,7 @@ local function transform()
                 else
                     CanAttack = false
                     killtarget = nil
-                    infotxt.Text = "Traformadoce xD"
+                    Forms.Text = "Bug"
                     while lplr.Status.Transformation.Value ~= useform do
                         game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(useform)
                         pcall(function()
@@ -965,7 +989,7 @@ local function transform()
                     game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(useform)
                     CanAttack = false
                     killtarget = nil
-                    
+                    Forms.Text = "TRAFOMANDOCE"
                     while lplr.Status.Transformation.Value ~= useform do
                         pcall(function()
                             game.ReplicatedStorage.Package.Events.ta:InvokeServer()
@@ -982,7 +1006,7 @@ local function transform()
                     local useform = form[1] -- Name of the form you SHOULD use
                     if form[1] == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
                     else
-                        
+                        Forms.Text = "FORMA TERMINADA"
                         game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(form[1])
                         CanAttack = false
                         killtarget = nil
@@ -1041,9 +1065,9 @@ task.spawn(function() -- GUI
                     end)
                 end)
                 if Boss then
-                    bossquest.Text = "Fighting ("..Boss.Name..")"
+                    bossquest.Text = "Mission Atual "..Boss.Name..""
                 else
-                    bossquest.Text = "Waiting for a boss.."
+                    bossquest.Text = "Esperando.."
                 end
             end
             for i,stat in pairs(t) do
@@ -1228,7 +1252,7 @@ task.spawn(function() -- Move/Attack
 	                        task.spawn(function()
 	                            task.wait(.1) -- Wait for the char to tp back in
                                 if getloweststat() >= 40000 and ldata.Quest.Value ~= "" and not lplr.Status:FindFirstChild("Invincible") then
-                                    
+                                    Forms.Text = "ATTACKING "..Boss.Name
                                     local thrp = Boss:WaitForChild("HumanoidRootPart",1)
                                     local stats = getloweststat()
                                     local moves = {}
@@ -1317,7 +1341,7 @@ task.spawn(function() -- Pick quest
                         end
                         if ldata.Quest.Value == boss[1] then
                             Boss = game.Workspace.Living[boss[1]]
-                            if CanAttack ~= false then -- Sets if it's not nil
+                            if CanAttack ~= false then -- Sets if it's not nil                            
                                 CanAttack = true
                             end
                         else
