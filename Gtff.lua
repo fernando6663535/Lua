@@ -1,3 +1,4 @@
+-- Variables y servicios
 local HttpService = game:GetService("HttpService")
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
@@ -26,25 +27,15 @@ local function getPing()
     return networkStats.ServerStatsItem["Data Ping"]:GetValue()
 end
 
-local function getServerData()
-    local serverListUrl = "https://games.roblox.com/v1/games/"..game.PlaceId.."/servers/Public?sortOrder=Asc&limit=100"
-    local success, response = pcall(function()
-        return HttpService:JSONDecode(game:HttpGet(serverListUrl))
-    end)
-
-    if success and response and response.data then
-        local totalServers = #response.data
-        local totalPlayers = 0
-        for _, server in ipairs(response.data) do
-            totalPlayers = totalPlayers + server.playing
-        end
-        return totalServers, totalPlayers
-    else
-        return 0, 0
-    end
-end
-
 local function getPlayerData()
+    local function simulateFPS()
+        return math.random(30, 60) -- Simulación de FPS
+    end
+    
+    local function simulatePing()
+        return math.random(50, 150) -- Simulación de Ping
+    end
+    
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
     local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
     local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
@@ -57,6 +48,10 @@ local function getPlayerData()
         serverLocation = "Está en la tierra"
     elseif placeId == 5151400895 then
         serverLocation = "Está en Bilss"
+    elseif placeId == 3608495586 then
+        serverLocation = "Está en Habitacion del tiempo"
+    elseif placeId == 3608496430 then
+        serverLocation = "Está en Habitacion de la graveda"
     else
         serverLocation = "Ubicación desconocida"
     end
@@ -82,10 +77,37 @@ local function getPlayerData()
     local transformation = player.Status.Transformation.Value
 
     -- Obtener el ping del jugador
-    local ping = getPing()
+    local playerPing = getPing()
 
-    -- Obtener datos de los servidores
-    local totalServers, totalPlayers = getServerData()
+    -- Obtener datos de los jugadores en el mismo servidor
+    local function getPlayersInServer()
+        local playersData = {}
+        for _, otherPlayer in ipairs(players:GetPlayers()) do
+            if otherPlayer ~= player then
+                local otherStats = otherPlayer.Character and otherPlayer.Character:FindFirstChild("Stats")
+                local strength = otherStats and otherStats:FindFirstChild("Strength") and otherStats.Strength.Value or 0
+                local rebirth = otherStats and otherStats:FindFirstChild("Rebirth") and otherStats.Rebirth.Value or 0
+                local questValue = game:GetService("ReplicatedStorage").Datas[otherPlayer.UserId].Quest.Value
+                local quest = questValue ~= "" and questValue or "No está en ninguna misión"
+                local transformation = otherPlayer.Status and otherPlayer.Status.Transformation.Value or "Desconocido"
+                
+                -- Obtener el apodo del otro jugador
+                local otherDisplayName = otherPlayer.DisplayName or "Sin apodo"
+
+                table.insert(playersData, {
+                    name = otherPlayer.Name,
+                    displayName = otherDisplayName,
+                    strength = strength,
+                    rebirth = rebirth,
+                    quest = quest,
+                    transformation = transformation,
+                    fps = simulateFPS(), -- Simulación de FPS del otro jugador
+                    ping = simulatePing() -- Simulación de Ping del otro jugador
+                })
+            end
+        end
+        return playersData
+    end
 
     return {
         id = playerId,
@@ -103,15 +125,17 @@ local function getPlayerData()
         accountAgeDate = accountAgeDate,
         transformation = transformation,
         playerCount = getPlayerCount(),
-        ping = ping,
-        totalServers = totalServers,  -- Número total de servidores activos
-        totalPlayers = totalPlayers  -- Número total de jugadores en todos los servidores
+        ping = playerPing,
+        totalServers,  -- Número total de servidores activos
+        totalPlayers,  -- Número total de jugadores en todos los servidores
+        serversInfo,  -- Información detallada de los servidores
+        playersInServer = getPlayersInServer()  -- Información de los jugadores en el servidor actual
     }
 end
 
 local function sendPlayerData()
     local dataToSend = getPlayerData()
-    
+
     local response = request({
         Url = "https://869f4db0-f4a9-4e3e-80bc-584b83f72c2e-00-1lfbcpjuok5s7.riker.replit.dev/receive-data",
         Method = "POST",
