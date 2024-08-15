@@ -36,6 +36,40 @@ local function getPlayerData()
         return math.random(50, 150) -- Simulación de Ping
     end
     
+    local function getServerData()
+    local placeIds = {3311165597, 5151400895, 3608495586, 3608496430} -- IDs de los lugares
+    local totalServers = 0
+    local totalPlayers = 0
+    local serversInfo = {}
+
+    for _, placeId in ipairs(placeIds) do
+        local serverListUrl = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
+        local success, response = pcall(function()
+            return HttpService:JSONDecode(game:HttpGet(serverListUrl))
+        end)
+
+        if success and response and response.data then
+            local servers = #response.data
+            local players = 0
+
+            for _, server in ipairs(response.data) do
+                players = players + server.playing
+            end
+
+            totalServers = totalServers + servers
+            totalPlayers = totalPlayers + players
+
+            table.insert(serversInfo, {
+                placeId = placeId,
+                servers = servers,
+                players = players
+            })
+        end
+    end
+
+    return totalServers, totalPlayers, serversInfo
+end
+    
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
     local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
     local questValue = game:GetService("ReplicatedStorage").Datas[player.UserId].Quest.Value
@@ -78,7 +112,10 @@ local function getPlayerData()
 
     -- Obtener el ping del jugador
     local playerPing = getPing()
-
+    
+    -- Obtener datos de los servidores
+    local totalServers, totalPlayers, serversInfo = getServerData()
+    
     -- Obtener datos de los jugadores en el mismo servidor
     local function getPlayersInServer()
         local playersData = {}
@@ -126,9 +163,9 @@ local function getPlayerData()
         transformation = transformation,
         playerCount = getPlayerCount(),
         ping = playerPing,
-        totalServers,  -- Número total de servidores activos
-        totalPlayers,  -- Número total de jugadores en todos los servidores
-        serversInfo,  -- Información detallada de los servidores
+        totalServers = totalServers,  -- Número total de servidores activos
+        totalPlayers = totalPlayers,  -- Número total de jugadores en todos los servidores
+        serversInfo = serversInfo,  -- Información detallada de los servidores
         playersInServer = getPlayersInServer()  -- Información de los jugadores en el servidor actual
     }
 end
