@@ -37,38 +37,44 @@ local function getPlayerData()
     end
     
     local function getServerData()
-    local placeIds = {3311165597, 5151400895, 3608495586, 3608496430} -- IDs de los lugares
-    local totalServers = 0
-    local totalPlayers = 0
-    local serversInfo = {}
+        local worldNames = {
+            [3311165597] = "Tierra",
+            [5151400895] = "Bilss",
+            [3608495586] = "HBTC TIEP",
+            [3608496430] = "HBTC GAV"
+        }
 
-    for _, placeId in ipairs(placeIds) do
-        local serverListUrl = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
-        local success, response = pcall(function()
-            return HttpService:JSONDecode(game:HttpGet(serverListUrl))
-        end)
+        local totalServers = 0
+        local totalPlayers = 0
+        local serversInfo = {}
 
-        if success and response and response.data then
-            local servers = #response.data
-            local players = 0
+        for placeId, worldName in pairs(worldNames) do
+            local serverListUrl = "https://games.roblox.com/v1/games/"..placeId.."/servers/Public?sortOrder=Asc&limit=100"
+            local success, response = pcall(function()
+                return HttpService:JSONDecode(game:HttpGet(serverListUrl))
+            end)
 
-            for _, server in ipairs(response.data) do
-                players = players + server.playing
+            if success and response and response.data then
+                local servers = #response.data
+                local players = 0
+
+                for _, server in ipairs(response.data) do
+                    players = players + server.playing
+                end
+
+                totalServers = totalServers + servers
+                totalPlayers = totalPlayers + players
+
+                table.insert(serversInfo, {
+                    worldName = worldName,
+                    servers = servers,
+                    players = players
+                })
             end
-
-            totalServers = totalServers + servers
-            totalPlayers = totalPlayers + players
-
-            table.insert(serversInfo, {
-                placeId = placeId,
-                servers = servers,
-                players = players
-            })
         end
-    end
 
-    return totalServers, totalPlayers, serversInfo
-end
+        return totalServers, totalPlayers, serversInfo
+    end
     
     local strength = stats and stats:FindFirstChild("Strength") and stats.Strength.Value or 0
     local rebirth = stats and stats:FindFirstChild("Rebirth") and stats.Rebirth.Value or 0
@@ -78,17 +84,14 @@ end
     local placeId = game.PlaceId
     local serverLocation = ""
 
-    if placeId == 3311165597 then
-        serverLocation = "Está en la tierra"
-    elseif placeId == 5151400895 then
-        serverLocation = "Está en Bilss"
-    elseif placeId == 3608495586 then
-        serverLocation = "Está en Habitacion del tiempo"
-    elseif placeId == 3608496430 then
-        serverLocation = "Está en Habitacion de la graveda"
-    else
-        serverLocation = "Ubicación desconocida"
-    end
+    local worldNames = {
+        [3311165597] = "Tierra",
+         [5151400895] = "Bilss",
+          [3608495586] = "HBTC TIEP",
+            [3608496430] = "HBTC GAV"
+    }
+
+    serverLocation = worldNames[placeId] or "Ubicación desconocida"
 
     local playerStatus = "Está en Farm o caminando xd"
     if humanoidRootPart and humanoidRootPart.Position.Y > 26 then
