@@ -1155,21 +1155,13 @@ task.spawn(function() -- Rebirth, teleport earth/bills
             end
             if getloweststat() >= 150e6 and ldata.Zeni.Value >= 15000 and planet == "Earth" then
                 infotxt.Text = "TP BILLS"
-                local s, e = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
-end)
-if not s then warn(e) end
+                game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
                 wait(5)
             end
             -- If just rebirthed and in Beerus go to Earth
             if getloweststat() < 50e6 and planet == "Bills" then
                 infotxt.Text = "TP EARTH"
-        local s, e = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
-end)
-if not s then warn(e) end
+                game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
                 wait(5)
             end
         end
@@ -1288,7 +1280,6 @@ task.spawn(function() -- Move/Attack
                                         if not lplr.Status:FindFirstChild(move) then
                                             spawn(function()
                                                 game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(move,"Blacknwhite27")
-                                                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
                                             end)
                                             attacked = true
                                         end
@@ -1304,7 +1295,6 @@ task.spawn(function() -- Move/Attack
                                     if getloweststat() > 10000 and canvolley then
                                         canvolley = false
                                         game.ReplicatedStorage.Package.Events.voleys:InvokeServer(unpack(args))
-                                        
                                         attacked = true
                                         spawn(function()
                                             wait(5)
@@ -1325,7 +1315,6 @@ task.spawn(function() -- Move/Attack
                     elseif table.find(mobs,Boss.Name) then
                         game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",1)
                         game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",2)
-                        
 	               	end
                 end)
             end)
@@ -1348,7 +1337,6 @@ task.spawn(function() -- Pick quest
                         if ldata.Quest.Value ~= boss[1] then
                             pcall(function()
                                 game:GetService("ReplicatedStorage").Package.Events.Qaction:InvokeServer(questNPCs[boss[1]])
-                                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
                             end)
                         end
                         if ldata.Quest.Value == boss[1] then
