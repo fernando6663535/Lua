@@ -10,11 +10,7 @@ COREGUI = cloneref(game:GetService("CoreGui"))
 Players = cloneref(game:GetService("Players"))
 
 if not game:IsLoaded() then
-    local notLoaded = Instance.new("Message")
-    notLoaded.Parent = COREGUI
-    notLoaded.Text = "Infinite Yield is waiting for the game to load"
-    game.Loaded:Wait()
-    notLoaded:Destroy()
+    
 end
 
 currentVersion = "6"
@@ -125,39 +121,15 @@ scroll = {}
 
 function makeSettingsButton(name,iconID,off)
 	local button = Instance.new("TextButton")
-	button.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
-	button.BorderSizePixel = 0
-	button.Position = UDim2.new(0,0,0,0)
-	button.Size = UDim2.new(1,0,0,25)
-	button.Text = ""
-	button.ZIndex = 10
+	
 	local icon = Instance.new("ImageLabel")
-	icon.Name = "Icon"
-	icon.Parent = button
-	icon.Position = UDim2.new(0,5,0,5)
-	icon.Size = UDim2.new(0,16,0,16)
-	icon.BackgroundTransparency = 1
-	icon.Image = iconID
-	icon.ZIndex = 10
+	
 	if off then
-		icon.ScaleType = Enum.ScaleType.Crop
-		icon.ImageRectSize = Vector2.new(16,16)
-		icon.ImageRectOffset = Vector2.new(off,0)
+		
+
 	end
-	local label = Instance.new("TextLabel")
-	label.Name = "ButtonLabel"
-	label.Parent = button
-	label.BackgroundTransparency = 1
-	label.Text = name
-	label.Position = UDim2.new(0,28,0,0)
-	label.Size = UDim2.new(1,-28,1,0)
-	label.Font = Enum.Font.SourceSans
-	label.TextColor3 = Color3.new(1, 1, 1)
-	label.TextSize = 14
-	label.ZIndex = 10
-	label.TextXAlignment = Enum.TextXAlignment.Left
-	table.insert(shade2,button)
-	table.insert(text1,label)
+
+
 	return button
 end
 
@@ -363,23 +335,7 @@ ViewportTextBox = (function()
 		local obj = setmetatable({OffsetX = 0, TextBox = textbox},mt)
 
 		local view = Instance.new("Frame")
-		view.BackgroundTransparency = textbox.BackgroundTransparency
-		view.BackgroundColor3 = textbox.BackgroundColor3
-		view.BorderSizePixel = textbox.BorderSizePixel
-		view.BorderColor3 = textbox.BorderColor3
-		view.Position = textbox.Position
-		view.Size = textbox.Size
-		view.ClipsDescendants = true
-		view.Name = textbox.Name
-		view.ZIndex = 10
-		textbox.BackgroundTransparency = 1
-		textbox.Position = UDim2.new(0,4,0,0)
-		textbox.Size = UDim2.new(1,-8,1,0)
-		textbox.TextXAlignment = Enum.TextXAlignment.Left
-		textbox.Name = "Input"
-		table.insert(text1,textbox)
-		table.insert(shade2,view)
-
+		
 		obj.View = view
 
 		textbox.Changed:Connect(function(prop)
@@ -466,115 +422,11 @@ function isNumber(str)
 	end
 end
 
-function getRoot(char)
-	local rootPart = char:FindFirstChild('HumanoidRootPart') or char:FindFirstChild('Torso') or char:FindFirstChild('UpperTorso')
-	return rootPart
-end
 
-function tools(plr)
-	if plr:FindFirstChildOfClass("Backpack"):FindFirstChildOfClass('Tool') or plr.Character:FindFirstChildOfClass('Tool') then
-		return true
-	end
-end
 
-function r15(plr)
-	if plr.Character:FindFirstChildOfClass('Humanoid').RigType == Enum.HumanoidRigType.R15 then
-		return true
-	end
-end
 
-function rigType(player)
-    return tostring(player.Character:FindFirstChildWhichIsA("Humanoid").RigType):split(".")[3]
-end
-
-function toClipboard(txt)
-    if everyClipboard then
-        everyClipboard(tostring(txt))
-        notify("Clipboard", "Copied to clipboard")
-    else
-        notify("Clipboard", "Your exploit doesn't have the ability to use the clipboard")
-    end
-end
-
-function chatMessage(str)
-    str = tostring(str)
-    if TextChatService.ChatVersion == Enum.ChatVersion.TextChatService then
-        TextChatService.TextChannels.RBXGeneral:SendAsync(str)
-    else
-        ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(str, "All")
-    end
-end
-
-function getHierarchy(obj)
-	local fullname
-	local period
-
-	if string.find(obj.Name,' ') then
-		fullname = '["'..obj.Name..'"]'
-		period = false
-	else
-		fullname = obj.Name
-		period = true
-	end
-
-	local getS = obj
-	local parent = obj
-	local service = ''
-
-	if getS.Parent ~= game then
-		repeat
-			getS = getS.Parent
-			service = getS.ClassName
-		until getS.Parent == game
-	end
-
-	if parent.Parent ~= getS then
-		repeat
-			parent = parent.Parent
-			if string.find(tostring(parent),' ') then
-				if period then
-					fullname = '["'..parent.Name..'"].'..fullname
-				else
-					fullname = '["'..parent.Name..'"]'..fullname
-				end
-				period = false
-			else
-				if period then
-					fullname = parent.Name..'.'..fullname
-				else
-					fullname = parent.Name..''..fullname
-				end
-				period = true
-			end
-		until parent.Parent == getS
-	elseif string.find(tostring(parent),' ') then
-		fullname = '["'..parent.Name..'"]'
-		period = false
-	end
-
-	if period then
-		return 'game:GetService("'..service..'").'..fullname
-	else
-		return 'game:GetService("'..service..'")'..fullname
-	end
-end
 
 AllWaypoints = {}
-
-local cooldown = false
-function writefileCooldown(name,data)
-	task.spawn(function()
-		if not cooldown then
-			cooldown = true
-			writefile(name, data, true)
-		else
-			repeat wait() until cooldown == false
-			writefileCooldown(name,data)
-		end
-		wait(3)
-		cooldown = false
-	end)
-end
 
 function dragGUI(gui)
 	task.spawn(function()
