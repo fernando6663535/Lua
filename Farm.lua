@@ -1,3 +1,6 @@
+
+
+
 local testers = {""}
 
 --[[getgenv().Stats = {-- Name, Rebcap, Statcap, Play Solo ONLY?
@@ -963,7 +966,7 @@ local function transform()
                     return
                 end
             end
-            local useform = "Godly SSJ2" -- goodly
+            local useform = "Godly " -- goodly
             if ldata[useform].Value < 332526 then
                 if useform == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
                 else
@@ -1182,7 +1185,7 @@ while not lplr:FindFirstChild("Status") do task.wait() print("Waiting for status
 if planet == "Bills" and lplr.Status.Transformation.Value == "None" and getloweststat() < getrebprice()*1.2 then
     Stacking = true
     print("wait to stack")
-    repeat infotxt.Text = "Creado×Funny_Modificado×Pvtin" wait() until lplr.Character and lplr.Character:FindFirstChild("Humanoid") and lplr.Character.Humanoid.Health > 0
+    repeat infotxt.Text = "Creado×Funny_Modificado×Pvtin" wait() until lplr.Character and lplr.Character:FindFirstChild("Humanoid") and lplr.Character.Humanoid.Health > 999
     
     print("stacking now")
     local form = lplr:WaitForChild("Status"):WaitForChild("Transformation").Value
