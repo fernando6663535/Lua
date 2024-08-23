@@ -1155,8 +1155,8 @@ task.spawn(function() -- Rebirth, teleport earth/bills
             end
             if getloweststat() >= 150e6 and ldata.Zeni.Value >= 15000 and planet == "Earth" then
                 infotxt.Text = "TP BILLS"
-                local s, e = pcall(function()
-    
+          local s, e = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
     game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
 end)
 if not s then warn(e) end
@@ -1166,7 +1166,7 @@ if not s then warn(e) end
             if getloweststat() < 50e6 and planet == "Bills" then
                 infotxt.Text = "TP EARTH"
         local s, e = pcall(function()
-    
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
     game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
 end)
 if not s then warn(e) end
