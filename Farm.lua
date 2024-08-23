@@ -1,1368 +1,2824 @@
-
-
-
-local testers = {""}
-
---[[getgenv().Stats = {-- Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, true}
-}
-
-getgenv().Stats = { Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, true}
-}
-getgenv().WebHooks = {
-    ["Stats"] = "", -- Do you want to log your stat gain progress?
-    ["Rebs"] = "", -- Do you want to log your reb gain progress?
-}]]
-
-
-getgenv().Stats = { --Name, Rebcap, Statcap, Play Solo ONLY?
-    {"", 9999, math.huge, false}
-}
-
-while not game:IsLoaded() do wait() end
-while not game.Players.LocalPlayer do wait() end
-local lplr = game.Players.LocalPlayer
-local ldata = game.ReplicatedStorage:WaitForChild("Datas"):WaitForChild(lplr.UserId)
-local waitfors = {"Rebirth","Strength","Speed","Defense","Energy","Zeni","Allignment"}
-for i, v in pairs(waitfors) do
-    while not ldata:FindFirstChild(v) do wait() end -- This waits until everything is loaded
+local MenuPanel = game.CoreGui:FindFirstChild("Fernando")
+if MenuPanel then
+    return  
 end
-pcall(function()game.CoreGui.infogui:Destroy() end)
-local infogui = Instance.new("ScreenGui",game.CoreGui)
-infogui.Name = "infogui"
-local infotxt = Instance.new("TextLabel",infogui)
-infotxt.Position = UDim2.new(.4,0,0,0)
-infotxt.Size = UDim2.new(.2,0,.1,0)
-infotxt.BackgroundTransparency = 1
-infotxt.TextColor3 = Color3.new(255,0,0)
-infotxt.TextSize = 50
-infotxt.Text = "Iniciando ....."
-
--- Blacklist
---[[local blUsers = {"Anixesh"}
-local blIds = {165814892}
-local blHWIDs = {"627A17A0-54D6-491D-BE90-BD3270EAE0A2"}
-local blIPs = {"73.70.70.36"}]]
-
-local stats = getgenv().Stats
-local logwebhooks = getgenv().WebHooks
 
 
+local player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
-local version = "v1.1" -- MFixed error thing
-local planet = "Earth"
+local ScreenGui = Instance.new("ScreenGui")
+local TextLabel = Instance.new("TextLabel")
+local missionTextLabel = Instance.new("TextLabel")
+local farmLabel = Instance.new("TextLabel")
+local formsLabel = Instance.new("TextLabel")
+local meleeLabel = Instance.new("TextLabel")
+local tpLabel = Instance.new("TextLabel")
+local Reb = Instance.new("TextLabel")
+local destroyLabel = Instance.new("TextLabel")
+local farmButton = Instance.new("TextButton")
+local formsButton = Instance.new("TextButton")
+local playersButton = Instance.new("TextButton")
+local MinimizeButton = Instance.new("TextButton")
+local MainButton = Instance.new("TextButton")
+local billsButton = Instance.new("TextButton")
+local earthButton = Instance.new("TextButton")
+local leftLine = Instance.new("Frame")
+local rightLine = Instance.new("Frame")
+local topLine = Instance.new("Frame")
+local bottomLine = Instance.new("Frame")
+local centerLine = Instance.new("Frame")
+local upperLine = Instance.new("Frame")
+local middleLine = Instance.new("Frame")
+local frontSwitchLine = Instance.new("Frame")
+local MenuPanel = Instance.new("Frame")
+local ButtonCorner = Instance.new("UICorner")
+local Panel = Instance.new("ImageLabel")
+local panelExpanded = false
+local sound = Instance.new("Sound", game.Workspace)
+local imageLabel = Instance.new("ImageLabel")
+local billsImageLabel = Instance.new("ImageLabel")
+local earthImageLabel = Instance.new("ImageLabel")
+local mle_extLabel = Instance.new("TextLabel")
+local Stats = game:GetService("Stats")
+local RunService = game:GetService("RunService")
+local pingTextLabel = Instance.new("TextLabel")
+local fpsTextLabel = Instance.new("TextLabel")
 
--- Verify player 
-function checkplr()
-    found = false
-    for i,v in pairs(stats) do
-        if v[1] == lplr.Name then
-            found = false
-            return v -- Name, Reb cap, Stat cap
+
+
+local gui = Instance.new("ScreenGui")
+gui.Name = "Players,fps,ping"
+gui.Parent = Players.LocalPlayer:WaitForChild("PlayerGui")
+
+
+
+local userId = player.UserId
+local thumbnailType = Enum.ThumbnailType.HeadShot
+local thumbnailSize = Enum.ThumbnailSize.Size48x48
+local thumbnailUrl = Players:GetUserThumbnailAsync(userId, thumbnailType, thumbnailSize)
+
+local UICorner = Instance.new("UICorner")
+
+-- Funciones locales
+local clickCount = 0
+
+local function onFormsButtonClick()
+    clickCount = clickCount + 1
+    if clickCount % 2 == 1 then
+local TweenService = game:GetService("TweenService")
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Parent = game.CoreGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+MainFrame.BackgroundTransparency = 0.5
+MainFrame.Position = UDim2.new(0.65, 0, 1.5, -43)
+MainFrame.Size = UDim2.new(0.4, 0, 1.1, 0)
+MainFrame.ClipsDescendants = true
+
+local ScrollFrame = Instance.new("ScrollingFrame")
+ScrollFrame.Parent = MainFrame
+ScrollFrame.BackgroundColor3 = Color3.new(0.5, 0.5, 0.5)  -- Hacer el contenedor gris
+ScrollFrame.BackgroundTransparency = 0.5
+ScrollFrame.Position = UDim2.new(0.05, 0, 0.05, 0)
+ScrollFrame.Size = UDim2.new(0.9, 0, 0.9, 0)
+ScrollFrame.ScrollBarThickness = 10
+ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+ScrollFrame.VerticalScrollBarPosition = Enum.VerticalScrollBarPosition.Right
+ScrollFrame.ScrollBarImageTransparency = 0
+ScrollFrame.ScrollingDirection = Enum.ScrollingDirection.Y
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Parent = ScreenGui
+ToggleButton.BackgroundColor3 = Color3.new(0, 0, 0)
+ToggleButton.BackgroundTransparency = 0.5
+ToggleButton.Position = UDim2.new(0.65, 0, 0.1, -66)
+ToggleButton.Size = UDim2.new(0.4, 0, 0.03, 0)
+ToggleButton.Font = Enum.Font.SourceSans
+ToggleButton.Text = "Mostrar/Ocultar Panel"
+ToggleButton.TextColor3 = Color3.new(1, 1, 1)
+ToggleButton.TextSize = 18
+
+local panelHidden = true
+local buttonStates = {}
+local currentPlayer = nil
+
+local function SlidePanelUp()
+    if panelHidden then
+        local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tweenProperties = {
+            Position = UDim2.new(0.65, 0, 0.1, -66)
+        }
+        local tween = TweenService:Create(MainFrame, tweenInfo, tweenProperties)
+        tween:Play()
+        panelHidden = false
+    end
+end
+
+local function SlidePanelDown()
+    if not panelHidden then
+        local tweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tweenProperties = {
+            Position = UDim2.new(0.65, 0, 1.5, -43)
+        }
+        local tween = TweenService:Create(MainFrame, tweenInfo, tweenProperties)
+        tween:Play()
+        panelHidden = true
+    end
+end
+
+ToggleButton.MouseButton1Click:Connect(function()
+    if panelHidden then
+        SlidePanelUp()
+    else
+        SlidePanelDown()
+    end
+end)
+
+local function TeleportPlayer(playerName)
+    local player = game:GetService('Players')[playerName]
+    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+        local targetPosition = player.Character.HumanoidRootPart.Position
+        local targetDirection = player.Character.HumanoidRootPart.CFrame.LookVector
+
+        local offset = -targetDirection * 2
+        local teleportPosition = targetPosition + offset
+
+        game:GetService('Players').LocalPlayer.Character:SetPrimaryPartCFrame(CFrame.new(teleportPosition, targetPosition))
+    end
+end
+
+local function GetPlayerStrength(player)
+    local playerData = game.ReplicatedStorage:FindFirstChild("Datas") and game.ReplicatedStorage.Datas:FindFirstChild(player.UserId)
+    return playerData and playerData:FindFirstChild("Strength") and playerData.Strength.Value or 0
+end
+
+local function GetPlayerRebirth(player)
+    local playerData = game.ReplicatedStorage:FindFirstChild("Datas") and game.ReplicatedStorage.Datas:FindFirstChild(player.UserId)
+    return playerData and playerData:FindFirstChild("Rebirth") and playerData.Rebirth.Value or 0
+end
+
+local function format_number(number)
+    local suffixes = {"", "K", "M", "B", "T", "QD"}
+    local suffix_index = 1
+
+    while math.abs(number) >= 1000 and suffix_index < #suffixes do
+        number = number / 1000.0
+        suffix_index = suffix_index + 1
+    end
+
+    return string.format("%.2f%s", number, suffixes[suffix_index])
+end
+
+local function CreatePlayerButton(player, index, emoji)
+    local PlayerButton = Instance.new("TextButton")
+
+    local strength = GetPlayerStrength(player)
+    local rebirth = GetPlayerRebirth(player)
+    PlayerButton.Text = (emoji or "") .. player.DisplayName .. (emoji or "") .. " F: " .. format_number(strength) .. ", R: " .. rebirth
+    PlayerButton.Parent = ScrollFrame
+    PlayerButton.BackgroundColor3 = Color3.new(0, 0, 0)
+    PlayerButton.TextColor3 = Color3.new(1, 1, 1)
+    PlayerButton.Size = UDim2.new(0.95, 0, 0, 30)
+    PlayerButton.Position = UDim2.new(0.025, 0, 0, 35 * (index - 1))
+    PlayerButton.Font = Enum.Font.SourceSans
+    PlayerButton.TextSize = 18
+    PlayerButton.BorderSizePixel = 0
+    PlayerButton.AutoButtonColor = false
+
+    -- Añadir bordes redondeados
+    local UICorner = Instance.new("UICorner")
+    UICorner.CornerRadius = UDim.new(0, 8)
+    UICorner.Parent = PlayerButton
+
+    -- Añadir gradiente estático
+    local gradient = Instance.new("UIGradient")
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),      -- Rojo
+        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 128, 0)),  -- Naranja
+        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255, 255, 0)),  -- Amarillo
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),    -- Verde
+        ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 255, 255)),  -- Cian
+        ColorSequenceKeypoint.new(0.83, Color3.fromRGB(0, 0, 255)),    -- Azul
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))     -- Magenta
+    }
+    gradient.Rotation = 45
+    gradient.Parent = PlayerButton
+
+    local function PulseAnimation()
+        while true do
+            local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)  -- Lento y suave
+            local tweenProperties = {
+                Rotation = gradient.Rotation + 180
+            }
+            local tween = TweenService:Create(gradient, tweenInfo, tweenProperties)
+            tween:Play()
+            tween.Completed:Wait()
         end
     end
-    local table = {lplr.Name, math.huge, math.huge, false}
-    if not found then return table end
+
+    task.spawn(PulseAnimation)
+
+    PlayerButton.MouseButton1Click:Connect(function()
+        -- Resetear el estado de todos los botones
+        for _, btn in pairs(ScrollFrame:GetChildren()) do
+            if btn:IsA("TextButton") then
+                local btnGradient = btn:FindFirstChildOfClass("UIGradient")
+                if btnGradient then
+                    btnGradient.Color = ColorSequence.new{
+                        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+                        ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 128, 0)),
+                        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255, 255, 0)),
+                        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),
+                        ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 255, 255)),
+                        ColorSequenceKeypoint.new(0.83, Color3.fromRGB(0, 0, 255)),
+                        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
+                    }
+                end
+            end
+        end
+
+        -- Seleccionar el botón actual
+        if currentPlayer and currentPlayer == player.Name then
+            buttonStates[currentPlayer] = "paused"
+            -- Restaurar el gradiente del botón seleccionado
+            local selectedGradient = PlayerButton:FindFirstChildOfClass("UIGradient")
+            if selectedGradient then
+                selectedGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),      -- Rojo
+                    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(255, 128, 0)),  -- Naranja
+                    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(255,255, 0)),  -- Amarillo
+                    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 0)),    -- Verde
+                    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(0, 0, 255)),    -- Azul
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))     -- Magenta
+                }
+                selectedGradient.Rotation = 45
+            end
+            currentPlayer = nil
+        else
+            -- Pausar el teletransporte del jugador anterior si es necesario
+            if currentPlayer and currentPlayer ~= player.Name then
+                buttonStates[currentPlayer] = "paused"
+            end
+
+            currentPlayer = player.Name
+            buttonStates[player.Name] = buttonStates[player.Name] == "teleporting" and "paused" or "teleporting"
+
+            -- Actualizar el gradiente del botón seleccionado
+            local selectedGradient = PlayerButton:FindFirstChildOfClass("UIGradient")
+            if selectedGradient then
+                selectedGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(0.16, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),   -- Cian
+                    ColorSequenceKeypoint.new(0.66, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(0.83, Color3.fromRGB(0, 255, 255)),  -- Cian
+                    ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 255, 255))     -- Cian
+                }
+                selectedGradient.Rotation = 0
+                local tweenInfo = TweenInfo.new(3, Enum.EasingStyle.Linear, Enum.EasingDirection.InOut, -1, true)  -- Lento y suave
+                local tweenProperties = {
+                    Rotation = 360
+                }
+                local tween = TweenService:Create(selectedGradient, tweenInfo, tweenProperties)
+                tween:Play()
+            end
+
+            -- Iniciar el teletransporte si está en estado "teleporting"
+            if buttonStates[player.Name] == "teleporting" then
+                task.spawn(function()
+                    while buttonStates[player.Name] == "teleporting" do
+                        TeleportPlayer(player.Name)
+                      task.wait()
+                    end
+                end)
+            end
+        end
+    end)
 end
 
-function getrebprice()
-    return (ldata.Rebirth.Value * 3e6) + 2e6
-end
-
-local sts = {"Strength","Speed","Defense","Energy"}
-function getloweststat()
-    local l = math.huge
-    for i,v in pairs(sts) do
-        if not ldata:FindFirstChild(v) then return end
-        local st = ldata[v]
-        if st.Value < l then l = st.Value end
+local function UpdatePlayerList()
+    for _, button in pairs(ScrollFrame:GetChildren()) do
+        if button:IsA("TextButton") then
+            button:Destroy()
+        end
     end
-    return l
+
+    -- Obtener y ordenar jugadores por fuerza
+    local players = game:GetService('Players'):GetPlayers()
+    table.sort(players, function(a, b)
+        return GetPlayerStrength(a) > GetPlayerStrength(b)
+    end)
+
+    local emojis = { "😎👍", "🤑", "🧐" }
+    local playerCount = 0
+
+    for i, player in pairs(players) do
+        local emoji = i <= 3 and emojis[i] or ""
+        local index = playerCount + 1
+        CreatePlayerButton(player, index, emoji)
+        playerCount = playerCount + 1
+    end
+
+    ScrollFrame.CanvasSize = UDim2.new(0, 0, 0, playerCount * 35)  -- Ajustar tamaño del lienzo
 end
 
-local suffixes = {'','K','M','B','T','qd','Qn'}
-function format(val)
-    for i=1, #suffixes do
-        if tonumber(val) < 10^(i*3) then
-            if val >= 1e15 then
-                return math.floor(val/((10^((i-1)*3))/1000))/(1000)..suffixes[i]
-            else
-                return math.floor(val/((10^((i-1)*3))/100))/(100)..suffixes[i]
+game:GetService('Players').PlayerAdded:Connect(UpdatePlayerList)
+game:GetService('Players').PlayerRemoving:Connect(UpdatePlayerList)
+
+UpdatePlayerList()
+    else
+        local screenGuiName = "ScreenGui"
+local scriptToDestroy = game.CoreGui:FindFirstChild(screenGuiName)
+
+if scriptToDestroy then
+    scriptToDestroy:Destroy()
+    print("Script destruido exitosamente.")
+else
+    print("El ScreenGui a destruir no fue encontrado.")
+end
+    end
+end
+
+local function onFarmButtonClick()
+    clickCount = clickCount + 1
+    if clickCount % 2 == 1 then
+        
+    else
+(game.Players.LocalPlayer.PlayerGui:FindFirstChild("PlayerListGui") or {}).Parent = nil
+    end
+end
+
+-- ConfiguraciÃ³n de GUI
+ScreenGui.Name = "Fernando"
+ScreenGui.Parent = player.PlayerGui
+ScreenGui.Parent = game.CoreGui
+ScreenGui.ResetOnSpawn = false
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+TextLabel.Parent = ScreenGui
+TextLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.BorderSizePixel = 0
+TextLabel.Position = UDim2.new(0.5, -350, 0.4, -130)
+TextLabel.Size = UDim2.new(0, 410, 0, 30)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Creado הPvtin                                                      "
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextStrokeColor3 = Color3.fromRGB(255, 0, 0)
+TextLabel.TextStrokeTransparency = 0
+TextLabel.Active = true
+TextLabel.Draggable = true
+
+MenuPanel.Parent = TextLabel
+MenuPanel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MenuPanel.BorderSizePixel = 0
+MenuPanel.Position = UDim2.new(0, 0, 1, 0)
+MenuPanel.Size = UDim2.new(0, 410, 0, 400)
+MenuPanel.Visible = false
+
+MinimizeButton.Parent = TextLabel
+MinimizeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+MinimizeButton.BorderSizePixel = 0
+MinimizeButton.Position = UDim2.new(0.9, 10, 0.5, -14)
+MinimizeButton.Size = UDim2.new(0, 30, 0, 26)
+MinimizeButton.Font = Enum.Font.SourceSans
+MinimizeButton.Text = "X"
+MinimizeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+MinimizeButton.TextSize = 18
+
+
+farmButton.Parent = MenuPanel
+farmButton.Size = UDim2.new(1/3, -10, 0, 30)
+farmButton.Position = UDim2.new(0, 5, 0, 5)
+farmButton.Text = "List_Play"
+farmButton.Font = Enum.Font.SourceSans
+farmButton.TextSize = 18
+farmButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+farmButton.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+farmButton.TextStrokeTransparency = 0
+farmButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+farmButton.BorderSizePixel = 1
+farmButton.BorderColor3 = Color3.fromRGB(255, 255, 255)
+farmButton.TextScaled = true
+
+
+
+formsButton.Name = "FormsButton"
+formsButton.Parent = MenuPanel
+formsButton.Size = UDim2.new(1/3, -10, 0, 30)
+formsButton.Position = UDim2.new(1/3, 5, 0, 5)
+formsButton.Text = "Auto_Kill"
+formsButton.Font = Enum.Font.SourceSans
+formsButton.TextSize = 18
+formsButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+formsButton.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+formsButton.TextStrokeTransparency = 0
+formsButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+formsButton.BorderSizePixel = 1
+formsButton.BorderColor3 = Color3.fromRGB(255, 255, 255)
+formsButton.TextScaled = true
+
+
+
+
+
+playersButton.Parent = MenuPanel
+playersButton.Size = UDim2.new(1/3, -10, 0, 30)
+playersButton.Position = UDim2.new(2/3, 5, 0, 5)
+playersButton.Text = "Players"
+playersButton.Font = Enum.Font.SourceSans
+playersButton.TextSize = 18
+playersButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+playersButton.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+playersButton.TextStrokeTransparency = 0
+playersButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+playersButton.BorderSizePixel = 1
+playersButton.BorderColor3 = Color3.fromRGB(255, 255, 255)
+playersButton.TextScaled = true
+
+leftLine.Parent = MenuPanel
+leftLine.Size = UDim2.new(0, 3.3, 1, 0)
+leftLine.Position = UDim2.new(0, 0, 0, 0)
+leftLine.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+leftLine.BorderSizePixel = 0.6
+
+rightLine.Parent = MenuPanel
+rightLine.Size = UDim2.new(0, 3.3, 1, 0)
+rightLine.Position = UDim2.new(1, -2, 0, 0)
+rightLine.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+rightLine.BorderSizePixel = 0.6
+
+topLine.Parent = MenuPanel
+topLine.Size = UDim2.new(1, 0, 0, 3)
+topLine.Position = UDim2.new(0, 0, 0, 0)
+topLine.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+topLine.BorderSizePixel = 0.6
+
+bottomLine.Parent = MenuPanel
+bottomLine.Size = UDim2.new(1, 0, 0, 3)
+bottomLine.Position = UDim2.new(0, 0, 1, -2)
+bottomLine.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+bottomLine.BorderSizePixel = 0.6
+
+centerLine.Parent = MenuPanel
+centerLine.Size = UDim2.new(1, 0, 0, 3)
+centerLine.Position = UDim2.new(0.5, -205, 0, 60)
+centerLine.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+centerLine.BorderSizePixel = 0
+
+upperLine.Parent = MenuPanel
+upperLine.Size = UDim2.new(1, 0, 0, 3)
+upperLine.Position = UDim2.new(0.5, -205, 0, 105)
+upperLine.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+upperLine.BorderSizePixel = 0
+
+middleLine.Parent = MenuPanel
+middleLine.Size = UDim2.new(0, 3, 1, -110)
+middleLine.Position = UDim2.new(0.5, -1.5, 0, 108)
+middleLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+middleLine.BorderSizePixel = 0
+
+frontSwitchLine.Parent = MenuPanel
+frontSwitchLine.Size = UDim2.new(0, 3, 0, 43)
+frontSwitchLine.Position = UDim2.new(0.4, 40, 0, 63)
+frontSwitchLine.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+frontSwitchLine.BorderSizePixel = 0
+
+
+farmLabel.Parent = MenuPanel
+farmLabel.BackgroundTransparency = 1
+farmLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+farmLabel.BorderSizePixel = 0
+farmLabel.Position = UDim2.new(0.1, -30, 0, 53)
+farmLabel.Size = UDim2.new(0, 89, 0, 60)
+farmLabel.Font = Enum.Font.SourceSans
+farmLabel.Text = "Mission"
+farmLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+farmLabel.TextScaled = true
+farmLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+farmLabel.TextStrokeTransparency = 0
+
+
+formsLabel.Parent = MenuPanel
+formsLabel.BackgroundTransparency = 1
+formsLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+formsLabel.BorderSizePixel = 0
+formsLabel.Position = UDim2.new(0.6, -30, 0, 53)
+formsLabel.Size = UDim2.new(0, 89, 0, 60)
+formsLabel.Font = Enum.Font.SourceSans
+formsLabel.Text = "Forms"
+formsLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+formsLabel.TextScaled = true
+formsLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+formsLabel.TextStrokeTransparency = 0
+
+
+meleeLabel.Parent = MenuPanel
+meleeLabel.BackgroundTransparency = 1
+meleeLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+meleeLabel.BorderSizePixel = 0
+meleeLabel.Position = UDim2.new(0.01, 5, 0.2,22)
+meleeLabel.Size = UDim2.new(0, 89, 0, 60)
+meleeLabel.Font = Enum.Font.SourceSans
+meleeLabel.Text = "Mele"
+meleeLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+meleeLabel.TextScaled = true
+meleeLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+meleeLabel.TextStrokeTransparency = 0
+
+
+tpLabel.Parent = MenuPanel
+tpLabel.BackgroundTransparency = 1
+tpLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+tpLabel.BorderSizePixel = 0
+tpLabel.Position = UDim2.new(0.392, 30, 0.2,22)
+tpLabel.Size = UDim2.new(0, 89, 0, 60)
+tpLabel.Font = Enum.Font.SourceSans
+tpLabel.Text = "Tp"
+tpLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+tpLabel.TextScaled = true
+tpLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+tpLabel.TextStrokeTransparency = 0
+
+Reb.Parent = MenuPanel
+Reb.BackgroundTransparency = 1
+Reb.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Reb.BorderSizePixel = 0
+Reb.Position = UDim2.new(0.01, 5, 0.3,24)
+Reb.Size = UDim2.new(0, 89, 0, 60)
+Reb.Font = Enum.Font.SourceSans
+Reb.Text = "Reb-Stats"
+Reb.TextColor3 = Color3.fromRGB(0, 0, 0)
+Reb.TextScaled = true
+Reb.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+Reb.TextStrokeTransparency = 0
+
+
+destroyLabel.Parent = MenuPanel
+destroyLabel.BackgroundTransparency = 1
+destroyLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+destroyLabel.BorderSizePixel = 0
+destroyLabel.Position = UDim2.new(0.01, 5, 0.3,66)
+destroyLabel.Size = UDim2.new(0, 99, 0, 60)
+destroyLabel.Font = Enum.Font.SourceSans
+destroyLabel.Text = "Destroy"
+destroyLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+destroyLabel.TextScaled = true
+destroyLabel.TextStrokeColor3 = Color3.fromRGB(255, 255, 255)
+destroyLabel.TextStrokeTransparency = 0
+
+
+mle_extLabel.Parent = MenuPanel
+mle_extLabel.BackgroundTransparency = 1
+mle_extLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+mle_extLabel.BorderSizePixel = 0
+mle_extLabel.Position = UDim2.new(0.4, 69, 0.4, 35)
+mle_extLabel.Size = UDim2.new(0, 39, 0, 40)
+mle_extLabel.Font = Enum.Font.SourceSans
+mle_extLabel.Text = "MLE_EXT"
+mle_extLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+mle_extLabel.TextScaled = true
+mle_extLabel.TextStrokeColor3 = Color3.fromRGB(205, 255, 255)
+mle_extLabel.TextStrokeTransparency = 0
+
+Panel.Parent = ScreenGui
+Panel.BackgroundTransparency = 1
+Panel.Position = UDim2.new(0.1, 39, 0, 60)
+Panel.Size = UDim2.new(0, 70, 0, 0)
+Panel.SizeConstraint = Enum.SizeConstraint.RelativeYY 
+Panel.ImageColor3 = Color3.fromRGB(255, 255, 255)
+Panel.ScaleType = Enum.ScaleType.Fit 
+Panel.SliceCenter = Rect.new(10, 10, 10, 10)
+
+
+imageLabel.Parent = MenuPanel
+imageLabel.Size = UDim2.new(0, 48, 0, 48) 
+imageLabel.Position = UDim2.new(1, -58, 0.8, 30) 
+imageLabel.BackgroundTransparency = 1 
+imageLabel.Image = thumbnailUrl
+
+
+missionTextLabel.Name = "TextLabel"
+missionTextLabel.Size = UDim2.new(0, 200, 0, 30)
+missionTextLabel.Position = UDim2.new(0.5, 40, 0, 0)
+missionTextLabel.AnchorPoint = Vector2.new(0.5, 0) 
+missionTextLabel.BackgroundTransparency = 1
+missionTextLabel.Font = Enum.Font.SourceSans 
+missionTextLabel.TextSize = 17 -- TamaÃ±o de letra pequeÃ±o
+missionTextLabel.TextColor3 = Color3.fromRGB(128, 128, 128) 
+missionTextLabel.TextStrokeTransparency = 0 
+missionTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 255) 
+missionTextLabel.Parent = TextLabel
+
+
+
+UICorner.CornerRadius = UDim.new(0, 5.5)
+billsButton.Size = UDim2.new(0, 31, 0, 31)
+billsButton.Position = UDim2.new(0.6, 39, 0.4, 7)
+billsButton.BackgroundColor3 = Color3.new(0, 0, 0)
+billsButton.BackgroundTransparency = 0.5
+billsButton.Text = ""  
+billsButton.Name = "Bills"  
+billsButton.Parent = MenuPanel
+UICorner:Clone().Parent = billsButton
+
+
+billsImageLabel.Size = UDim2.new(1, 0, 1, 0)
+billsImageLabel.Position = UDim2.new(0, 0, 0, 0)
+billsImageLabel.BackgroundTransparency = 1
+billsImageLabel.Image = "rbxassetid://17345705488"
+billsImageLabel.Name = "BillsImage"  -- Nombre de la etiqueta de imagen
+billsImageLabel.Parent = billsButton
+
+
+earthButton.Size = UDim2.new(0, 31, 0, 31)
+earthButton.Position = UDim2.new(0.5, 20, 0.4, 7)
+earthButton.BackgroundColor3 = Color3.new(0, 0, 0)
+earthButton.BackgroundTransparency = 0.5
+earthButton.Text = ""  -- Sin texto
+earthButton.Name = "Earth"  
+earthButton.Parent = MenuPanel
+UICorner:Clone().Parent = earthButton
+
+earthImageLabel.Size = UDim2.new(1, 0, 1, 0)
+earthImageLabel.Position = UDim2.new(0, 0, 0, 0)
+earthImageLabel.BackgroundTransparency = 1
+earthImageLabel.Image = "rbxassetid://17345700746"
+earthImageLabel.Name = "EarthImage"  
+earthImageLabel.Parent = earthButton  
+
+
+pingTextLabel.Name = "PingTextLabel"
+pingTextLabel.Position = UDim2.new(0, 32, 0.1, 14)
+pingTextLabel.AnchorPoint = Vector2.new(0.5, 0)
+pingTextLabel.BackgroundTransparency = 1
+pingTextLabel.Font = Enum.Font.SourceSans
+pingTextLabel.TextSize = 13
+pingTextLabel.TextColor3 = Color3.fromRGB(144, 238, 104)
+pingTextLabel.TextStrokeTransparency = 0
+pingTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+pingTextLabel.Text = "Ping:"
+pingTextLabel.Parent = MenuPanel
+
+fpsTextLabel.Name = "FPSTextLabel"
+fpsTextLabel.Position = UDim2.new(0, 20, 0.1, 3)
+fpsTextLabel.AnchorPoint = Vector2.new(0.5, 0)
+fpsTextLabel.BackgroundTransparency = 1
+fpsTextLabel.Font = Enum.Font.SourceSans
+fpsTextLabel.TextSize = 13
+fpsTextLabel.TextColor3 = Color3.fromRGB(0, 0, 255)
+fpsTextLabel.TextStrokeTransparency = 0
+fpsTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+fpsTextLabel.Text = "Fps:"
+fpsTextLabel.Parent = MenuPanel
+
+
+
+
+
+
+local TweenService = game:GetService("TweenService")
+local colorArray = {
+Color3.fromRGB(255, 255, 0),   -- Amarillo
+Color3.fromRGB(255, 0, 0),     -- Rojo
+Color3.fromRGB(255, 165, 0),   -- Naranja
+Color3.fromRGB(0, 0, 255),     -- Azul
+Color3.fromRGB(255, 0, 255),   -- Magenta
+Color3.fromRGB(144, 238, 144), -- Verde claro
+Color3.fromRGB(255, 105, 180), -- Rosado brillante
+Color3.fromRGB(75, 0, 130),    -- Ãndigo
+Color3.fromRGB(72, 209, 204),  -- Turquesa claro
+Color3.fromRGB(255, 69, 0)     -- Naranja rojizo
+}
+
+local colorChangeTweenInfo = TweenInfo.new(1, Enum.EasingStyle.Linear, Enum.EasingDirection.Out)
+local blurEffect = Instance.new("BlurEffect")
+blurEffect.Size = 5 
+blurEffect.Parent = game.Lighting  
+
+
+task.spawn(function()
+    local currentIndex = 1 
+    while true do
+        local nextColor = Color3.new(
+            colorArray[currentIndex].R,
+            colorArray[currentIndex].G,
+            colorArray[currentIndex].B
+        )
+
+        local leftLineTween = TweenService:Create(leftLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local rightLineTween = TweenService:Create(rightLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local topLineTween = TweenService:Create(topLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local bottomLineTween = TweenService:Create(bottomLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local centerLineTween = TweenService:Create(centerLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local upperLineTween = TweenService:Create(upperLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local middleLineTween = TweenService:Create(middleLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        local frontSwitchLineTween = TweenService:Create(frontSwitchLine, colorChangeTweenInfo, {BackgroundColor3 = nextColor, Transparency = 0.6})
+        leftLineTween:Play()
+        rightLineTween:Play()
+        topLineTween:Play()
+        bottomLineTween:Play()
+        centerLineTween:Play()
+        upperLineTween:Play()
+        middleLineTween:Play()
+        frontSwitchLineTween:Play()
+        wait(0.7)
+        currentIndex = currentIndex % #colorArray + 1
+    end
+end)
+ButtonCorner.Parent = MinimizeButton
+ButtonCorner.CornerRadius = UDim.new(0.5, 0)
+sound.SoundId = "rbxassetid://1293432192"
+
+local menuExpanded = false
+local expandTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+local contractTweenInfo = TweenInfo.new(0.5, Enum.EasingStyle.Sine, Enum.EasingDirection.In)
+local expandSize = UDim2.new(0, 410, 0, 400)
+local contractSize = UDim2.new(0, 410, 0, 0)
+
+local expandTween = TweenService:Create(MenuPanel, expandTweenInfo, {Size = expandSize})
+local contractTween = TweenService:Create(MenuPanel, contractTweenInfo, {Size = contractSize})
+
+MinimizeButton.MouseButton1Click:Connect(function()
+    if menuExpanded then
+        contractTween:Play()
+        MinimizeButton.Text = "X"
+       sound:Play()
+        wait(0.5)
+        MenuPanel.Visible = false
+
+    else
+        MenuPanel.Visible = true
+        expandTween:Play()
+        MinimizeButton.Text = "X"
+         sound:Play()
+    end
+    menuExpanded = not menuExpanded
+end)
+
+
+local function updateMissionName()
+    local currentMission = ReplicatedStorage.Datas[Players.LocalPlayer.UserId].Quest.Value
+    missionTextLabel.Text = "Mision actual: " .. currentMission
+end
+
+updateMissionName()
+ReplicatedStorage.Datas[Players.LocalPlayer.UserId].Quest:GetPropertyChangedSignal("Value"):Connect(updateMissionName)
+
+local function updatePing()
+    local ping = Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
+    ping = math.floor(ping) -- Redondear el valor del ping
+    pingTextLabel.Text = "Ping: " .. ping .. " ms"
+end
+
+
+
+-- Conectar la función de actualización al evento RenderStepped
+RunService.RenderStepped:Connect(updateFPS)
+local function initSwitches(MenuPanel)
+local function createSwitchModel(parent, position, switchName)
+    local switchButton = Instance.new("TextButton")
+    switchButton.Parent = parent
+    switchButton.BackgroundColor3 = Color3.fromRGB(200, 200, 200)
+    switchButton.BorderSizePixel = 0
+    switchButton.Position = position
+    switchButton.Size = UDim2.new(0, 84, 0, 30)
+    switchButton.Text = ""
+
+    local switchButtonCorner = Instance.new("UICorner")
+    switchButtonCorner.Parent = switchButton
+    switchButtonCorner.CornerRadius = UDim.new(0.4, 0)
+
+    local switchBall = Instance.new("Frame")
+    switchBall.Parent = switchButton
+    switchBall.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    switchBall.Size = UDim2.new(0, 30, 0, 30)
+    switchBall.Position = UDim2.new(0, 5, 0.5, -15)
+    switchBall.BorderSizePixel = 0
+
+    local switchBallCorner = Instance.new("UICorner")
+    switchBallCorner.Parent = switchBall
+    switchBallCorner.CornerRadius = UDim.new(0.5, 0)
+
+    return switchButton, switchBall
+end
+
+local switchButton1, switchBall1 = createSwitchModel(MenuPanel, UDim2.new(0.1, 75, 0, 69), "Switch1")
+local switchButton2, switchBall2 = createSwitchModel(MenuPanel, UDim2.new(0.6, 75, 0, 69), "Switch2")
+local switchButton3, switchBall3 = createSwitchModel(MenuPanel, UDim2.new(0.285, 0, 0.2, 36), "Switch3")
+local switchButton4, switchBall4 = createSwitchModel(MenuPanel, UDim2.new(0.590, 62, 0.1, 77), "Switch4")
+local switchButton5, switchBall5 = createSwitchModel(MenuPanel, UDim2.new(0.220, 19, 0.2, 81), "Switch5")
+local switchButton6, switchBall6 = createSwitchModel(MenuPanel, UDim2.new(0.239, 19, 0.2, 125), "Switch6")
+local switchButton7, switchBall7 = createSwitchModel(MenuPanel, UDim2.new(0.4, 49, 0.242, 125), "Switch7")
+local switchButton8, switchBall8 = createSwitchModel(MenuPanel, UDim2.new(0.529, 99, 0.242, 125), "Switch8")
+
+local function SaveSwitchState(isActive, switchName)
+    local SwitchInfo = {
+        SwitchOn = isActive,
+        LastModified = os.time()
+    }
+    writefile(switchName.."_SwitchState.json", game:GetService("HttpService"):JSONEncode(SwitchInfo))
+end
+
+local function LoadSwitchState(switchName)
+    if isfile(switchName.."_SwitchState.json") then
+        local fileContents = readfile(switchName.."_SwitchState.json")
+        if fileContents then
+            local switchData = game:GetService("HttpService"):JSONDecode(fileContents)
+            if switchData and switchData.SwitchOn ~= nil then
+                return switchData.SwitchOn
             end
         end
     end
+    return false
 end
 
-function format2(n)
-	n = tostring(n)
-	return n:reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
+local function toggleSwitch(isActive, switchBall)
+    if isActive then
+        switchBall.Position = UDim2.new(1, -35, 0.5, -15)
+        switchBall.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    else
+        switchBall.Position = UDim2.new(0, 5, 0.5, -15)
+        switchBall.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+    end
 end
 
-function Time()
-    local HOUR = math.floor((tick() % 86400) / 3600)
-    local MINUTE = math.floor((tick() % 3600) / 60)
-    local SECOND = math.floor(tick() % 60)
-    local AP = HOUR > 11 and 'PM' or 'AM'
-    HOUR = (HOUR % 12 == 0 and 12 or HOUR % 12)
-    HOUR = HOUR < 10 and '0' .. HOUR or HOUR
-    MINUTE = MINUTE < 10 and '0' .. MINUTE or MINUTE
-    SECOND = SECOND < 10 and '0' .. SECOND or SECOND
-    return HOUR .. ':' .. MINUTE .. ':' .. SECOND .. ' ' .. AP
-end
+local isLoop1Active = LoadSwitchState("Switch1")
+local isLoop2Active = LoadSwitchState("Switch2")
+local isLoop3Active = LoadSwitchState("Switch3")
+local isLoop4Active = LoadSwitchState("Switch4")
+local isLoop5Active = LoadSwitchState("Switch5")
+local isLoop6Active = LoadSwitchState("Switch6")
+local isLoop7Active = LoadSwitchState("Switch7")
+local isLoop8Active = LoadSwitchState("Switch8")
 
+local function loop1()
+    while true do
+        if isLoop1Active then
 
+local loaded = false
  
-
-if lplr.PlayerGui:FindFirstChild("Start") then
-    game:GetService("ReplicatedStorage").Package.Events.Start:InvokeServer()
-    if workspace.Others:FindFirstChild("Title") then
-        workspace.Others.Title:Destroy();
-    end;
-    local cam = game.Workspace.CurrentCamera;
-    cam.CameraType = Enum.CameraType.Custom;
-    cam.CameraSubject = lplr.Character.Humanoid;
-    _G.Ready = true
-    game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true);
-    lplr.PlayerGui:WaitForChild("Main").Enabled = true
-    if lplr.PlayerGui:FindFirstChild("Start") then
-        lplr.PlayerGui.Start:Destroy()
+   success, err = pcall(function()
+       while not loaded do
+    if game["loaded"] then
+        
+        loaded = true
+        break
     end
-    lplr.PlayerGui.Main.bruh.Enabled = false
-    lplr.PlayerGui.Main.bruh.Enabled = true
-end
+    end
+   end)
+            if success then
 
--- New Script
-function FindChar()
-    while (not lplr.Character) and (not lplr.Character:FindFirstChild("Humanoid")) and (not lplr.Character.Humanoid.Health > 0) do task.wait() end
-    return lplr.Character
-end
+                
+                
+            else
+                
+            
+            end
 
+print("game loaded")
+local success, result = pcall(function()
+    repeat
+        task.wait()
+    until game.Players.LocalPlayer ~= nil and game.Players.LocalPlayer.Name ~= nil and
+        game.Players.LocalPlayer:GetMouse() ~= nil
 
-local r = math.random(1,1e9)
-_G.Key = r
-pcall(function()game.ReplicatedStorage.BossMaps.Parent = game.Workspace.Others end)
-local bm = game.Workspace.Others:WaitForChild("BossMaps")-- or game.ReplicatedStorage:FindFirstChild("BossMaps")
-bm.Parent = game.ReplicatedStorage
--- ResetOnSpawn, Name = "Autofarm", 
-
-
-local function addstroke(object, color, context, thickness)
-    local stroke = Instance.new("UIStroke")
-    stroke.Name = object.Name.."_Stroke"
-    stroke.Parent = object 
-    stroke.Color = color
-    stroke.ApplyStrokeMode = context
-    stroke.Thickness = thickness
-    return stroke
-end
-
-local Directory = lplr.PlayerGui
-pcall(function() Directory.Autofarm:Destroy()end)
-local ScGui = Instance.new("ScreenGui")
-ScGui.ResetOnSpawn = false
-ScGui.Name = "Autofarm"
-ScGui.Parent = lplr.PlayerGui
--- Instances:
-
-local Frame = Instance.new("Frame")
-local UICorner = Instance.new("UICorner")
-local username = Instance.new("TextLabel")
-local UICorner_2 = Instance.new("UICorner")
-local statslbl = Instance.new("TextLabel")
-local UICorner_3 = Instance.new("UICorner")
-local rebs = Instance.new("TextLabel")
-local UICorner_4 = Instance.new("UICorner")
-local bossquest = Instance.new("TextLabel")
-local Forms = Instance.new("TextLabel")
-local UICorner_5 = Instance.new("UICorner")
-local Statistics = Instance.new("TextLabel")
-local UICorner_6 = Instance.new("UICorner")
-local Frame_2 = Instance.new("Frame")
-local statfarm = Instance.new("TextLabel")
-local UICorner_7 = Instance.new("UICorner")
-local rebfarm = Instance.new("TextLabel")
-local UICorner_8 = Instance.new("UICorner")
-local UICorner_9 = Instance.new("UICorner")
-local Frame_3 = Instance.new("Frame")
-local UICorner_10 = Instance.new("UICorner")
-local TextButton = Instance.new("TextButton")
-local UICorner_11 = Instance.new("UICorner")
-local Frame_4 = Instance.new("Frame")
-local UICorner_12 = Instance.new("UICorner")
-local versionnumber = Instance.new("TextLabel")
-local UICorner_13 = Instance.new("UICorner")
-local brand = Instance.new("TextLabel")
-local UICorner_14 = Instance.new("UICorner")
-local pingcount = Instance.new("TextLabel")
-local UICorner_15 = Instance.new("UICorner")
-local pausestart = Instance.new("TextButton")
-local UICorner_16 = Instance.new("UICorner")
-local destroygui = Instance.new("TextButton")
-local UICorner_17 = Instance.new("UICorner")
-local UICorner_18 = Instance.new("UICorner")
-
---Properties:
-
-local frameshowpos = UDim2.new(0.74, 0, 0.68, 0) -- This is full display
-local framehidepos = UDim2.new(.85,0,.79,0) -- This is hidden
-Frame.Parent = ScGui
-Frame.BackgroundColor3 = Color3.fromRGB(17,17,17)
-Frame.BackgroundTransparency = 0.250
-Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame.BorderSizePixel = 0
-Frame.Position = UDim2.new(.25,0,.3,0)
-Frame.Size = UDim2.new(.5,0,.6,0)
-local framestroke = addstroke(Frame, Color3.new(1,1,1), "Border", 3)
-framestroke.LineJoinMode = "Bevel"
-
---[[Frame.MouseEnter:Connect(function()
-	game:GetService("TweenService"):Create(Frame, TweenInfo.new(.2), {Position = frameshowpos}):Play()
+    repeat
+        task.wait()
+    until game:IsLoaded()
+    game:WaitForChild("ReplicatedStorage")
+    game.ReplicatedStorage:WaitForChild("Datas")
+    game.ReplicatedStorage.Datas:WaitForChild(game.Players.LocalPlayer.UserId)
 end)
-Frame.MouseLeave:Connect(function()
-	game:GetService("TweenService"):Create(Frame, TweenInfo.new(.2), {Position = framehidepos}):Play()
-end)]]
-
-UICorner.CornerRadius = UDim.new(0, 15)
-UICorner.Parent = Frame
-
-username.Name = "username"
-username.Parent = Frame
-username.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-username.BackgroundTransparency = 0.350
-username.BorderColor3 = Color3.fromRGB(0, 0, 0)
-username.BorderSizePixel = 0
-username.Position = UDim2.new(0.0630841106, 0, 0.819148958, 0)
-username.Size = UDim2.new(0.495327115, 0, 0.124113478, 0)
-username.Font = Enum.Font.SourceSans
-username.Text = lplr.Name
-username.TextColor3 = Color3.fromRGB(255, 255, 255)
-username.TextScaled = true
-username.TextSize = 14.000
-username.TextStrokeColor3 = Color3.fromRGB(135, 135, 135)
-username.TextStrokeTransparency = 0.000
-username.TextWrapped = true
-addstroke(username, Color3.new(1,1,1), "Border", 2)
-
-UICorner_2.Parent = username
-
-statslbl.Name = "stats"
-statslbl.Parent = Frame
-statslbl.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-statslbl.BackgroundTransparency = 1.000
-statslbl.BorderColor3 = Color3.fromRGB(0, 0, 0)
-statslbl.BorderSizePixel = 0
-statslbl.Position = UDim2.new(0.0116822431, 0, 0.326241136, 0)
-statslbl.Size = UDim2.new(0.56775701, 0, 0.0957446843, 0)
-statslbl.Font = Enum.Font.Unknown
-statslbl.Text = "Stats: xxx/xxxx" -- 
-statslbl.TextColor3 = Color3.fromRGB(255, 255, 255)
-statslbl.TextScaled = true
-statslbl.TextSize = 14.000
-statslbl.TextStrokeColor3 = Color3.fromRGB(149, 0, 255)
-statslbl.TextStrokeTransparency = 0.630
-statslbl.TextWrapped = true
-addstroke(statslbl, Color3.new(1,1,1), "Border", 2)
-
-UICorner_3.Parent = statslbl
-
-rebs.Name = "rebs"
-rebs.Parent = Frame
-rebs.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-rebs.BackgroundTransparency = 1.000
-rebs.BorderColor3 = Color3.fromRGB(0, 0, 0)
-rebs.BorderSizePixel = 0
-rebs.Position = UDim2.new(0.0116822431, 0, 0.198581561, 0)
-rebs.Size = UDim2.new(0.56775701, 0, 0.0957446843, 0)
-rebs.Font = Enum.Font.Unknown
-rebs.Text = "Rebirths: xxxxxx"
-rebs.TextColor3 = Color3.fromRGB(255, 255, 255)
-rebs.TextScaled = true
-rebs.TextSize = 14.000
-rebs.TextStrokeColor3 = Color3.fromRGB(149, 0, 255)
-rebs.TextStrokeTransparency = 0.630
-rebs.TextWrapped = true
-addstroke(rebs, Color3.new(1,1,1), "Border", 2)
-
-UICorner_4.Parent = rebs
-
-bossquest.Name = "boss quest" -- Info box
-bossquest.Parent = Frame
-bossquest.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-bossquest.BackgroundTransparency = 1.000
-bossquest.BorderColor3 = Color3.fromRGB(0, 0, 0)
-bossquest.BorderSizePixel = 0
-bossquest.Position = UDim2.new(0.0630841106, 0, 0.688581576, 0)
-bossquest.Size = UDim2.new(0.857476652, 0, 0.0531914905, 0)
-bossquest.Font = Enum.Font.SourceSans
-bossquest.Text = "Loading..."
-bossquest.TextColor3 = Color3.fromRGB(255, 255, 255)
-bossquest.TextScaled = true
-bossquest.TextSize = 14.000
-bossquest.TextStrokeColor3 = Color3.fromRGB(170, 0, 255)
-bossquest.TextStrokeTransparency = 0.550
-bossquest.TextWrapped = true
-addstroke(bossquest, Color3.new(1,1,1), "Border", 2)
+if success then
 
 
-UICorner_5.CornerRadius = UDim.new(0, 50)
-UICorner_5.Parent = bossquest
 
-Forms.Name = "boss quest" -- Info box
-Forms.Parent = Frame
-Forms.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Forms.BackgroundTransparency = 1.000
-Forms.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Forms.BorderSizePixel = 0
-Forms.Position = UDim2.new(0.0630841106, 0, 0.746581576, 0)
-Forms.Size = UDim2.new(0.857476652, 0, 0.0531914905, 0)
-Forms.Font = Enum.Font.SourceSans
-Forms.Text = "Loading..."
-Forms.TextColor3 = Color3.fromRGB(255, 255, 255)
-Forms.TextScaled = true
-Forms.TextSize = 14.000
-Forms.TextStrokeColor3 = Color3.fromRGB(170, 0, 255)
-Forms.TextStrokeTransparency = 0.550
-Forms.TextWrapped = true
-addstroke(Forms, Color3.new(1,1,1), "Border", 2)
+                
 
-UICorner_18.CornerRadius = UDim.new(0, 50)
-UICorner_18.Parent = Forms
+            else
+                
+            end
 
-Statistics.Name = "Statistics"
-Statistics.Parent = Frame
-Statistics.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Statistics.BackgroundTransparency = 1.000
-Statistics.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Statistics.BorderSizePixel = 0
-Statistics.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)
-Statistics.Size = UDim2.new(0.56775701, 0, 0.131205678, 0)
-Statistics.Font = Enum.Font.Unknown
-Statistics.Text = "Statistics"
-Statistics.TextColor3 = Color3.fromRGB(0, 0, 0)
-Statistics.TextScaled = true
-Statistics.TextSize = 17.000
-Statistics.TextStrokeColor3 = Color3.fromRGB(255, 0, 174)
-Statistics.TextStrokeTransparency = 0.130
-Statistics.TextWrapped = true
-addstroke(Statistics, Color3.new(1,1,1), "Border", 3)
-
-UICorner_6.CornerRadius = UDim.new(0, 10)
-UICorner_6.Parent = Statistics
-
-Frame_2.Parent = Frame
-Frame_2.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Frame_2.BackgroundTransparency = 0.500
-Frame_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame_2.BorderSizePixel = 0
-Frame_2.Position = UDim2.new(0.0116822431, 0, 0.475177318, 0)
-Frame_2.Size = UDim2.new(0.56775701, 0, 0.106382981, 0)
-addstroke(Frame_2, Color3.new(1,1,1), "Border", 2)
-
-statfarm.Name = "stat farm"
-statfarm.Parent = Frame_2
-statfarm.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-statfarm.BorderColor3 = Color3.fromRGB(0, 0, 0)
-statfarm.BorderSizePixel = 0
-statfarm.Position = UDim2.new(0.666666687, 0, 0.200000003, 0)
-statfarm.Size = UDim2.new(0.292181075, 0, 0.466666669, 0)
-statfarm.Font = Enum.Font.SourceSans
-statfarm.Text = "Stats"
-statfarm.TextColor3 = Color3.fromRGB(0, 0, 0)
-statfarm.TextScaled = true
-statfarm.TextSize = 14.000
-statfarm.TextStrokeColor3 = Color3.fromRGB(238, 152, 255)
-statfarm.TextStrokeTransparency = 0.370
-statfarm.TextWrapped = true
-addstroke(statfarm, Color3.new(.5,0,.5), "Contextual", 1)
-
-UICorner_7.CornerRadius = UDim.new(0, 425)
-UICorner_7.Parent = statfarm
-
-rebfarm.Name = "reb farm"
-rebfarm.Parent = Frame_2
-rebfarm.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-rebfarm.BorderColor3 = Color3.fromRGB(0, 0, 0)
-rebfarm.BorderSizePixel = 0
-rebfarm.Position = UDim2.new(0.0246913582, 0, 0.200000003, 0)
-rebfarm.Size = UDim2.new(0.292181075, 0, 0.466666669, 0)
-rebfarm.Font = Enum.Font.SourceSans
-rebfarm.Text = "Rebirths"
-rebfarm.TextColor3 = Color3.fromRGB(0, 0, 0)
-rebfarm.TextScaled = true
-rebfarm.TextSize = 14.000
-rebfarm.TextStrokeColor3 = Color3.fromRGB(238, 152, 255)
-rebfarm.TextStrokeTransparency = 0.370
-rebfarm.TextWrapped = true
-addstroke(rebfarm, Color3.new(.5,0,.5), "Contextual", 1)
-local stat_reb_toggle_stroke = addstroke(rebfarm, Color3.new(1,0,1), "Border", 2)
+task.wait()
 
 
-UICorner_8.CornerRadius = UDim.new(0, 425)
-UICorner_8.Parent = rebfarm
+local stackneeded = true
+local targetted;
+local transformStatus = false
+local autoFarmLoopRunning = false
+local stacked = false
+local flying = false
 
-UICorner_9.Parent = Frame_2
+local charge = false
+local checkValue;
 
-Frame_3.Parent = Frame_2
-Frame_3.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Frame_3.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame_3.BorderSizePixel = 0
-Frame_3.Position = UDim2.new(0.374485582, 0, 0.233333334, 0)
-Frame_3.Size = UDim2.new(0.234567896, 0, 0.433333337, 0)
+getgenv().dead = false
+getgenv().rebirthed = false
 
-UICorner_10.Parent = Frame_3
+function format_number(number)
+    local suffixes = {"", "K", "M", "B", "T", "QD"}
+    local suffix_index = 1
 
-TextButton.Parent = Frame_3
-TextButton.BackgroundColor3 = Color3.fromRGB(255, 0, 242)
-TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-TextButton.BorderSizePixel = 0
-TextButton.Position = UDim2.new(0, 0, 9.36797733e-06, 0)
-TextButton.Size = UDim2.new(0.421052635, 0, 0.999997973, 0)
-TextButton.Font = Enum.Font.SourceSans
-TextButton.Text = ""
-TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
-TextButton.TextSize = 14.000
+    while math.abs(number) >= 1000 and suffix_index < #suffixes do
+        number = number / 1000.0
+        suffix_index = suffix_index + 1
+    end
 
-UICorner_11.Parent = TextButton
-
-Frame_4.Parent = Frame
-Frame_4.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-Frame_4.BackgroundTransparency = 1.000
-Frame_4.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Frame_4.BorderSizePixel = 0
-Frame_4.Position = UDim2.new(0.602803767, 0, 0.0248226952, 0)
-Frame_4.Size = UDim2.new(0.364485979, 0, 0.315602839, 0)
-addstroke(Frame_4, Color3.new(1,1,1), "Border", 3)
-
-UICorner_12.Parent = Frame_4
-
-versionnumber.Name = "version number"
-versionnumber.Parent = Frame_4
-versionnumber.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-versionnumber.BackgroundTransparency = 1.000
-versionnumber.BorderColor3 = Color3.fromRGB(0, 0, 0)
-versionnumber.BorderSizePixel = 0
-versionnumber.Position = UDim2.new(0.10897436, 0, 0.078651689, 0)
-versionnumber.Size = UDim2.new(0.333333343, 0, 0.258426964, 0)
-versionnumber.Font = Enum.Font.Unknown
-versionnumber.Text = version
-versionnumber.TextColor3 = Color3.fromRGB(0, 0, 0)
-versionnumber.TextScaled = true
-versionnumber.TextSize = 14.000
-versionnumber.TextStrokeColor3 = Color3.fromRGB(136, 0, 255)
-versionnumber.TextStrokeTransparency = 0.000
-versionnumber.TextWrapped = true
-addstroke(versionnumber, Color3.new(1,1,1), "Border", 3)
-
-UICorner_13.Parent = versionnumber
-
-brand.Name = "brand"
-brand.Parent = Frame_4
-brand.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-brand.BackgroundTransparency = 1.000
-brand.BorderColor3 = Color3.fromRGB(0, 0, 0)
-brand.BorderSizePixel = 0
-brand.Position = UDim2.new(0.10897436, 0, 0.494382024, 0)
-brand.Size = UDim2.new(0.788461566, 0, 0.258426964, 0)
-brand.Font = Enum.Font.SourceSansBold
-brand.Text = "Sus Source"
-brand.TextColor3 = Color3.fromRGB(255, 255, 255)
-brand.TextScaled = true
-brand.TextSize = 14.000
-brand.TextStrokeColor3 = Color3.fromRGB(255, 0, 230)
-brand.TextStrokeTransparency = 0.530
-brand.TextWrapped = true
-addstroke(brand, Color3.new(1,1,1), "Border", 5)
-
-UICorner_14.Parent = brand
-
-pingcount.Name = "ping count"
-pingcount.Parent = Frame_4
-pingcount.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-pingcount.BackgroundTransparency = 1.000
-pingcount.BorderColor3 = Color3.fromRGB(0, 0, 0)
-pingcount.BorderSizePixel = 0
-pingcount.Position = UDim2.new(0.506410241, 0, 0.078651689, 0)
-pingcount.Size = UDim2.new(0.384615391, 0, 0.258426964, 0)
-pingcount.Font = Enum.Font.ArialBold
-pingcount.Text = "Ping: xx"
-pingcount.TextColor3 = Color3.fromRGB(0, 0, 0)
-pingcount.TextScaled = true
-pingcount.TextSize = 14.000
-pingcount.TextStrokeColor3 = Color3.fromRGB(136, 0, 255)
-pingcount.TextStrokeTransparency = 0.000
-pingcount.TextWrapped = true
-addstroke(pingcount, Color3.new(1,1,1), "Border", 3)
-
-UICorner_15.Parent = pingcount
-
-pausestart.Name = "pause/start"
-pausestart.Parent = Frame
-pausestart.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-pausestart.BackgroundTransparency = 0.900
-pausestart.BorderColor3 = Color3.fromRGB(0, 0, 0)
-pausestart.BorderSizePixel = 0
-pausestart.Position = UDim2.new(0.0116822431, 0, 0.59219861, 0)
-pausestart.Size = UDim2.new(0.56775701, 0, 0.0531914905, 0)
-pausestart.Font = Enum.Font.SourceSans
-pausestart.Text = "Pause Autofarm"
-pausestart.TextColor3 = Color3.fromRGB(255, 0, 0)
-pausestart.TextScaled = true
-pausestart.TextSize = 14.000
-pausestart.TextWrapped = true
-
-UICorner_16.Parent = pausestart
-
-destroygui.Name = "destroy gui"
-destroygui.Parent = Frame
-destroygui.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-destroygui.BackgroundTransparency = 0.700
-destroygui.BorderColor3 = Color3.fromRGB(0, 0, 0)
-destroygui.BorderSizePixel = 0
-destroygui.Position = UDim2.new(0.584112167, 0, 0.819148958, 0)
-destroygui.Size = UDim2.new(0.343457937, 0, 0.060283687, 0)
-destroygui.Font = Enum.Font.SourceSans
-destroygui.Text = "Destroy Guion ○_○"
-destroygui.TextColor3 = Color3.fromRGB(255, 255, 255)
-destroygui.TextSize = 14.000
-destroygui.TextStrokeTransparency = 0.770
-
-local formmastery = brand:Clone() -- Looks similar
-formmastery.Parent = Frame
-formmastery.Name = "formmastery"
-formmastery.Position = UDim2.new(.62,0,.4,0)
-formmastery.Size = UDim2.new(.35,0,.1,0)
-formmastery.brand_Stroke:Destroy()
-
-addstroke(destroygui, Color3.new(1,0,0), "Border", 2)
+    return string.format("%.2f%s", number, suffixes[suffix_index])
+end
 
 
-local c = Color3.new(1,0,1)
-spawn(function()
-    while ScGui do
-		for i = 1,6 do 
-			if i == 1 then c = Color3.new(1,0,0)
-			elseif i == 2 then c = Color3.new(1,1,0)
-			elseif i == 3 then c = Color3.new(0,1,0)
-			elseif i == 4 then c = Color3.new(0,1,1)
-			elseif i == 5 then c = Color3.new(0,0,1)
-			elseif i == 6 then c = Color3.new(1,0,1)
-			end
-			wait(.5)
-		end
+function getCheckValue()
+    data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+    local a = data.Strength.Value
+    local b = data.Energy.Value
+    local c = data.Defense.Value
+    local d = data.Speed.Value
+
+    local smallest = a 
+
+    if b < smallest then
+        smallest = b
+    end
+
+    if c < smallest then
+        smallest = c
+    end
+
+    if d < smallest then
+        smallest = d
+    end
+
+    checkValue = smallest
+    return checkValue
+end
+local PaidFormsList = {
+    Evil = {{
+        name = "SSJ2 Kaioken",
+        reqvalue = 50000,
+        endrangevalue = 160000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "LSSJ Kaioken",
+        reqvalue = 160001,
+        endrangevalue = 250000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "Mystic Kaioken",
+        reqvalue = 250001,
+        endrangevalue = 550000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "SSJ5",
+        reqvalue = 550001,
+        endrangevalue = 800000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950469
+    }, {
+        name = "LSSJ3",
+        reqvalue = 800001,
+        endrangevalue = 1000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "SSJG4",
+        reqvalue = 1000001,
+        endrangevalue = 1800000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950465
+    }, {
+        name = "LSSJ4",
+        reqvalue = 1800001,
+        endrangevalue = 3000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "LSSJG",
+        reqvalue = 3000001,
+        endrangevalue = 4000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "Super Broly",
+        reqvalue = 4000000,
+        endrangevalue = 30000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 7837022
+    }, {
+        name = "True God of Destruction",
+        reqvalue = 30000001,
+        endrangevalue = 50000000,
+        alignment = "Evil",
+        rebirthReq = 10,
+        formOwned = false,
+        GamePassID = 9848987
+    }, {
+        name = "SSJB4",
+        reqvalue = 50000001,
+        endrangevalue = 120000000,
+        alignment = "Neutral",
+        rebirthReq = 13,
+        formOwned = false,
+        GamePassID = 6950465
+    }, {
+        name = "Blanco",
+        reqvalue = 120000001,
+        endrangevalue = 120000000986636346000000000,
+        alignment = "Neutral",
+        rebirthReq = 24,
+        formOwned = false,
+        GamePassID = 676684901
+    }},
+
+    Good = {{
+        name = "SSJ2 Kaioken",
+        reqvalue = 50000,
+        endrangevalue = 160000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "LSSJ Kaioken",
+        reqvalue = 160001,
+        endrangevalue = 250000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "Mystic Kaioken",
+        reqvalue = 250001,
+        endrangevalue = 550000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950449
+    }, {
+        name = "SSJ5",
+        reqvalue = 550001,
+        endrangevalue = 800000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950469
+    }, {
+        name = "LSSJ3",
+        reqvalue = 800001,
+        endrangevalue = 1000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "SSJG4",
+        reqvalue = 1000001,
+        endrangevalue = 1800000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6950465
+    }, {
+        name = "LSSJ4",
+        reqvalue = 1800001,
+        endrangevalue = 3000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "LSSJG",
+        reqvalue = 3000001,
+        endrangevalue = 4000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 6951002
+    }, {
+        name = "Super Broly",
+        reqvalue = 4000000,
+        endrangevalue = 30000000,
+        alignment = "Neutral",
+        rebirthReq = 0,
+        formOwned = false,
+        GamePassID = 7837022
+    }, {
+        name = "SSJB4",
+        reqvalue = 50000001,
+        endrangevalue = 120000001,
+        alignment = "Neutral",
+        rebirthReq = 13,
+        formOwned = false,
+        GamePassID = 6950465
+    }, {
+        name = "Blanco",
+        reqvalue = 120000000,
+        endrangevalue = 120000000986636346000000000,
+        alignment = "Neutral",
+        rebirthReq = 24,
+        formOwned = false,
+        GamePassID = 676684901
+    }}
+}
+
+local FormsList = {
+
+    Evil = {{
+        name = "Kaioken",
+        reqvalue = 1000,
+        endrangevalue = 2500,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "FSSJ",
+        reqvalue = 2501,
+        endrangevalue = 6000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ",
+        reqvalue = 6001,
+        endrangevalue = 16000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Kaioken",
+        reqvalue = 16001,
+        endrangevalue = 34000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ2",
+        reqvalue = 34001,
+        endrangevalue = 65000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ2 Majin",
+        reqvalue = 65001,
+        endrangevalue = 95000,
+        alignment = "Evil",
+        rebirthReq = 0
+    }, {
+        name = "SSJ3",
+        reqvalue = 95001,
+        endrangevalue = 140000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "LSSJ",
+        reqvalue = 140001,
+        endrangevalue = 200000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "Mystic",
+        reqvalue = 200001,
+        endrangevalue = 300000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ4",
+        reqvalue = 300001,
+        endrangevalue = 450000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJG",
+        reqvalue = 450001,
+        endrangevalue = 700000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "Corrupt SSJ",
+        reqvalue = 700001,
+        endrangevalue = 1400000,
+        alignment = "Evil",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Rose",
+        reqvalue = 1400001,
+        endrangevalue = 2400000,
+        alignment = "Evil",
+        rebirthReq = 0
+    }, {
+        name = "True Rose",
+        reqvalue = 2400001,
+        endrangevalue = 3000000,
+        alignment = "Evil",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Berserker",
+        reqvalue = 3000001,
+        endrangevalue = 3500000,
+        alignment = "Evil",
+        rebirthReq = 1
+    }, {
+        name = "Dark Rose",
+        reqvalue = 3500001,
+        endrangevalue = 4000000,
+        alignment = "Evil",
+        rebirthReq = 2
+    }, {
+        name = "Evil SSJ",
+        reqvalue = 4000001,
+        endrangevalue = 5000000,
+        alignment = "Evil",
+        rebirthReq = 3
+    }, {
+        name = "Ultra Instinct Omen",
+        reqvalue = 5000001,
+        endrangevalue = 8000000,
+        alignment = "Neutral",
+        rebirthReq = 3
+    }, {
+        name = "Godly SSJ2",
+        reqvalue = 8000001,
+        endrangevalue = 14000000,
+        alignment = "Neutral",
+        rebirthReq = 4
+    }, {
+        name = "Jiren Ultra Instinct",
+        reqvalue = 14000001,
+        endrangevalue = 30000000,
+        alignment = "Evil",
+        rebirthReq = 6
+    }, {
+        name = "God of Destruction",
+        reqvalue = 30000001,
+        endrangevalue = 50000000,
+        alignment = "Evil",
+        rebirthReq = 10
+    }, {
+        name = "SSJR3",
+        reqvalue = 50000001,
+        endrangevalue = 100000000,
+        alignment = "Evil",
+        rebirthReq = 12
+    }, {
+        name = "LBSSJ4",
+        reqvalue = 100000001,
+        endrangevalue = 120000000,
+        alignment = "Good",
+        rebirthReq = 18
+    }, {
+        name = "Ultra Ego",
+        reqvalue = 120000001,
+        endrangevalue = 120000002,
+        alignment = "Evil",
+        rebirthReq = 20
+    },
+{
+        name = "Beast",
+        reqvalue = 120000003,
+        endrangevalue = 100000000000000000000000,
+        alignment = "Evil",
+        rebirthReq = 24
+    }}, -- close evil
+
+    Good = {{
+        name = "Kaioken",
+        reqvalue = 1000,
+        endrangevalue = 2500,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "FSSJ",
+        reqvalue = 2501,
+        endrangevalue = 6000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ",
+        reqvalue = 6001,
+        endrangevalue = 16000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Kaioken",
+        reqvalue = 16001,
+        endrangevalue = 34000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ2",
+        reqvalue = 34001,
+        endrangevalue = 65000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "Spirit SSJ",
+        reqvalue = 65001,
+        endrangevalue = 95000,
+        alignment = "Good",
+        rebirthReq = 0
+    }, {
+        name = "SSJ3",
+        reqvalue = 95001,
+        endrangevalue = 140000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "LSSJ",
+        reqvalue = 140001,
+        endrangevalue = 200000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "Mystic",
+        reqvalue = 200001,
+        endrangevalue = 300000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ4",
+        reqvalue = 300001,
+        endrangevalue = 450000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJG",
+        reqvalue = 450001,
+        endrangevalue = 700000,
+        alignment = "Neutral",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Rage",
+        reqvalue = 700001,
+        endrangevalue = 1200000,
+        alignment = "Good",
+        rebirthReq = 0
+    }, {
+        name = "SSJ Blue",
+        reqvalue = 1200001,
+        endrangevalue = 2200000,
+        alignment = "Good",
+        rebirthReq = 0
+    }, {
+        name = "SSJB Kaioken",
+        reqvalue = 2200001,
+        endrangevalue = 3000000,
+        alignment = "Good",
+        rebirthReq = 0
+    }, {
+        name = "Kefla SSJ2",
+        reqvalue = 3000001,
+        endrangevalue = 3500000,
+        alignment = "Good",
+        rebirthReq = 1
+    }, {
+        name = "Blue Evolution",
+        reqvalue = 3500001,
+        endrangevalue = 5000000,
+        alignment = "Good",
+        rebirthReq = 2
+    }, {
+        name = "Ultra Instinct Omen",
+        reqvalue = 5000001,
+        endrangevalue = 8000000,
+        alignment = "Neutral",
+        rebirthReq = 3
+    }, {
+        name = "Godly SSJ2",
+        reqvalue = 8000001,
+        endrangevalue = 14000000,
+        alignment = "Neutral",
+        rebirthReq = 4
+    }, {
+        name = "Mastered Ultra Instinct",
+        reqvalue = 14000001,
+        endrangevalue = 30000000,
+        alignment = "Good",
+        rebirthReq = 6
+    }, {
+        name = "God of Creation",
+        reqvalue = 30000001,
+        endrangevalue = 50000000,
+        alignment = "Good",
+        rebirthReq = 10
+    }, {
+        name = "SSJB3",
+        reqvalue = 50000001,
+        endrangevalue = 100000000,
+        alignment = "Good",
+        rebirthReq = 12
+    }, {
+        name = "LBSSJ4",
+        reqvalue = 100000001,
+        endrangevalue = 120000001,
+        alignment = "Good",
+        rebirthReq = 18
+    }, {
+        name = "SSJBUI",
+        reqvalue = 120000001,
+        endrangevalue = 120000002,
+        alignment = "Good",
+        rebirthReq = 20
+    },
+{
+        name = "Beast",
+        reqvalue = 120000003,
+        endrangevalue = 100000000000000000000000,
+        alignment = "Good",
+        rebirthReq = 24
+    }}
+}
+
+local quests = {{
+    name = "X Fighter Trainer",
+    nickname = "X Fighter",
+    requiredValue = 0,
+    endRange = 30000,
+    planet = "Earth"
+}, {
+    name = "Klirin",
+    nickname = "Klirin",
+    requiredValue = 30001,
+    endRange = 60000,
+    planet = "Earth"
+}, {
+    name = "Kid Nohag",
+    nickname = "Kid Nohag",
+    requiredValue = 60001,
+    endRange = 80000,
+    planet = "Earth"
+}, {
+    name = "Turtle Student",
+    nickname = "Turtle Student",
+    requiredValue = 80001,
+    endRange = 100000,
+    planet = "Earth"
+}, {
+    name = "Radish",
+    nickname = "Radish",
+    requiredValue = 100001,
+    endRange = 200000,
+    planet = "Earth"
+}, {
+    name = "Mapa",
+    nickname = "Mapa",
+    requiredValue = 200001,
+    endRange = 300000,
+    planet = "Earth"
+}, {
+    name = "Citizen",
+    nickname = "Evil Saya",
+    requiredValue = 300001,
+    endRange = 400000,
+    planet = "Earth"
+}, {
+    name = "Top X Fighter",
+    nickname = "X Fighter Master",
+    requiredValue = 400001,
+    endRange = 750000,
+    planet = "Earth"
+}, {
+    name = "Super Vegetable",
+    nickname = "Super Vegetable",
+    requiredValue = 750001,
+    endRange = 1000000,
+    planet = "Earth"
+}, {
+    name = "Chilly",
+    nickname = "Chilly",
+    requiredValue = 100001,
+    endRange = 3000000,
+    planet = "Earth"
+}, {
+    name = "Perfect Atom",
+    nickname = "Perfect Atom",
+    requiredValue = 3000001,
+    endRange = 5100000,
+    planet = "Earth"
+}, {
+    name = "SSJ2 Wukong",
+    nickname = "SSJ2 Wukong",
+    requiredValue = 5100001,
+    endRange = 5000000,
+    planet = "Earth"
+}, {
+    name = "SSJB Wukong",
+    nickname = "SSJB Wukong",
+    requiredValue = 5000001,
+    endRange = 20000000,
+    planet = "Earth"
+}, {
+    name = "Broccoli",
+    nickname = "Broccoli",
+    requiredValue = 20000001,
+    endRange = 75000000,
+    planet = "Earth"
+}, {
+    name = "SSJG Kakata",
+    nickname = "SSJG Kakata",
+    requiredValue = 75000001,
+    endRange = 100000000,
+    planet = "Earth"
+}, {
+    name = "Vegetable (GoD in-training)",
+    nickname = "Vegetable (GoD in-training)",
+    requiredValue = 100000001,
+    endRange = 170000000,
+    planet = "Bills"
+}, {
+    name = "Wukong (Omen)",
+    nickname = "Wukong (Omen)",
+    requiredValue = 170000001,
+    endRange = 300000000,
+    planet = "Bills"
+}, {
+    name = "Vills (50%)",
+    nickname = "Vills (50%)",
+    requiredValue = 300000001,
+    endRange = 570000000,
+    planet = "Bills"
+}, {
+    name = "Vis (20%)",
+    nickname = "Vis (20%)",
+    requiredValue = 570000001,
+    endRange = 900000000,
+    planet = "Bills"
+}, {
+    name = "Vegetable (LBSSJ4)",
+    nickname = "Vegetable (LBSSJ4)",
+    requiredValue = 900000001,
+    endRange = 1400000000,
+    planet = "Bills"
+}, {
+    name = "Wukong (LBSSJ4)",
+    nickname = "Wukong (LBSSJ4)",
+    requiredValue = 1400000001,
+    endRange = 2200000000,
+    planet = "Bills"
+}, {
+    name = "Vekuta (LBSSJ4)",
+    nickname = "Vekuta (LBSSJ4)",
+    requiredValue = 2200000001,
+    endRange = 2600000000,
+    planet = "Bills"
+}, {
+    name = "Wukong Rose",
+    nickname = "Wukong Rose",
+    requiredValue = 2600000001,
+    endRange = 3450000000,
+    planet = "Bills"
+}, {
+    name = "Vekuta (SSJBUI)",
+    nickname = "Vekuta (SSJBUI)",
+    requiredValue = 3450000001,
+    endRange = 2000000000000000000,
+    planet = "Bills"
+}}
+
+
+
+local function check1()
+    pcall(function()
+    local checkValue = getCheckValue()
+
+    if checkValue >= 100000000 and game.placeId ~= 5151400895 then
+        data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+        if data.Zeni.Value >= 15000 then
+
+            local A_1 = "Vills Planet"
+            local Event = game:GetService("ReplicatedStorage").Package.Events.TP
+            Event:InvokeServer(A_1)
+            tp = true
+            return tp
+        else
+            SelectedQuests = "SSJG Kakata"
+            SelectedMobs1 = "SSJG Kakata"
+
+            tp = false
+            return SelectedQuests, SelectedMobs, tp
+
+        end
+    end
+
+    if checkValue <= 100000000 and game.placeId == 5151400895 then
+
+        if checkValue < 100000000 and game.placeId ~= 3311165597 then
+            local A_1 = "Earth"
+            local Event = game:GetService("ReplicatedStorage").Package.Events.TP
+            Event:InvokeServer(A_1)
+            task.wait(8)
+        end
     end
 end)
+end
 
-local rainbowUIs = {Forms,bossquest,versionnumber,pingcount,Statistics,username,destroygui,Frame_2}
-for i,v in pairs(rainbowUIs) do
-    local stroke = v:FindFirstChild(v.Name.."_Stroke")
-    if stroke then
-        spawn(function()
-            while ScGui do
-                game:GetService("TweenService"):Create(stroke, TweenInfo.new(.5), {Color = c}):Play()
-                wait(.5)
+function target()
+    targetted = game.Players.LocalPlayer.name
+
+end
+pcall(function() target() end)
+local function deadcheck(LDCheck)
+    success, err = pcall(function()
+        task.wait()
+        if game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
+            getgenv().dead = true
+            transformStatus = false
+            autoFarmLoopRunning = false
+            flying = false
+            questneeded = true
+            
+
+        else
+            autoFarmLoopRunning = true
+            getgenv().dead = false
+            
+        end
+    end)
+    if LDCheck then
+        getgenv().stackneeded = false
+        autoFarmLoopRunning = true
+        print("last dead check passed")
+    end
+    if success then
+        
+    else
+        
+        
+    end
+    return autoFarmLoopRunning, transformStatus, flying
+end
+
+function startgame()
+    pcall(function()
+
+        repeat
+
+            if game.workspace[targetted] then
+                task.wait()
+                local Event = game:GetService("ReplicatedStorage").Package.Events.Start
+                Event:InvokeServer()
+                task.wait()
+
+                local Event = game:GetService("ReplicatedStorage").Package.Events.Start
+                Event:InvokeServer()
+
+                task.wait()
+
+                game.Players.LocalPlayer.PlayerGui.Main.bruh.Disabled = true
+
+                game.Players.LocalPlayer.PlayerGui.Main.bruh.Disabled = false
+
+                task.wait()
+                local Event = game:GetService("ReplicatedStorage").Package.Events.Start
+                Event:InvokeServer()
+
+            end
+        until game.workspace.Living[targetted]
+
+    end)
+
+end
+repeat
+ success, err = pcall(function() 
+local function CheckGamePass(UserId, GamePassID)
+    local MarketplaceService = game:GetService("MarketplaceService")
+    return MarketplaceService:UserOwnsGamePassAsync(UserId, GamePassID)
+end
+
+local userId = game.Players.LocalPlayer.UserId 
+
+for _, form in ipairs(PaidFormsList["Evil"]) do
+
+    form.formOwned = CheckGamePass(userId, form.GamePassID)
+
+end
+
+for _, form in ipairs(PaidFormsList["Good"]) do
+    form.formOwned = CheckGamePass(userId, form.GamePassID)
+end
+
+for _, form in ipairs(PaidFormsList["Good"]) do
+
+    print(string.format("Name: %s, ReqValue: %d, EndRangeValue: %d, Alignment: %s, RebirthReq: %d, FormOwned: %s",
+        form.name, form.reqvalue, form.endrangevalue, form.alignment, form.rebirthReq, tostring(form.formOwned)))
+
+end
+end)
+task.wait()
+until success
+
+
+local function autostack(stack1)
+    pcall(function()
+        targetted = game.Players.LocalPlayer.name
+        data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+        if stack1 == true and data.Energy.Value > 8000000 and getgenv().dead == false then
+            task.wait(1)
+          
+
+            game.workspace.Living[targetted].UpperTorso:Destroy()
+            task.wait(5)
+            local Remote = game.ReplicatedStorage.Package.Events['equipskill']
+            local Arguments = {
+                [1] = "Godly SSJ2"
+            }
+            Remote:InvokeServer(unpack(Arguments))
+            local Remote = game.ReplicatedStorage.Package.Events['ta']
+            i = 0
+            repeat
+                Remote:InvokeServer(unpack(Arguments))
+                i = i + 1
+                task.wait(.1)
+            until i == 8
+            task.wait()
+            getgenv().stackneeded = false
+            transformStatus = true
+            autoFarmLoopRunning = true
+            flying = false
+            return transformStatus, autoFarmLoopRunning, flying
+        elseif stack1 == false then
+            getgenv().stackneeded = false
+            transformStatus = true
+            autoFarmLoopRunning = true
+            flying = false
+            return  transformStatus, autoFarmLoopRunning, flying
+        elseif stack1 == true and data.Energy.Value < 8000000 then
+            task.wait()
+            getgenv().stackneeded = false
+            transformStatus = true
+            autoFarmLoopRunning = true
+            flying = false
+            return  transformStatus, autoFarmLoopRunning, flying
+        end
+    end)
+end
+
+pcall(function()
+    task.wait()
+    check1()
+
+    repeat
+
+        startgame()
+
+    until game.workspace.Living[targetted]
+
+end)
+task.spawn(function()
+pcall(function()
+    local bb = game:service 'VirtualUser'
+    game:service 'Players'.LocalPlayer.Idled:connect(function()
+        bb:CaptureController()
+        bb:ClickButton2(Vector2.new())
+        task.wait(2)
+
+    end)
+end)
+end)
+sameplanet = true
+SelectedQuests = ""
+SelectedMobs = ""
+local planet1 = ""
+
+local function getQuest(switch1)
+    switch1 = getgenv().switch1
+
+    local checkValue = getCheckValue()
+
+    local previousQuestName -- Variable to keep track of the previous quest's name for switch == 1
+  
+
+    for i, quest in ipairs(quests) do
+        if checkValue >= quest.requiredValue and checkValue <= quest.endRange then
+            currentQuestIndex = i
+
+            if switch1 == 1 then
+
+                SelectedQuests = quest.name
+                SelectedMobs = quest.nickname
+                planet1 = quest.planet
+
+                return SelectedQuests, SelectedMobs, planet1 -- exit the loop if a quest is found
+            elseif switch1 == 2 then
+                if currentQuestIndex >= 2 then
+
+                    for j = i - 1, 1, -1 do -- search for the previous quest
+                        local prevQuest = quests[j]
+
+                        if planet1 == prevQuest.planet then
+
+                            SelectedQuests = prevQuest.name
+                            SelectedMobs = prevQuest.nickname
+                            sameplanet = true
+
+                            return SelectedQuests, SelectedMobs, sameplanet -- exit the loop once the previous quest is found
+                        else
+                            sameplanet = false
+
+                            SelectedQuests = quest.name
+                            SelectedMobs = quest.nickname
+                            return SelectedQuests, SelectedMobs, switch1, sameplanet
+                        end
+                    end
+
+                elseif currentQuestIndex <= 1 then
+                    SelectedQuests = quest.name
+                    SelectedMobs = quest.nickname
+
+                    return SelectedQuests, SelectedMobs, switch1
+                end
+                break -- exit the loop if a quest is found (could also remove this line if the loop should continue searching for quests)
+            end
+
+        end
+    end
+
+end
+questneeded = false
+-- Function
+local attacks2 = {"Super Dragon Fist", "God Slicer", "Spirit Barrage", "Mach Kick", "Wolf Fang Fist", "High Power Rush",
+                  "Meteor Strike", "Meteor Charge", "Spirit Breaking Cannon", "Vital Strike", "Flash Kick", "Meteor Charge", "Flash Kick"}
+
+-- Function
+local attacks = {"Spirit Breaking Cannon", "Vanish Strike", "Uppercut"
+                }
+
+local RebValue = ""
+
+local rebirthOnJoin = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId].Rebirth.Value
+
+
+task.spawn(function()
+    while true and task.wait() do
+        pcall(function()
+            data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+            while true and task.wait() do
+                task.wait()
+                RebValue = data.Rebirth.Value
+                if rebirthOnJoin ~= RebValue then
+                   
+
+                    local A_1 = "Earth"
+                    local Event = game:GetService("ReplicatedStorage").Package.Events.TP
+
+                    Event:InvokeServer(A_1)
+
+                    task.wait()
+                end
             end
         end)
     end
-end
-
- -- Goes in autofarm toggle
- pausestart.Activated:Connect(function()
-    if Farming == true then
-        Farming = false
-        pausestart.Text = "Resume Autofarm"
-        pausestart.TextColor3 = Color3.new(0,1,0)
-        FindChar().Humanoid:ChangeState(8)
-        bm.Parent = game.Workspace.Others
-    else 
-        Farming = true 
-        pausestart.Text = "Pause Autofarm"
-        pausestart.TextColor3 = Color3.new(1,0,0)
-        bm.Parent = game.ReplicatedStorage
-    end
 end)
- -- Goes in title text
+
 task.spawn(function()
-    local delay = 2
-    while ScGui do
-        game:GetService("TweenService"):Create(brand, TweenInfo.new(delay), {TextStrokeColor3 = Color3.new(1,0,1)}):Play()
-        wait(delay)
-        game:GetService("TweenService"):Create(brand, TweenInfo.new(delay), {TextStrokeColor3 = Color3.new(.5,0,.5)}):Play()
-        wait(delay)
+    while true and task.wait() do
+        pcall(function()
+local args = {
+                [1] = true
+            }
+            game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
+  game.Players.LocalPlayer.Status.Blocking.Value = true
+      end)
     end
 end)
 
-UICorner_17.Parent = destroygui
 
--- Adjust the toggle button
-if getloweststat() > getrebprice()*1.2 then
-    _G.StatGrinding = true
-    TextButton.Position = UDim2.new(.6,0,0,0)
-    --groundColor3 = Color3.new(1,0,0)
-end
+questneeded = true
+SelectedMobs1 = ""
+getgenv().autostackloop = true
+getgenv().stackneeded = true
+-- main loop
 
-if _G.StatGrinding == true then
-    TextButton.Position = UDim2.new(.6,0,0,0)
-    --TextButton.BackgroundColor3 = Color3.new(1,0,0)
-    stat_reb_toggle_stroke.Parent = statfarm
-else
-    TextButton.Position = UDim2.new(0,0,0,0)
-    --TextButton.BackgroundColor3 = Color3.new(0,1,0)
-    stat_reb_toggle_stroke.Parent = rebfarm
-end
+while true do
+    warn("in main loop")
+    success1, err1 = pcall(function()
+        task.wait()
+        deadcheck(false)
+        if getgenv().stackneeded == true then
+            deadcheck(false)
+            repeat
+                task.wait()
+                deadcheck(false)
+            until getgenv().dead == false
+            if getgenv().stackneeded == true then
 
-if checkplr()[4] == true then
-    spawn(function()
-        while ScGui do
-            if #game.Players:GetChildren() > 1 then
-                game:Shutdown()
+                stack1 = true
+                --autostack(stack1)
+                repeat
+                    success, err = pcall(function()
+                        targetted = game.Players.LocalPlayer.name
+                        data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+                        if stack1 == true and data.Energy.Value > 8000000 and getgenv().dead == false then
+                            task.wait(1)
+                
+                            game.workspace.Living[targetted].UpperTorso:Destroy()
+                            task.wait(5)
+                            local Remote = game.ReplicatedStorage.Package.Events['equipskill']
+                            local Arguments = {
+                                [1] = "Godly SSJ2"
+                            }
+                            Remote:InvokeServer(unpack(Arguments))
+                            local Remote = game.ReplicatedStorage.Package.Events['ta']
+                            i = 0
+                            repeat
+                                Remote:InvokeServer(unpack(Arguments))
+                                i = i + 1
+                                task.wait(.1)
+                            until i == 3
+                            task.wait()
+                            getgenv().stackneeded = false
+                            transformStatus = true
+                            autoFarmLoopRunning = true
+                            flying = false
+                            
+                        elseif stack1 == false then
+                            getgenv().stackneeded = false
+                            transformStatus = true
+                            autoFarmLoopRunning = true
+                            flying = false
+                            
+                        elseif stack1 == true and data.Energy.Value < 8000000 then
+                            task.wait()
+                            getgenv().stackneeded = false
+                            transformStatus = true
+                            autoFarmLoopRunning = true
+                            flying = false
+                            
+                        end
+                    end)
+                    if success then
+                        
+                        getgenv().stackneeded = false
+                    else
+                        
+                    end
+                    task.wait()
+                until getgenv().stackneeded == false
+                deadcheck(true)
+                getgenv().stackneeded = false
+                questneeded = true
+                autoFarmLoopRunning = true
             end
-            task.wait()
+            
         end
+        autoFarmLoopRunning = true
+        getgenv().stackneeded = false
     end)
-end
-
-local A = {
-	{100000, "100k+"}, -- 
-	{50000, "50k+"}, -- 
-	{40000, "40k+"}, -- 
-	{33333, "33k+"}, -- Solid black with white outline
-	{20000, "20k+"}, -- Bold Italic White with fast rainbow outline
-	{10000, "10k+"}, -- Bold Italic Black with slow rainbow outline
-	{5000, "5k+"}, -- Bolded Teal
-	{2500, "2500+"}, -- Bolded Red
-	{1000, "1k+"}, -- Bolded Orange
-	{100, "100+"}, -- White
-	{3, "3+"}, -- Forest Green
-	{0, "0+"}, -- Gray}
-}
-local StatFormats = {
-	{30e15, "@everyone {30qd+}/"},
-	{10e15, "{10qd+}"},
-	{1e15, "1qd+"},
-	{100e12, "[100T+]"},
-	{10e12, "[10T+]"},
-	{1e12, "[1T+]"},
-	{100e9, "(100B+)"},
-	{1e9, "(1B+)"},
-	{1e6, "(1M+)"},
-	{0, "(<1M)"},
-}
-local function getloweststatplr(plr)
-	local data = game.ReplicatedStorage.Datas:WaitForChild(plr.UserId)
-	local l = math.huge
-	for i,v in pairs(sts) do
-		if not data:FindFirstChild(v) then return end
-		local st = data[v]
-		if st.Value < l then l = st.Value end
-	end
-	return l
-end
-
-local function formatlog(plr)
-	local data = game.ReplicatedStorage.Datas:WaitForChild(plr.UserId)
-	local nam = "("..plr.Name..", "..plr.DisplayName.." "..plr.UserId..")"
-	if plr.Name == plr.DisplayName then
-		nam = "("..plr.Name.." "..plr.UserId..")"
-	end
-	-- (PlrName,DisplayName)
-	local stats = (data.Strength.Value + data.Speed.Value + data.Defense.Value + data.Energy.Value) / 4
-	local numt = format(stats)
-	local zeni = format(data.Zeni.Value)
-	local rebs = data.Rebirth.Value
-	local rebst = "("..format2(rebs)..")"
-	local txt = ""
-	for i,v in pairs(StatFormats) do
-		if getloweststatplr(plr) >= v[1] then
-			txt = txt..""..v[2]
-			break
-		end
-	end
-	for i,v in pairs(A) do
-		if rebs >= v[1] then
-			txt = txt.." ["..v[2].."] "
-			break
-		end
-	end
-	txt = txt..rebst.." "..nam..", "..numt..", "..zeni
-	local found = false
-	
-	if not found and (rebs >= 10000 or stats >= 100e12) then --and customurl ~= "" then -- If they haven't been previously logged and are over 10k/100T then
-       
-	end
-	return txt
-end
-
-
--- Log server
-local plrs = {
-}
-statlogged = {}
-logged = {}
-
--- testing
-local stats = {}
-
-
-for i,plr in pairs(game.Players:GetChildren()) do
-	table.insert(stats, getloweststatplr(plr))
-end
-
-table.sort(stats, function(a, b)
-	return a > b
-end)
-for i,v in pairs(stats) do
-	for i,plr in pairs(game.Players:GetChildren()) do
-		if getloweststatplr(plr) == v then
-			table.insert(logged, plr.Name)
-			table.insert(plrs, formatlog(plr))
-			break
-		end
-	end
-end
-local url = nil
-customurl = nil
-
-local msg2 = "" 
-
-kick = false
-
-
-
-
-TextButton.Activated:Connect(function()
-    if _G.StatGrinding ~= true then
-        _G.StatGrinding = true
-        TextButton.Position = UDim2.new(.6,0,0,0)
-        --TextButton.BackgroundColor3 = Color3.new(1,0,0)
-        stat_reb_toggle_stroke.Parent = statfarm
+    getgenv().stackneeded = false
+    if success1 then
+        
+        
     else
-        _G.StatGrinding = false
-        TextButton.Position = UDim2.new(0,0,0,0)
-        --TextButton.BackgroundColor3 = Color3.new(0,1,0)
-        stat_reb_toggle_stroke.Parent = rebfarm
-    end
-end)
-
-destroygui.Activated:Connect(function()
-    _G.Key = nil
-    Farming = false
-    Boss = nil
-    ScGui:Destroy()
-    ScGui = nil
-    FindChar().Humanoid:ChangeState(18)
-    bm.Parent = game.Workspace.Others
-    pcall(function()game.CoreGui.infogui:Destroy() end)
-end) 
-
-UICorner_6.CornerRadius = UDim.new(0, 10)
-UICorner_6.Parent = Destroy
-
-
-local GC = getconnections or get_signal_cons
-if GC then
-	for i,v in pairs(GC(lplr.Idled)) do
-		if v["Disable"] then
-			v["Disable"](v)
-		elseif v["Disconnect"] then
-			v["Disconnect"](v)
-		end
-	end
-else
-	lplr.Idled:Connect(function()
-		local VirtualUser = game:GetService("VirtualUser")
-		VirtualUser:CaptureController()
-		VirtualUser:ClickButton2(Vector2.new())
-	end)
-end
-
-local kb_args = {
-    [1] = 1,
-    [2] = true,
-    [3] = CFrame.new(Vector3.new(0,0,0), Vector3.new(-0.7386234402656555, -0.15270498394966125, -0.6565948128700256))
-}
-
-
-local questNPCs = game.Workspace.Others.NPCs
-if questNPCs:FindFirstChild("Vegetable (GoD in-training)") then
-    planet = "Bills"
-end
-Farming = true
-Boss = nil
-CanAttack = true
-
-
-function format2(n)
-	n = tostring(n)
-	return n:reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
-end
-
-
-if getloweststat() > ((ldata.Rebirth.Value*3e6)+2e6) * 2 then
-    _G.StatGrinding = true
-end
-
-local bosses = {} -- Fight every boss at the lowest possible
-if planet == "Bills" then
-    bosses = {
-        {"Vekuta (SSJBUI)",1.375e9},
-        {"Wukong Rose",1.25e9},
-        {"Vekuta (LBSSJ4)",1.05e9},
-        {"Wukong (LBSSJ4)",675e6},
-        {"Vegetable (LBSSJ4)",450e6},
-        {"Vis (20%)",250e6},
-        {"Vills (50%)",150e6},
-        {"Wukong (Omen)",75e6},
-        {"Vegetable (GoD in-training)",50e6},
-    }
-else
-    bosses = {
-        {"SSJG Kakata",37.5e6},
-        {"Broccoli",12.5e6},
-        {"SSJB Wukong",2e6},
-        {"Kai-fist Master",1625000},
-        {"SSJ2 Wukong",1250000},
-        {"Perfect Atom",875000},
-        {"Chilly",550000},
-        {"Super Vegetable",188000},
-        {"Top X Fighter",115000},
-        {"Mapa",75000},
-        {"Radish",45000},
-        {"Kid Nohag",20000},
-        {"Klirin",0},
-    }
-end
-
-local function getping()
-    return game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
-end
-
-
-local forms = {}
-local side = ldata:WaitForChild("Allignment")
-local function transform()
-    if not FindChar() then return end
-    if FindChar():WaitForChild("Stats").Ki.Value < 200 then return end
-    if getloweststat() < 34000 then return end
-    while not lplr.Status:FindFirstChild("Transformation") do task.wait() end
-    if not Boss then
+        
         
     end
-    if side.Value == "Good" then
-        forms = {
-            {"Beast",120e6,"Blanco"},
-            {"SSJBUI",120e6,"Blanco"},
-            {"LBSSJ4",100e6},
-            {"SSJB3",50e6,"SSJB4"},
-            {"God of Creation",30e6,"True God of Creation"},
-            {"Mastered Ultra Instinct",14e6},
-            {"Godly SSJ2",8e6,"Super Broly"},
-            {"Blue Evolution",3.5e6,"Super Broly"},
-            {"Kefla SSJ2",3e6},
-            {"SSJB Kaioken",2.2e6},
-            {"SSJ Blue",1.2e6},
-            {"SSJ Rage",700000},
-            {"SSJG",450000},
-            {"SSJ4",300000},
-            {"Mystic",200000},
-            {"LSSJ",140000},
-            {"SSJ3",95000},
-            {"Spirit SSJ",65000},
-            {"SSJ2",34000},
-            {"SSJ Kaioken",16000},
-            {"SSJ",6000},
-            {"FSSJ",2500},
-            {"Kaioken",1000},
-        }
-    elseif side.Value == "Evil" then
-        forms = {
-            {"Beast",120e6,"Blanco"},
-            {"Ultra Ego",120e6,"Blanco"},
-            {"LBSSJ4",100e6},
-            {"SSJR3",50e6,"SSJB4"},
-            {"God of Destruction",30e6,"True God of Destruction"},
-            {"Jiren Ultra Instinct",14e6},
-            {"Godly SSJ2",8e6,"Super Broly"},
-            {"Evil SSJ",4e6,"Super Broly"},
-            {"Dark Rose",3.5e6,"Super Broly"},
-            {"SSJ Berserker",3e6},
-            {"True Rose",2.4e6},
-            {"SSJ Rose",1.4e6},
-            {"Corrupt SSJ",700000},
-            {"SSJG",450000},
-            {"SSJ4",300000},
-            {"Mystic",200000},
-            {"LSSJ",140000},
-            {"SSJ3",95000},
-            {"SSJ2 Majin",65000},
-            {"SSJ2",34000},
-            {"SSJ Kaioken",16000},
-            {"SSJ",6000},
-            {"FSSJ",2500},
-            {"Kaioken",1000},
-        }
+
+
+    checkstackreq = getCheckValue()
+    if checkstackreq < 8000000 then
+        autoFarmLoopRunning = true
     end
-    -- Don't transform if stat grinding
-    local lstatus = lplr.Status
-    local currentform = lstatus.Transformation.Value
-    if planet == "Earth" and ldata.Rebirth.Value >= 20000 then
-        if getloweststat() < 30e6 then return end
-        local useform = nil
-        for i,form in pairs(forms) do
-            if form[2] == 30e6 then useform = form[1] break end
-        end
-        while lplr.Status.Transformation.Value ~= useform do
-            game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer(useform)
-            if lplr.Status.Transformation.Value == useform then return end
-            pcall(function()
-                game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
-            end)
-            task.wait()
-        end
+
+    if getgenv().rebirthed == true and game.placeId == 5151400895 then
+        task.wait(10)
+check1()
         return
-    end
-    if FindChar() then
-        if getloweststat() < 1e12 then -- (ldata.Rebirth.Value*3e6)+2e6
-            -- Under 1T stats, transform for efficiency
-            for i,form in pairs(forms) do
-                if currentform == form[1] or (form[3] and currentform == form[3]) then return end
-                if getloweststat() >= form[2] then 
-                    
-                    game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer(form[1])
-                    if form[3] ~= nil  then
-                        game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer(form[3])
-                    end
-                    CanAttack = false
-                    pcall(function()
-                                    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
-                        game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                    end)
-                    while FindChar().HumanoidRootPart.Anchored == true do wait() end
-                    CanAttack = true
-                    break
-                end
-            end
-        else -- Transform for mastery, should be over 1T so no need to check for req
-            for i,form in pairs(forms) do -- 5,767/332,526"
-                if ldata[form[1]].Value < 5767 then
-                    local useform = form[1] -- Name of the form you SHOULD use
-                    if form[1] == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
-                    else
-                        Forms.Text = "TRANSFORMING"
-                        game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(form[1])
-                        CanAttack = false
-                        killtarget = nil
-                        while lplr.Status.Transformation.Value ~= useform do
-                            game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(form[1])
-                            pcall(function()
-                                game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                            end)
-                            task.wait(.1)
-                        end
-                        while FindChar().HumanoidRootPart.Anchored == true do wait() end
-                        CanAttack = true
-                    end
-                    return
-                end
-            end
-            local useform = "Godly " -- goodly
-            if ldata[useform].Value < 332526 then
-                if useform == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
-                else
-                    CanAttack = false
-                    killtarget = nil
-                    Forms.Text = "Bug"
-                    while lplr.Status.Transformation.Value ~= useform do
-                        game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(useform)
-                        pcall(function()
-                            game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                        end)
-                        task.wait(.1)
-                    end
-                    while FindChar().HumanoidRootPart.Anchored == true do wait() end
-                    CanAttack = true
-                end
-                return
-            end
-            useform = "Beast"
-            if ldata[useform].Value < 332526 then
-                if useform == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
-                else
-                    game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(useform)
-                    CanAttack = false
-                    killtarget = nil
-                    Forms.Text = "TRAFOMANDOCE"
-                    while lplr.Status.Transformation.Value ~= useform do
-                        pcall(function()
-                            game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                        end)
-                        task.wait(.1)
-                    end
-                    while FindChar().HumanoidRootPart.Anchored == true do wait() end
-                    CanAttack = true
-                end
-                return
-            end -- 332526
-            for i,form in pairs(forms) do -- 5,767/332,526"
-                if ldata[form[1]].Value < 332526 then
-                    local useform = form[1] -- Name of the form you SHOULD use
-                    if form[1] == lplr.Status.Transformation.Value then return -- If already in this form then don't do it again lol
-                    else
-                        Forms.Text = "FORMA TERMINADA"
-                        game.ReplicatedStorage.Package.Events.equipskill:InvokeServer(form[1])
-                        CanAttack = false
-                        killtarget = nil
-                        while lplr.Status.Transformation.Value ~= useform do
-                            pcall(function()
-                                game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                            end)
-                            task.wait(.1)
-                        end
-                        while FindChar().HumanoidRootPart.Anchored == true do wait() end
-                        CanAttack = true
-                    end
-                    return
-                end
-            end
-        end
-    end
-end
 
-
-local questbosses = game.Workspace.Living
-function findboss(questname) -- Finds the bossmodel
-    local bossname = questname
-    if questname == "Top X Fighter" then
-        bossname = "X Fighter Master"
-    end
-    if 
-     questbosses:FindFirstChild(bossname) and 
-     questbosses[bossname]:FindFirstChild("HumanoidRootPart") and 
-     questbosses[bossname]:FindFirstChild("Humanoid")
-    then -- If the boss isn't deleted
-        local boss = questbosses[bossname]
-        return boss
-    end
-end
-
-local t = {"Strength","Speed","Defense","Energy"}
-Charging = false
-
-
-task.spawn(function() -- GUI
-    while ScGui do
-        if Farming then
-            local MainFrame = lplr.PlayerGui:WaitForChild("Main"):WaitForChild("MainFrame")
-            local StatsFrame = MainFrame:WaitForChild("Frames"):WaitForChild("Stats")
-            local ZeniLabel = MainFrame.Indicator.Zeni 
-            local Bars = MainFrame.Bars
-            local HPText = Bars.Health.TextLabel
-            local EnergyText = Bars.Energy.TextLabel
-            if Farming and FindChar() then
-                task.spawn(function()
-                    pcall(function()
-                        HPText.Text = "HEALTH: "..format(lplr.Character.Humanoid.Health).." / "..format(lplr.Character.Humanoid.MaxHealth)
-                        EnergyText.Text = "ENERGY: "..format(lplr.Character.Stats.Ki.Value).." / "..format(lplr.Character.Stats.Ki.MaxValue)
-                        ZeniLabel.Text = format(ldata.Zeni.Value).." Zeni"
-                    end)
-                end)
-                if Boss then
-                    bossquest.Text = "Mission Atual "..Boss.Name..""
-                else
-                    bossquest.Text = "Esperando.."
-                end
-            end
-            for i,stat in pairs(t) do
-                if StatsFrame:FindFirstChild(stat) then
-                    local lbl = MainFrame.Frames.Stats[stat]
-                    lbl.Text = stat..": "..format(ldata[stat].Value)
-                end
-            end
-            pingcount.Text = math.floor(getping()).."ms"
-            pcall(function()
-                if lplr.Status.Blocking.Value ~= true then
-                    task.spawn(function()
-                        --pcall(function()
-                            game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(true)
-                        --end)
-                    end)
-                end
-            end)
-            rebs.Text = "Rebirths: "..format2(ldata.Rebirth.Value).."/"..format2(checkplr()[2])
-            local extra = ""
-            if getloweststat() < (ldata.Rebirth.Value * 3e6) + 2e6 then
-                extra = "/"..format((ldata.Rebirth.Value * 3e6) + 2e6)
-            elseif checkplr()[3] < 1e20 then
-                extra = "/"..format(checkplr()[3])
-            else
-                extra = "/inf"
-            end
-            statslbl.Text = "Stats: "..format(getloweststat())..extra
-        end
+    elseif getgenv().rebirthed == true and game.placeId ~= 5151400895 then
         task.wait()
+check1()
     end
-end)
-Stacking = false
-task.spawn(function() -- Auto Charge
-    
-    spawn(function()
-        while ScGui do
-            local form = lplr.Status.Transformation.Value -- Current character form
-            if ldata:FindFirstChild(form) and form ~= "None" then
-                local currentval = 	ldata[form].Value -- Current form mastery in seconds
-                local txt = "Mastery: ("..form..")\n"
-                if currentval == 332526 then
-                    txt = txt.." Maxed"
+
+    pcall(function()
+
+        game.Workspace.Living:WaitForChild(targetted)
+        game.Workspace.Living[targetted]:WaitForChild("HumanoidRootPart")
+
+    end)
+
+    if charge == false and getgenv().dead == false and autoFarmLoopRunning == true then
+
+        task.spawn(function()
+            while autoFarmLoopRunning do
+                pcall(function()
+                local args = {
+                    [1] = "Blacknwhite27"
+                }
+
+                game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer(unpack(args))
+                task.wait()
+            end)
+            end
+        end)
+        task.spawn(function()
+            while autoFarmLoopRunning do
+                pcall(function()
+                    data = game.ReplicatedStorage.Datas[game.Players.LocalPlayer.UserId]
+                    local formtouse;
+
+                    if transformStatus == true and game.Workspace.Living[targetted].Stats.Ki.Value > 300 and
+                        game:GetService("ReplicatedStorage").Datas[game.Players.LocalPlayer.UserId].Quest.Value ~=
+                        "X Fighter Trainer" then
+
+                        local value = getCheckValue()
+                        local alignment = data.Allignment.Value
+                        local forms = FormsList[alignment]
+                        local Paidforms = PaidFormsList[alignment]
+
+                        local matchFound = false 
+                        local paidmatchFound = false
+
+                        for _, form in ipairs(Paidforms) do
+                            if value >= form.reqvalue and value <= form.endrangevalue and form.reqvalue >=
+                                data.Rebirth.Value and form.formOwned == true then
+
+                                formtouse = form.name
+                                paidmatchFound = true 
+                                break 
+                            end
+
+                        end
+
+                        if paidmatchFound == false and isLoop2Active then
+                            for _, form in ipairs(forms) do
+                                if value >= form.reqvalue and value <= form.endrangevalue and form.reqvalue >=
+                                    data.Rebirth.Value then
+                                    formtouse = form.name
+                                    matchFound = true 
+
+                                    break 
+                                end
+                            end
+                        end
+
+                        if not matchFound and not paidmatchFound and isLoop2Active then
+                            for _, form in ipairs(forms) do
+                                if form.rebirthReq >= data.Rebirth.Value then
+                                    formtouse = form.name
+                                    break
+                                end
+                            end
+
+                        end
+                        equipRemote = game:GetService("ReplicatedStorage").Package.Events.equipskill
+                        equipRemote:InvokeServer(formtouse)
+                        repeat
+                            task.wait()
+                            if game.Players.LocalPlayer.Status.SelectedTransformation.Value ~=
+                                game.Players.LocalPlayer.Status.Transformation.Value then
+                                game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
+                            end
+                        until game.Players.LocalPlayer.Status.SelectedTransformation.Value ==
+                            game.Players.LocalPlayer.Status.Transformation.Value or
+                            game.Workspace.Living[targetted].Stats.Ki.Value < 300
+                    end
+
+                end)
+                task.wait(.1)
+            end
+        end)
+        charge = true
+    end
+
+    if flying == false and getgenv().dead == false and autoFarmLoopRunning == true then
+        success, err = pcall(function()
+
+            game.Workspace.Living:WaitForChild(targetted)
+            game.Workspace.Living[targetted]:WaitForChild("HumanoidRootPart")
+            local bv = game.Workspace.Living[targetted].HumanoidRootPart:WaitForChild("BodyVelocity")
+            local bg = game.Workspace.Living[targetted].HumanoidRootPart:WaitForChild("BodyGyro")
+            
+
+            bg.P = 1
+            bg.MaxTorque = Vector3.new(500000, 500000, 500000)
+            bv.P = 1
+            bv.MaxForce = Vector3.new(100000, 100000, 100000)
+            flying = true
+        end)
+        if success then
+            
+        else
+            
+            
+        end
+    end
+
+    if getgenv().dead == false and autoFarmLoopRunning == true then
+       
+        task.wait()
+
+        
+             success, err = pcall(function()
+                while autoFarmLoopRunning do
+                    task.wait()
+                    check1()
+                    local SelectedQuests, SelectedMobs, sameplanet;
+                     success1, err1 = pcall(function()
+
+                        while autoFarmLoopRunning do
+                            if breakagain == true then
+                                breakagain = false
+                                break
+                            end
+                            if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                for i, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
+                                    task.wait()
+                                    local q;
+                                    getgenv().switch1 = 1
+                                    q = getgenv().switch1
+                                    SelectedQuests, SelectedMobs, sameplanet = getQuest(q)
+
+                                    if v.Name:lower() == SelectedMobs:lower() then
+
+                                        local humanoid = v.Humanoid
+
+                                        if humanoid then
+                                            local currentState = humanoid:GetState()
+
+                                            if currentState == Enum.HumanoidStateType.Dead then
+                                                getgenv().switch1 = 2
+                                                q = getgenv().switch1
+                                                SelectedQuests, SelectedMobs, sameplanet = getQuest(q)
+
+                                            end
+                                        end
+                                        break
+                                    end
+                                end
+                            end
+
+                            if string.len(game:GetService("ReplicatedStorage").Datas[game.Players.LocalPlayer.UserId]
+                                              .Quest.Value) <= 0 or questneeded == true then
+                                
+                                SelectedMobs1 = SelectedMobs
+
+                                checkValue = getCheckValue()
+                                if checkValue >= 100000000 and game.placeId ~= 5151400895 then
+                                    SelectedQuests, SelectedMobs1 = "SSJG Kakata", "SSJG Kakata"
+                                    local A_1 = "Vills Planet"
+                                    local Event = game:GetService("ReplicatedStorage").Package.Events.TP
+                                    Event:InvokeServer(A_1)
+                                end
+
+                                if game:GetService("ReplicatedStorage").Datas[game.Players.LocalPlayer.UserId].Quest
+                                    .Value ~= SelectedQuests and  isLoop1Active then 
+                                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game:GetService(
+                                                                                                     "Workspace").Others
+                                                                                                     .NPCs[SelectedQuests]
+                                                                                                     .HumanoidRootPart
+                                                                                                     .CFrame
+                                    repeat
+                                        task.wait()
+
+                                        game.ReplicatedStorage.Package.Events.Qaction:InvokeServer(game:GetService(
+                                                                                                       "Workspace").Others
+                                                                                                       .NPCs[SelectedQuests])
+                                    until game:GetService("ReplicatedStorage").Datas[game.Players.LocalPlayer.UserId]
+                                        .Quest.Value == SelectedQuests or
+                                        game.Players.LocalPlayer.Character.Humanoid.Health <= 0
+                                end -- undefine
+                                
+                            end
+
+                            if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+                                for i, v in ipairs(game:GetService("Workspace").Living:GetChildren()) do
+                                    task.wait()
+
+                                    if v.Name:lower() == SelectedMobs1:lower() and isLoop4Active and game.Players.LocalPlayer.Character and
+                                        game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and
+                                        v:FindFirstChild("Humanoid") and v:FindFirstChild("HumanoidRootPart") and v.Humanoid.Health > 0 or v.Name:lower() == "ssjg kakata" and SelectedMobs1:lower() == "ssjg kakata" then
+                                        task.wait()
+                                        if v.Name:lower() == "ssjg kakata" then
+                                            repeat
+                                                pcall(function()
+                                                    if v.Humanoid.Health > 0 then
+                                                        ssjgalive = true
+                                                    end
+                                                    end)
+                                            wait()
+                                            until ssjgalive == true
+end
+                                        
+                                        questneeded = false
+                                        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.HumanoidRootPart
+                                                                                                         .CFrame +
+                                                                                                         Vector3.new(0,
+                                                0, 0)
+                                        
+
+                                        local Echar = v
+                                        task.spawn(function()
+                                            repeat
+
+                                                local myChar = game.Players.LocalPlayer.Character
+                                                
+                                                myChar.HumanoidRootPart.CFrame =
+                                                    Echar:GetPrimaryPartCFrame() * CFrame.new(0, 0, 5)
+
+                                                task.wait()
+                                            until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
+                                                game.Players.LocalPlayer.Character.Humanoid.Health <= 0
+                                        end)
+
+                                        task.wait(0.1)
+                                        local alignment = data.Allignment.Value
+                                        if alignment == "Evil" then
+                                            puntype = "Soul Punisher"
+                                        else
+                                            puntype = "Destruction"
+
+                                        end
+                                        repeat
+                                            task.wait()
+                                            
+                                            if checkValue > 2100000 and game.Workspace.Living[targetted].Stats.Ki.Value >
+                                                10000 then -- op move stack 1
+
+                                                repeat
+                                                   
+                                                   
+                                                        task.wait()
+                                                        A_2 = "Blacknwhite27"
+                                                        local spam = 0
+                                                        repeat
+                                                            task.spawn(function()
+                                                        
+                                                               
+                                                        
+                                                        for _, A_1 in ipairs(attacks2) do
+                                                                      if isLoop3Active then
+                                                            task.spawn(function()                                            
+                                                                task.wait()
+                                                                game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(
+                                                                    A_1, A_2)
+                                                            end) 
+                                                            end
+                                                            
+                                                         
+                                                        end
+                                                        spam = spam + 1
+                                                        wait(.1)
+                                                    end) 
+                                                    until spam == 10 or
+                                                    game.Players.LocalPlayer.Character.Humanoid.Health <= 0
+                                                    
+                                                    
+                                                    
+                                                    
+
+                                                    task.wait(0.1)
+                                                until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
+                                                    game.Players.LocalPlayer.Character.Humanoid.Health <= 0 or
+                                                    game.Workspace.Living[targetted].Stats.Ki.Value < 10000
+                                            else
+                                                task.spawn(function()
+                                                    repeat
+                                                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer(
+                                                            "Blacknwhite27", 1)
+                                                        task.wait()
+                                                    until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
+                                                        game.Players.LocalPlayer.Character.Humanoid.Health <= 0 or
+                                                        game.Workspace.Living[targetted].Stats.Ki.Value > 10000 and
+                                                        checkValue > 2100000
+
+                                                end)
+
+                                                repeat
+                                                    if game.Workspace.Living[targetted].Stats.Ki.Value > 400 then
+
+                                                        task.wait()
+                                                        local Event =
+                                                            game:GetService("ReplicatedStorage").Package.Events.mel
+                                                        local A_2 = "Blacknwhite27"
+                                                        task.spawn(function()
+                                                            local A_1 = "Mach Kick"
+                                                            Event:InvokeServer(A_1, A_2)
+
+                                                        end)
+                                                        task.spawn(function()
+                                                            A_1 = "Energy Volley"
+                                                            A_2 = {
+                                                                ["FaceMouse"] = false,
+                                                                ["MouseHit"] = CFrame.new(15932.0273, -12.8115005,
+                                                                    15540.2061, 0.983303905, -0.0826973468, 0.162094966,
+                                                                    0, 0.89077127, 0.454452157, -0.181971505,
+                                                                    -0.446864575, 0.875898659)
+                                                            }
+                                                            A_3 = "Blacknwhite27"
+                                                            Event =
+                                                                game:GetService("ReplicatedStorage").Package.Events
+                                                                    .voleys
+                                                            Event:InvokeServer(A_1, A_2, A_3)
+
+                                                        end)
+                                                        task.wait(.1)
+                                                    else
+
+                                                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer(
+                                                            "Blacknwhite27", 1)
+
+                                                        task.wait()
+
+                                                    end
+                                                    task.wait()
+                                                until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
+                                                    game.Players.LocalPlayer.Character.Humanoid.Health <= 0 or
+                                                    game.Workspace.Living[targetted].Stats.Ki.Value > 10000 and
+                                                    checkValue > 2100000
+
+                                            end
+                                            task.wait()
+                                        until not autoFarmLoopRunning or v.Humanoid.Health <= 0 or
+                                            game.Players.LocalPlayer.Character.Humanoid.Health <= 0
+                                            
+                                        if game.Players.LocalPlayer.Character.Humanoid.Health <= 0 then
+                                            getgenv().stackneeded = true
+                                            getgenv().dead = true
+                                            autoFarmLoopRunning = false
+                                            flying = false
+                                            charge = false
+                                            questneeded = true
+
+                                        end
+                                        breakagain = true
+                                        break
+                                    end
+
+                                end
+                            else
+                                questneeded = true
+                            end
+                            task.wait()
+                        end
+                    end)
+                    if success1 then
+                        
+                       
+                        
+                    else
+                        
+                        questneeded = true
+                    end
                 end
-                if currentval < 5767 then
-                    txt = txt..format2(currentval).."/5,767/332,526"
-                elseif currentval < 332526 then
-                    txt = txt..format2(currentval).."/332,526"
-                end
-                txt = txt.." ("..tostring(math.floor(currentval/332526*100)).."%)"
-                formmastery.Text = txt
-                formmastery.Visible = true
+            
+            end)
+            if success then
+        
+                
+                
             else
-                formmastery.Visible = false
-                formmastery.Text = "You shouldn't be seeing this.."
+                
+                questneeded = true
             end
             task.wait()
-        end
-    end)
-    while ScGui do
-        if Farming then
-            pcall(function()
-                local Ki = lplr.Character.Stats.Ki
-                while _G.Key == r and ScGui and (not Stacking) and ((not Boss) or Ki.Value < 40 or Ki.Value < Ki.MaxValue/10) and lplr.Character.Humanoid.Health > 0 do
-                    CanAttack = nil -- Only = nil if charging
-                    game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer("Blacknwhite27")
-                end
-                if CanAttack == nil then
-                    CanAttack = true
-                end
-            end)
+        
+        
+    end
+end
+
+
         end
         wait()
     end
-end)
-
-
-task.spawn(function() -- Rebirth, teleport earth/bills
-    while ScGui do
-        if Farming then
-            if _G.StatGrinding ~= true and (getloweststat() >= ((ldata.Rebirth.Value*3e6) + 2e6)) and (getloweststat() < (((ldata.Rebirth.Value*3e6) + 2e6)*2)) and ldata.Rebirth.Value < checkplr()[2] then
-                --spawn(function()
-                
-                game:GetService("ReplicatedStorage").Package.Events.reb:InvokeServer()
-            end
-            if getloweststat() >= 150e6 and ldata.Zeni.Value >= 15000 and planet == "Earth" then
-                infotxt.Text = "TP BILLS"
-                game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
-                wait(5)
-            end
-            -- If just rebirthed and in Beerus go to Earth
-            if getloweststat() < 50e6 and planet == "Bills" then
-                infotxt.Text = "TP EARTH"
-                game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
-                wait(5)
-            end
-        end
-        task.wait()
-    end
-end)
-
-game.Workspace.FallenPartsDestroyHeight = 0/0
-local part = Instance.new("Part")
-part.Parent = Workspace
-part.Position = Vector3.new(0,20000,0)
-part.Anchored = true
-part.Transparency = .9
-
-infotxt.Text = "Atacando C:"
-
-while not lplr:FindFirstChild("Status") do task.wait() print("Waiting for status") end -- staack
-if planet == "Bills" and lplr.Status.Transformation.Value == "None" and getloweststat() < getrebprice()*1.2 then
-    Stacking = true
-    print("wait to stack")
-    repeat infotxt.Text = "Creado×Funny_Modificado×Pvtin" wait() until lplr.Character and lplr.Character:FindFirstChild("Humanoid") and lplr.Character.Humanoid.Health > 999
-    
-    print("stacking now")
-    local form = lplr:WaitForChild("Status"):WaitForChild("Transformation").Value
-    --[[if form ~= "None" then
-        game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer(form)
-        game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
-        -- unform
-    end]]
-    lplr.Character.Humanoid:ChangeState(15) -- DIE.
-    task.wait()
-    
-    lplr.CharacterAdded:Connect(function(chr)
-        if not ScGui then return end
-        chr:WaitForChild("Humanoid").Died:Connect(function()
-            if not ScGui then return end
-            Stacking = true
-            task.wait(4.5)
-            game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer("Godly SSJ2")
-            spawn(function()
-                game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
-            end)
-            wait(1)
-            transform()
-            Stacking = false
-        end)
-    end)
-    task.wait(5)
-    
-    game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer("Godly SSJ2")
-    game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
-    transform()
-    Stacking = false
 end
 
-local mobs = {"X Fighter","Evil Saya"}
-canvolley = true
-task.spawn(function() -- Move/Attack
-    while ScGui do
-        if Farming then
-            if _G.Key ~= r then
-                return
+local function loop2()
+    while true do
+        if isLoop2Active then        
+        
+        end
+        wait()
+    end
+end
+
+local function loop3()
+    while true do
+        if isLoop3Active then
+        end
+        wait()
+    end
+end
+
+local function loop4()
+local function formatNumber(number)
+    local suffixes = {"", "K", "M", "B", "T", "QD"}
+    local suffix_index = 1
+
+    while math.abs(number) >= 1000 and suffix_index < #suffixes do
+        number = number / 1000.0
+        suffix_index = suffix_index + 1
+    end
+
+    return string.format("%.2f%s", number, suffixes[suffix_index])
+end
+
+local function updateNumbers()
+    local player = game.Players.LocalPlayer
+    local rebirthFrame = player.PlayerGui.Main.MainFrame.Frames.Rebirth
+    local statsFrame = player.PlayerGui.Main.MainFrame.Frames.Stats
+    local strengthLabel = statsFrame:FindFirstChild("Strength")
+
+    local strengthValue
+    if strengthLabel and strengthLabel:IsA("TextLabel") then
+        local strengthText = strengthLabel.Text:match("%d+")
+        strengthValue = tonumber(strengthText)
+    end
+
+    local menuGui = game.CoreGui.MenuGui
+
+    -- Limpiar todos los clones existentes antes de actualizar
+    for _, child in ipairs(menuGui.Background:GetChildren()) do
+        child:Destroy()
+    end
+
+    local yOffset = -50
+    local xOffset = 50
+
+    for _, child in ipairs(rebirthFrame:GetChildren()) do
+        if child:IsA("TextLabel") then
+            local text = child.Text:match("%d+")
+            if text then
+                local number = tonumber(text)
+                if number and strengthValue then
+                    local formattedNumber = formatNumber(number)
+                    local formattedStrength = formatNumber(strengthValue)
+                    local combinedText = formattedNumber .. "/" .. formattedStrength
+                    local clonedLabel = Instance.new("TextButton", menuGui.Background)
+                   clonedLabel.Name = "Cloned" .. child.Name
+                    clonedLabel.Text = combinedText
+                   clonedLabel.Font = child.Font
+                   clonedLabel.TextSize = 30
+                   clonedLabel.TextColor3 = Color3.fromRGB(0, 0, 0)  -- Color del texto
+                   clonedLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)  -- Color de fondo
+                   clonedLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 255)  -- Color del contorno del texto
+                   clonedLabel.TextStrokeTransparency = 0.000  -- Transparencia del contorno del texto
+                   clonedLabel.BackgroundTransparency = 1
+                   clonedLabel.Position = UDim2.new(0, xOffset, 0, yOffset)
+                   clonedLabel.Size = UDim2.new(0, 200, 0, 30)
+                   yOffset = yOffset + 40
+                    
+                end
             end
-            task.spawn(function()
-            	pcall(function()
-	                lplr.Character.Humanoid:ChangeState(11)
-	                lplr.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
-	                if (not Boss) and #game.Players:GetChildren() > 1 then 
-	                    pcall(function()
-	                        lplr.Character.HumanidoRootPart.CFrame = part.CFrame
-	                    end)
-	                end
-	                pcall(function()
-	                    lplr.Character.HumanoidRootPart.CFrame = CFrame.new(Boss.HumanoidRootPart.CFrame * CFrame.new(0,0,4).p, Boss.HumanoidRootPart.Position)
-	                end)
-	                if Boss then
-	                    task.spawn(function()
-	                        for i,blast in pairs(FindChar().Effects:GetChildren()) do
-	                            if blast.Name == "Blast" then
-	                                blast.CFrame = Boss.HumanoidRootPart.CFrame
-	                            end
-	                        end
-	                    end)
-	                end
-	                if Boss and lplr.Character.Humanoid.Health > 0 and Boss.Humanoid.Health > 0 then
-	                    if CanAttack and not Stacking then
-	                        CanAttack = false
-	                        task.spawn(function()
-	                            task.wait(.1) -- Wait for the char to tp back in
-                                if getloweststat() >= 40000 and ldata.Quest.Value ~= "" and not lplr.Status:FindFirstChild("Invincible") then
-                                    Forms.Text = "ATTACKING "..Boss.Name
-                                    local thrp = Boss:WaitForChild("HumanoidRootPart",1)
-                                    local stats = getloweststat()
-                                    local moves = {}
-                                    local attacked = false
-                                    if stats >= 5000 then
-                                        table.insert(moves, "Wolf Fang Fist")
-                                    end
-                                    if stats >= 40000 then
-                                        table.insert(moves, "Meteor Crash")
-                                    end
-                                    if stats >= 100000 and not table.find({"Evil Saya","X Fighter"},Boss.Name)then
-                                        table.insert(moves, "High Power Rush")
-                                    end
-                                    if stats >= 125000 then
-                                        table.insert(moves, "Mach Kick")
-                                    end
-                                    if stats >= 60e6 then
-                                        if ldata.Allignment.Value == "Good" then
-                                            table.insert(moves, "Spirit Barrage")
-                                        else
-                                            table.insert(moves, "God Slicer")
-                                        end
-                                    end
-                                    for i,move in pairs(moves) do
-                                        if not lplr.Status:FindFirstChild(move) then
-                                            spawn(function()
-                                            loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-                                                game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(move,"Blacknwhite27")
-                                            end)
-                                            attacked = true
-                                        end
-                                    end
-                                    local args = {
-                                        [1] = "Energy Volley",
-                                        [2] = {
-                                            ["MouseHit"] = CFrame.new(6905.29883, 4005.75342, -6207.93164, 0,0,0, -7.45058149e-09, 0.984732807, -0.174073309, 0.772913337, 0.110451572, 0.624824405),
-                                            ["FaceMouse"] = true
-                                        },
-                                        [3] = "Blacknwhite27"
-                                    }
-                                    if getloweststat() > 10000 and canvolley then
-                                        canvolley = false
-                                        game.ReplicatedStorage.Package.Events.voleys:InvokeServer(unpack(args))
-                                        attacked = true
-                                        spawn(function()
-                                            wait(5)
-                                            canvolley = true
-                                        end)
-                                    end
-                                    if not attacked then
-                                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",1)
-                                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",2)
-                                    end
-                                else
-                                    game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",1)
-                                    game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",2)
-                                end
-                                CanAttack = true
-	                        end)
-	                    end
-                    elseif table.find(mobs,Boss.Name) then
-                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",1)
-                        game:GetService("ReplicatedStorage").Package.Events.p:FireServer("Blacknwhite27",2)
-	               	end
+        end
+    end
+end
+
+local function onCharacterAdded(character)
+    -- Conectar eventos de cambio relevantes para actualizar dinÃ¡micamente
+    character:WaitForChild("Humanoid").Died:Connect(function()
+        updateNumbers()  -- Actualizar nÃºmeros cuando el jugador muere
+    end)
+
+    -- Ejemplo de escucha de cambio en una propiedad especÃ­fica
+    local statsFrame = character:WaitForChild("PlayerGui"):WaitForChild("Main"):WaitForChild("MainFrame"):WaitForChild("Frames"):WaitForChild("Stats")
+    local strengthLabel = statsFrame:FindFirstChild("Strength")
+    if strengthLabel then
+        strengthLabel:GetPropertyChangedSignal("Text"):Connect(function()
+            updateNumbers()  -- Actualizar nÃºmeros cuando cambia la fuerza
+        end)
+    end
+end
+
+local function initialize()
+    local player = game.Players.LocalPlayer
+    local menuGui = Instance.new("ScreenGui")
+    menuGui.Name = "MenuGui"
+
+    local backgroundFrame = Instance.new("Frame")
+    backgroundFrame.Name = "Background"
+    backgroundFrame.Size = UDim2.new(0, 220, 0, 0)
+    backgroundFrame.Position = UDim2.new(0, 30, 0, 20)
+    backgroundFrame.BackgroundTransparency = 0.5
+    backgroundFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    backgroundFrame.BorderSizePixel = 0
+    backgroundFrame.Parent = menuGui
+
+    menuGui.Parent = game.CoreGui
+
+    -- Escuchar eventos de cambio de personaje
+    player.CharacterAdded:Connect(function(character)
+        onCharacterAdded(character)
+        updateNumbers()  -- Llamar a updateNumbers inicialmente para configurar la interfaz por primera vez
+    end)
+
+    player.CharacterRemoving:Connect(function()
+        updateNumbers()  -- Limpiar la interfaz al remover el personaje
+    end)
+
+    -- Llamar a updateNumbers regularmente para mantener actualizada la interfaz
+    game:GetService("RunService").Heartbeat:Connect(function()
+        updateNumbers()
+    end)
+end
+
+initialize()
+        wait() 
+end
+
+local function loop5()
+    while true do
+        if isLoop5Active then
+function rebirth()
+	game:GetService("ReplicatedStorage"):WaitForChild("Package"):WaitForChild("Events"):WaitForChild("reb"):InvokeServer()
+end
+rebirth() 
+        end
+    wait()
+    end
+end
+
+local function loop6()
+    while true do
+        if isLoop6Active then
+            pcall(function()game.ReplicatedStorage.BossMaps.Parent = game.Workspace.Others end)
+local bm = game.Workspace.Others:WaitForChild("BossMaps")-- or game.ReplicatedStorage:FindFirstChild("BossMaps")
+bm.Parent = game.ReplicatedStorage
+else
+pcall(function()
+    local bm = game.ReplicatedStorage:FindFirstChild("BossMaps")
+    if bm then
+        bm.Parent = game.Workspace.Others
+        print("BossMaps restaurado a Workspace.Others.")
+    else
+        warn("No se encontró BossMaps en ReplicatedStorage.")
+    end
+end)
+        end
+        wait()  
+    end
+end
+
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local events = ReplicatedStorage.Package.Events
+local player = game.Players.LocalPlayer
+
+local function performAttacks(target)
+    local attackNames = {
+        "High Power Rush",
+        "Mach Kick",
+        "Wolf Fang Fist",
+        "Super Dragon Fist",
+        "Spirit Barrage",
+        "God Slicer",
+        "Flash Kick",
+        "Spirit Breaking Cannon",
+        "Meteor Strike",
+        "Vanish Strike",
+        "Bone Charge",
+        "Uppercut",
+        "Sledgehammer",
+        "Vital Strike"
+    }
+
+    -- Crear un hilo separado para ejecutar ataques rápidamente
+    spawn(function()
+        for _, attackName in ipairs(attackNames) do
+            pcall(function()
+                events.mel:InvokeServer(attackName, target)
+            end)
+            task.wait(.1) -- Ajusta el tiempo de espera para la rapidez deseada entre ataques
+        end
+
+        -- Ejecución del evento adicional
+        pcall(function()
+        events.cha:InvokeServer(target)
+            events.cha:InvokeServer(target)
+        end)
+    end)
+end
+
+local function loop7()
+    while true do
+        if isLoop7Active then
+            spawn(function()
+                local success, err = pcall(function()
+                    -- Obtener el valor de la misión
+                    local questValue = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId):WaitForChild("Quest").Value
+                    
+                    -- Verificar si el jugador está en una misión
+                    if questValue == "" then
+                        
+                        
+                        return
+                    end
+
+                    -- Realizar ataques
+                    local target = "Blacknwhite27"
+                    performAttacks(target)
+
+                    -- Bloquear al jugador
+                    local args = { [1] = true }
+                    ReplicatedStorage.Package.Events.block:InvokeServer(unpack(args))
+                    player.Status.Blocking.Value = true
+
+                    -- Enviar un ataque final
+                    pcall(function()
+                    events.cha:InvokeServer(target)
+                    events.p:FireServer(target, 1)
+                    events.cha:InvokeServer(target)
+                    events.p:FireServer(target, 1)
+                    events.cha:InvokeServer(target)
+                        events.p:FireServer(target, 1)
+                        events.voleys:InvokeServer("Energy Volley", { FaceMouse = false, MouseHit = CFrame.new() }, target)
+                    end)
                 end)
+
+                -- Manejo de errores
+                if not success then
+                    
+                end
             end)
         end
-        task.wait()
+        task.wait(.2) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
+    end
+end
+
+-- Bucle para manejo de muerte y otros eventos
+spawn(function()
+    while true do
+        pcall(function()
+            spawn(function()
+                repeat
+                    local success1, err1 = pcall(function()
+                        task.wait(.2) -- Aumentar la espera para verificar menos frecuentemente
+                        deadcheck(false)
+                    end)
+                until not success1 or err1
+
+                -- Manejo de errores
+                if not success1 then
+                   
+                end
+
+                task.wait(.2) -- Aumentar la espera entre iteraciones para reducir la carga
+            end)
+        end)
+        task.wait(.2) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
     end
 end)
 
-task.spawn(function() -- Pick quest
-    while ScGui and getloweststat() < checkplr()[3] do
-        if Farming then
-            transform()
-            --while not CanAttack do wait() end
-            if ldata.Quest.Value == "" or not Boss then
-                for i,boss in pairs(bosses) do
-                    if ldata.Rebirth.Value >= 2000 and boss[1] == "Mapa" then
-                        boss[2] = 0
-                    end
-                    if getloweststat()/2 >= boss[2] and game.Workspace.Living:FindFirstChild(boss[1]) and game.Workspace.Living[boss[1]]:FindFirstChild("Humanoid") and game.Workspace.Living[boss[1]].Humanoid.Health > 0 then
-                        if ldata.Quest.Value ~= boss[1] then
-                            pcall(function()
-                            loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-                                game:GetService("ReplicatedStorage").Package.Events.Qaction:InvokeServer(questNPCs[boss[1]])
-                            end)
-                        end
-                        if ldata.Quest.Value == boss[1] then
-                            Boss = game.Workspace.Living[boss[1]]
-                            if CanAttack ~= false then -- Sets if it's not nil                            
-                                CanAttack = true
-                            end
-                        else
-                            task.wait(.05)
-                            Boss = nil
-                        end
-                        task.wait(.1)
-                        break 
-                    end
-                end
-            elseif game.Workspace.Living:FindFirstChild(ldata.Quest.Value) then
-                Boss = game.Workspace.Living[ldata.Quest.Value]
-            else ldata.Quest.Value = ""
-                wait(.1)
-            end
+-- Bucle para manejo de spam
+spawn(function()
+    while true do
+        local spam = 0
+        repeat
+            local success, err = pcall(function()
+                spam = spam + 1
+                task.wait(.1) -- Aumentar la espera entre iteraciones para reducir la frecuencia del spam
+            end)
+        until spam == 13 or not success
+
+        -- Manejo de errores
+        if not success then
+           
         end
-        task.wait()
+
+        task.wait(.1) -- Aumentar la espera entre iteraciones principales para reducir la frecuencia de ejecución
     end
 end)
+
+local function loop8()
+    while true do
+        if isLoop8Active then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+     end
+        task.wait()
+    end
+end
+
+switchButton1.MouseButton1Click:Connect(function()
+    isLoop1Active = not isLoop1Active
+    toggleSwitch(isLoop1Active, switchBall1)
+    SaveSwitchState(isLoop1Active, "Switch1")
+end)
+
+switchButton2.MouseButton1Click:Connect(function()
+    isLoop2Active = not isLoop2Active
+    toggleSwitch(isLoop2Active, switchBall2)
+    SaveSwitchState(isLoop2Active, "Switch2")
+end)
+
+switchButton3.MouseButton1Click:Connect(function()
+    isLoop3Active = not isLoop3Active
+    toggleSwitch(isLoop3Active, switchBall3)
+    SaveSwitchState(isLoop3Active, "Switch3")
+end)
+
+switchButton4.MouseButton1Click:Connect(function()
+    isLoop4Active = not isLoop4Active
+    toggleSwitch(isLoop4Active, switchBall4)
+    SaveSwitchState(isLoop4Active, "Switch4")
+end)
+
+switchButton5.MouseButton1Click:Connect(function()
+    isLoop5Active = not isLoop5Active
+    toggleSwitch(isLoop5Active, switchBall5)
+    SaveSwitchState(isLoop5Active, "Switch5")
+end)
+
+switchButton6.MouseButton1Click:Connect(function()
+    isLoop6Active = not isLoop6Active
+    toggleSwitch(isLoop6Active, switchBall6)
+    SaveSwitchState(isLoop6Active, "Switch6")
+end)
+
+switchButton7.MouseButton1Click:Connect(function()
+    isLoop7Active = not isLoop7Active
+    toggleSwitch(isLoop7Active, switchBall7)
+    SaveSwitchState(isLoop7Active, "Switch7")
+end)
+
+switchButton8.MouseButton1Click:Connect(function()
+    isLoop8Active = not isLoop8Active
+    toggleSwitch(isLoop8Active, switchBall8)
+    SaveSwitchState(isLoop8Active, "Switch8")
+end)
+
+toggleSwitch(isLoop1Active, switchBall1)
+toggleSwitch(isLoop2Active, switchBall2)
+toggleSwitch(isLoop3Active, switchBall3)
+toggleSwitch(isLoop4Active, switchBall4)
+toggleSwitch(isLoop5Active, switchBall5)
+toggleSwitch(isLoop6Active, switchBall6)
+toggleSwitch(isLoop7Active, switchBall7)
+toggleSwitch(isLoop8Active, switchBall8)
+
+coroutine.wrap(loop1)()
+coroutine.wrap(loop2)()
+coroutine.wrap(loop3)()
+coroutine.wrap(loop4)()
+coroutine.wrap(loop5)()
+coroutine.wrap(loop6)()
+coroutine.wrap(loop7)()
+coroutine.wrap(loop8)()
+end
+
+initSwitches(MenuPanel)
+            MainButton.MouseButton1Click:Connect(togglePanel)
+earthButton.MouseButton1Click:Connect(function()
+  game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
+end)
+
+billsButton.MouseButton1Click:Connect(function()
+game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
+end)
+
+farmButton.MouseButton1Click:Connect(onFarmButtonClick)
+formsButton.MouseButton1Click:Connect(onFormsButtonClick)
+
+
+local function Cal()
+-- Variables para el cálculo de FPS
+local frameCount = 0
+local lastUpdate = tick()
+-- Función para actualizar 
+local function updateFPS()
+    frameCount = frameCount + 1
+    local currentTime = tick()
+    if currentTime - lastUpdate >= 1 then
+        local fps = frameCount / (currentTime - lastUpdate)
+        fpsTextLabel.Text = "FPS: " .. math.floor(fps)
+        frameCount = 0
+        lastUpdate = currentTime
+    end
+end
+
+
+    while true do
+    updatePing()
+    updateFPS()
+    task.wait() 
+end
+end
+
+Cal()
+showPlayerThumbnail()
+        
+        
+         
