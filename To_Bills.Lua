@@ -1,3 +1,7 @@
+-- Cargar el contenido externo al inicio
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua"))()
+
+-- Definición de funciones y variables
 local cloneref = cloneref or function(o) return o end
 Players = cloneref(game:GetService("Players"))
 HttpService = cloneref(game:GetService("HttpService"))
@@ -135,11 +139,6 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         TeleportCheck = false
         queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()")
     end
+    wait(3)
 end)
 
-task.spawn(function()
-    local success, latestVersionInfo = pcall(function() 
-        local versionJson = game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua')
-        return HttpService:JSONDecode(versionJson)
-    end)
-end)
