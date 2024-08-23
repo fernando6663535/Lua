@@ -556,8 +556,13 @@ for i,v in pairs(rainbowUIs) do
     if stroke then
         spawn(function()
             while ScGui do
-                game:GetService("TweenService"):Create(stroke, TweenInfo.new(.5), {Color = c}):Play()
-                wait(.5)
+            local s, e = pcall(function()
+game:GetService("TweenService"):Create(stroke, TweenInfo.new(.5), {Color = c}):Play()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+end)
+if not s then warn(e) end
+                
+                wait(5)
             end
         end)
     end
@@ -1155,21 +1160,13 @@ task.spawn(function() -- Rebirth, teleport earth/bills
             end
             if getloweststat() >= 150e6 and ldata.Zeni.Value >= 15000 and planet == "Earth" then
                 infotxt.Text = "TP BILLS"
-                local s, e = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")
-end)
-if not s then warn(e) end
+    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Vills Planet")    
                 wait(5)
             end
             -- If just rebirthed and in Beerus go to Earth
             if getloweststat() < 50e6 and planet == "Bills" then
-                infotxt.Text = "TP EARTH"
-                local s, e = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Earth")
-end)
-if not s then warn(e) end
+                infotxt.Text = "TP EA))()
+    game.ReplicatedStorage.Package.Events.TP:InvokeServer("Ear end
                 wait(5)
             end
         end
@@ -1288,7 +1285,7 @@ task.spawn(function() -- Move/Attack
                                         if not lplr.Status:FindFirstChild(move) then
                                             spawn(function()
                                                 game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(move,"Blacknwhite27")
-                                                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+                                        ))()
                                             end)
                                             attacked = true
                                         end
