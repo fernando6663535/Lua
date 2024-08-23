@@ -139,6 +139,6 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         TeleportCheck = false
         queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()")
     end
-    wait(3)
+    wait(5)
 end)
 
