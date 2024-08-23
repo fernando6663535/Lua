@@ -1,5 +1,3 @@
--- Cargar el contenido externo al inicio
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua"))()
 
 -- Definición de funciones y variables
 local cloneref = cloneref or function(o) return o end
