@@ -134,8 +134,10 @@ saves()
 local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if KeepInfYield and not TeleportCheck and queueteleport then
-        task.wait(5) -- Esperar 5 segundos antes de ejecutar el script en el nuevo servidor
         TeleportCheck = false
-        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()")
+        queueteleport([[
+            task.wait(3.5)
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
+        ]])
     end
 end)
