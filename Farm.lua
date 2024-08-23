@@ -2710,7 +2710,7 @@ local function loop8()
         if isLoop8Active then
         loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
      end
-        task.wait()
+        task.wait(3)
     end
 end
 
