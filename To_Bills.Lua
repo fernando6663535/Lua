@@ -1,13 +1,3 @@
--- Función para ejecutar el loadstring una sola vez
-local function executeOnce()
-    local executed = false  -- Variable para asegurarse de que solo se ejecute una vez
-    return function()
-        if not executed then
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua"))()
-            executed = true  -- Marcar como ejecutado
-        end
-    end
-end
 
 -- Ejecutar la función
 local runOnce = executeOnce()
@@ -6284,7 +6274,7 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         TeleportCheck = false
         queueteleport([[
             task.wait(4.3)
-            loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Frm.lua'))()
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
         ]])
     end
 end)
@@ -12557,7 +12547,7 @@ IYMouse.Move:Connect(checkTT)
 
 task.spawn(function()
 	local success, latestVersionInfo = pcall(function() 
-		local versionJson = game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/arm.lua')
+		local versionJson = game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua')
 		return HttpService:JSONDecode(versionJson)
 	end)
 
