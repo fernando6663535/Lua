@@ -1,3 +1,5 @@
+
+
 local MenuPanel = game.CoreGui:FindFirstChild("Fernando")
 if MenuPanel then
     return  
@@ -680,7 +682,7 @@ fpsTextLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 fpsTextLabel.Text = "Fps:"
 fpsTextLabel.Parent = MenuPanel
 
-
+wait(4)
 
 
 
