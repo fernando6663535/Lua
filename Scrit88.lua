@@ -1,5 +1,5 @@
-
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
+                
 local testers = {""}
 
 --[[getgenv().Stats = {-- Name, Rebcap, Statcap, Play Solo ONLY?
@@ -921,7 +921,7 @@ local function transform()
                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
             end)
-            task.wait()
+            task.wait(.5)
         end
         return
     end
@@ -961,7 +961,7 @@ local function transform()
                             pcall(function()
                                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                             end)
-                            task.wait(.1)
+                            task.wait(0.01)
                         end
                         while FindChar().HumanoidRootPart.Anchored == true do wait() end
                         CanAttack = true
@@ -981,7 +981,7 @@ local function transform()
                         pcall(function()
                             game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                         end)
-                        task.wait(.1)
+                        task.wait(0.01)
                     end
                     while FindChar().HumanoidRootPart.Anchored == true do wait() end
                     CanAttack = true
@@ -1000,7 +1000,7 @@ local function transform()
                         pcall(function()
                             game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                         end)
-                        task.wait(.1)
+                        task.wait(.01)
                     end
                     while FindChar().HumanoidRootPart.Anchored == true do wait() end
                     CanAttack = true
@@ -1020,7 +1020,7 @@ local function transform()
                             pcall(function()
                                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                             end)
-                            task.wait(.1)
+                            task.wait(0.01)
                         end
                         while FindChar().HumanoidRootPart.Anchored == true do wait() end
                         CanAttack = true
@@ -1261,7 +1261,7 @@ task.spawn(function() -- Move/Attack
 	                    if CanAttack and not Stacking then
 	                        CanAttack = false
 	                        task.spawn(function()
-	                            task.wait(.1) -- Wait for the char to tp back in
+	                            task.wait(.01) -- Wait for the char to tp back in
                                 if getloweststat() >= 40000 and ldata.Quest.Value ~= "" and not lplr.Status:FindFirstChild("Invincible") then
                                     Forms.Text = "ATTACKING "..Boss.Name
                                     local thrp = Boss:WaitForChild("HumanoidRootPart",1)
@@ -1363,14 +1363,14 @@ task.spawn(function() -- Pick quest
                             task.wait(.05)
                             Boss = nil
                         end
-                        task.wait(.1)
+                        task.wait(.01)
                         break 
                     end
                 end
             elseif game.Workspace.Living:FindFirstChild(ldata.Quest.Value) then
                 Boss = game.Workspace.Living[ldata.Quest.Value]
             else ldata.Quest.Value = ""
-                wait(.1)
+                wait(.01)
             end
         end
         task.wait()
