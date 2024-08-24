@@ -6266,9 +6266,13 @@ Close_4.MouseButton1Click:Connect(function()
 end)
 
 local TeleportCheck = false
+local executedOnce = false  -- Variable para rastrear si el código ya ha sido ejecutado
+
 Players.LocalPlayer.OnTeleport:Connect(function(State)
-    if KeepInfYield and not TeleportCheck and queueteleport then
-        TeleportCheck = false
+    if KeepInfYield and not TeleportCheck and queueteleport and not executedOnce then
+        TeleportCheck = true  -- Cambiar a true para prevenir múltiples ejecuciones simultáneas
+        executedOnce = true  -- Marcar como ejecutado para evitar futuras ejecuciones
+
         queueteleport([[
             task.wait(4.3)
             loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
