@@ -133,7 +133,9 @@ local TeleportCheck = false
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if KeepInfYield and not TeleportCheck and queueteleport then
         TeleportCheck = false
-        queueteleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()")
+        queueteleport([[
+            task.wait(4)
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
+        ]])
     end
 end)
-
