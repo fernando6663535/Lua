@@ -1,7 +1,4 @@
 
--- Ejecutar la función
-local runOnce = executeOnce()
-runOnce()  -- Esto ejecuta el loadstring una sola vez
 if IY_LOADED and not _G.IY_DEBUG == true then
     -- error("Infinite Yield is already running!", 0)
     return
