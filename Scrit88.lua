@@ -919,7 +919,6 @@ local function transform()
             if lplr.Status.Transformation.Value == useform then return end
             pcall(function()
                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
             end)
             task.wait(.5)
         end
@@ -937,8 +936,7 @@ local function transform()
                         game:GetService("ReplicatedStorage").Package.Events.equipskill:InvokeServer(form[3])
                     end
                     CanAttack = false
-                    pcall(function()
-                                    loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Frees2.lua"))()
+                    pcall(function()                                  
                         game.ReplicatedStorage.Package.Events.ta:InvokeServer()
                     end)
                     while FindChar().HumanoidRootPart.Anchored == true do wait() end
