@@ -535,7 +535,7 @@ formmastery.brand_Stroke:Destroy()
 
 addstroke(destroygui, Color3.new(1,0,0), "Border", 2)
 
-wait(3.2)
+wait(2.7)
 
 
 local c = Color3.new(1,0,1)
