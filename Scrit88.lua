@@ -535,7 +535,7 @@ formmastery.brand_Stroke:Destroy()
 
 addstroke(destroygui, Color3.new(1,0,0), "Border", 2)
 
-wait(3.6)
+wait(3.2)
 
 
 local c = Color3.new(1,0,1)
@@ -920,7 +920,7 @@ local function transform()
             pcall(function()
                 game.ReplicatedStorage.Package.Events.ta:InvokeServer()
             end)
-            task.wait(.5)
+            task.wait(.01)
         end
         return
     end
