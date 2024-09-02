@@ -138,7 +138,7 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         executedOnce = true  -- Marcar como ejecutado para evitar futuras ejecuciones
 
         queueteleport([[
-            task.wait(4.4)
+            task.wait(0.6)
             loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
         ]])
     end
