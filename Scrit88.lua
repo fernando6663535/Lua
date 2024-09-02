@@ -1285,6 +1285,8 @@ task.spawn(function() -- Auto Charge
                 while _G.Key == r and ScGui and (not Stacking) and ((not Boss) or Ki.Value < 40 or Ki.Value < Ki.MaxValue/10) and lplr.Character.Humanoid.Health > 0 do
                     CanAttack = nil -- Only = nil if charging
                     game:GetService("ReplicatedStorage").Package.Events.cha:InvokeServer("Blacknwhite27")
+                    local args = {[1] = true}
+					game:GetService("ReplicatedStorage").Package.Events.block:InvokeServer(unpack(args))
                 end
                 if CanAttack == nil then
                     CanAttack = true
