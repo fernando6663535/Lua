@@ -1214,7 +1214,7 @@ if planet == "Bills" and lplr.Status.Transformation.Value == "None" and getlowes
             spawn(function()
                 game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
             end)
-            wait(1)
+            wait()
             transform()
             Stacking = false
         end)
@@ -1359,7 +1359,7 @@ task.spawn(function() -- Pick quest
                                 CanAttack = true
                             end
                         else
-                            task.wait(.05)
+                            task.wait(.01)
                             Boss = nil
                         end
                         task.wait(.01)
