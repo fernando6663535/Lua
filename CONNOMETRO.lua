@@ -5,9 +5,6 @@ local HttpService = game:GetService("HttpService")
 -- Ruta del archivo JSON en el entorno de desarrollo
 local FILE_PATH = "RebirthData.json"
 
--- URL del webhook de Discord
-local DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1280640915421008036/t1kYp4JocB6B5V9obHIiimani1D9Z_4EiTgYM6ZI6GwYh470mzJlKWLWrRlFkn_BK_iu"
-
 -- Crear el ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
@@ -69,29 +66,6 @@ local function animateTextColor()
         timerLabel.TextColor3 = colors[index]
         index = (index % #colors) + 1
         wait(1)  -- Cambiar el color cada segundo
-    end
-end
-
--- Función para enviar el tiempo de rebirth al webhook de Discord
-local function sendRebirthTimeToDiscord()
-    local rebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-    local elapsedTime = tick() - rebirthTime
-    local minutes = math.floor(elapsedTime / 60)
-    local seconds = math.floor(elapsedTime % 60)
-    local formattedTime = string.format("%d:%02d", minutes, seconds)
-
-    local data = {
-        content = "Tiempo de rebirth: " .. formattedTime
-    }
-    
-    local jsonData = HttpService:JSONEncode(data)
-    
-    local success, response = pcall(function()
-        HttpService:PostAsync(DISCORD_WEBHOOK_URL, jsonData, Enum.HttpContentType.ApplicationJson)
-    end)
-
-    if not success then
-        warn("Error al enviar datos al webhook de Discord: " .. response)
     end
 end
 
@@ -160,24 +134,21 @@ timerConnection = game:GetService("RunService").Stepped:Connect(function()
 
     -- Verificar si el valor de rebirth ha cambiado
     if currentRebirthValue > previousRebirthValue then
-        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
-        previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
-        sendRebirthTimeToDiscord()  -- Enviar el tiempo de rebirth al webhook de Discord
+        -- Si el valor de rebirth ha cambiado y el jugador está en el lugar objetivo
+        if isInTargetPlace() then
+            if not hasReinitialized then
+                ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
+                previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
+                hasReinitialized = true  -- Marcar que se ha reiniciado
+                saveRebirthData()  -- Guardar el tiempo y el rebirth
+            end
+        end
     end
 
-    -- Verificar si el jugador está en el lugar específico
-    if isInTargetPlace() then
-        if not hasReinitialized then
-            ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
-            previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
-            hasReinitialized = true  -- Marcar que se ha reiniciado
-        end
-    else
-        -- Si el jugador no está en el lugar, restablecer la bandera
+    -- Verificar si el jugador está fuera del lugar específico para restablecer la bandera
+    if not isInTargetPlace() then
         hasReinitialized = false
     end
-
-    saveRebirthData()  -- Guardar el tiempo y el rebirth cada segundo
 end)
 
 -- Iniciar la animación de color del texto
