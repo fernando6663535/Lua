@@ -5,6 +5,9 @@ local HttpService = game:GetService("HttpService")
 -- Ruta del archivo JSON en el entorno de desarrollo
 local FILE_PATH = "RebirthData.json"
 
+-- URL del webhook de Discord
+local DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1280640915421008036/t1kYp4JocB6B5V9obHIiimani1D9Z_4EiTgYM6ZI6GwYh470mzJlKWLWrRlFkn_BK_iu"
+
 -- Crear el ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
@@ -66,6 +69,29 @@ local function animateTextColor()
         timerLabel.TextColor3 = colors[index]
         index = (index % #colors) + 1
         wait(1)  -- Cambiar el color cada segundo
+    end
+end
+
+-- Función para enviar el tiempo de rebirth al webhook de Discord
+local function sendRebirthTimeToDiscord()
+    local rebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+    local elapsedTime = tick() - rebirthTime
+    local minutes = math.floor(elapsedTime / 60)
+    local seconds = math.floor(elapsedTime % 60)
+    local formattedTime = string.format("%d:%02d", minutes, seconds)
+
+    local data = {
+        content = "Tiempo de rebirth: " .. formattedTime
+    }
+    
+    local jsonData = HttpService:JSONEncode(data)
+    
+    local success, response = pcall(function()
+        HttpService:PostAsync(DISCORD_WEBHOOK_URL, jsonData, Enum.HttpContentType.ApplicationJson)
+    end)
+
+    if not success then
+        warn("Error al enviar datos al webhook de Discord: " .. response)
     end
 end
 
@@ -136,6 +162,7 @@ timerConnection = game:GetService("RunService").Stepped:Connect(function()
     if currentRebirthValue > previousRebirthValue then
         ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
         previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
+        sendRebirthTimeToDiscord()  -- Enviar el tiempo de rebirth al webhook de Discord
     end
 
     -- Verificar si el jugador está en el lugar específico
