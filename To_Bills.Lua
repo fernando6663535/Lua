@@ -128,31 +128,26 @@ function saves()
 end
 
 saves()
-
 local TeleportCheck = false
 local executedOnce = false  -- Variable para rastrear si el código ya ha sido ejecutado
-local targetPlaceId = 5151400895  -- ID del lugar con espera
-local immediatePlaceId = 3311165597  -- ID del lugar para ejecución inmediata
 
 Players.LocalPlayer.OnTeleport:Connect(function(State)
     if KeepInfYield and not TeleportCheck and queueteleport and not executedOnce then
         TeleportCheck = true  -- Cambiar a true para prevenir múltiples ejecuciones simultáneas
         executedOnce = true  -- Marcar como ejecutado para evitar futuras ejecuciones
-        
-        if game.PlaceId == targetPlaceId then
-            -- Esperar y luego ejecutar el script si el jugador está en el lugar con ID targetPlaceId
+
+        local currentPlaceId = game.PlaceId
+
+        if currentPlaceId == 5151400895 then
+            -- Esperar 0.6 segundos y luego ejecutar el script
             queueteleport([[
                 task.wait(0.6)
-                if game.PlaceId == ]] .. targetPlaceId .. [[ then
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
-                end
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
             ]])
-        elseif game.PlaceId == immediatePlaceId then
-            -- Ejecutar inmediatamente si el jugador está en el lugar con ID immediatePlaceId
+        elseif currentPlaceId == 3311165597 then
+            -- Ejecutar el script inmediatamente sin esperar
             queueteleport([[
-                if game.PlaceId == ]] .. immediatePlaceId .. [[ then
-                    loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
-                end
+                loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
             ]])
         end
     end
