@@ -1,4 +1,4 @@
-https://raw.githubusercontent.com/fernando6663535/Lua/main/Fer2.lua
+loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Fer2.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
              
 local player = game.Players.LocalPlayer
