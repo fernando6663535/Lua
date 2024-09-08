@@ -1,7 +1,6 @@
 local cloneref = cloneref or function(o) return o end
+COREGUI = cloneref(game:GetService("CoreGui"))
 Players = cloneref(game:GetService("Players"))
-HttpService = cloneref(game:GetService("HttpService"))
-
 Holder = Instance.new("Frame")
 Title = Instance.new("TextLabel")
 Plugins = Instance.new("TextLabel")
@@ -9,6 +8,13 @@ PluginsFrame = Instance.new("Frame")
 SaveChatlogs = Instance.new("TextButton")
 join = Instance.new("Frame")
 selectJoin = Instance.new("TextButton")
+
+shade1 = {}
+shade2 = {}
+shade3 = {}
+text1 = {}
+text2 = {}
+scroll = {}
 
 Plugins = Instance.new("TextButton")
 Plugins.Position = UDim2.new(0, 5, 0, 175)
@@ -25,11 +31,13 @@ join.ClipsDescendants = true
 join.Size = UDim2.new(0, 338, 0, 245)
 join.Visible = false
 join.ZIndex = 10
+table.insert(shade1, join)
 
 IYMouse = Players.LocalPlayer:GetMouse()
 PlayerGui = Players.LocalPlayer:FindFirstChildWhichIsA("PlayerGui")
 UserInputService = cloneref(game:GetService("UserInputService"))
 TweenService = cloneref(game:GetService("TweenService"))
+HttpService = cloneref(game:GetService("HttpService"))
 MarketplaceService = cloneref(game:GetService("MarketplaceService"))
 RunService = cloneref(game:GetService("RunService"))
 TeleportService = cloneref(game:GetService("TeleportService"))
@@ -60,7 +68,9 @@ function readfileExploit()
 end
 
 function isNumber(str)
-    return tonumber(str) ~= nil or str == 'inf'
+    if tonumber(str) ~= nil or str == 'inf' then
+        return true
+    end
 end
 
 AllWaypoints = {}
@@ -74,6 +84,8 @@ eventEditor = (function()
             sets = sets or {}
         }
     end
+
+    local onEdited = nil
 
     local function saveData()
         local result = {}
@@ -98,6 +110,7 @@ eventEditor = (function()
     }
 end)()
 
+local loadedEventData = nil
 local jsonAttempts = 0
 function saves()
     if writefileExploit() and readfileExploit() and jsonAttempts < 10 then
@@ -128,6 +141,7 @@ function saves()
 end
 
 saves()
+
 local TeleportCheck = false
 local executedOnce = false  -- Variable para rastrear si el código ya ha sido ejecutado
 
@@ -136,19 +150,9 @@ Players.LocalPlayer.OnTeleport:Connect(function(State)
         TeleportCheck = true  -- Cambiar a true para prevenir múltiples ejecuciones simultáneas
         executedOnce = true  -- Marcar como ejecutado para evitar futuras ejecuciones
 
-        local currentPlaceId = game.PlaceId
-
-        if currentPlaceId == 5151400895 then
-            -- Esperar 0.6 segundos y luego ejecutar el script
-            queueteleport([[
-                task.wait(0.6)
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
-            ]])
-        elseif currentPlaceId == 3311165597 then
-            -- Ejecutar el script inmediatamente sin esperar
-            queueteleport([[
-                loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
-            ]])
-        end
+        queueteleport([[
+            task.wait(0.3)
+            loadstring(game:HttpGet('https://raw.githubusercontent.com/fernando6663535/Lua/main/Farm.lua'))()
+        ]])
     end
 end)
