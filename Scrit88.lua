@@ -1,7 +1,8 @@
+local player = game.Players.LocalPlayer
+
+-- Ejecuta los scripts externos primero
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/Fer2.lua"))()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/fernando6663535/Lua/main/To_Bills.Lua"))()
-             
-local player = game.Players.LocalPlayer
 
 -- Verifica si el jugador está en el lugar con el ID especificado
 if game.PlaceId == 5151400895 then
