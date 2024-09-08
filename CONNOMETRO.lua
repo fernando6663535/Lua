@@ -134,21 +134,23 @@ timerConnection = game:GetService("RunService").Stepped:Connect(function()
 
     -- Verificar si el valor de rebirth ha cambiado
     if currentRebirthValue > previousRebirthValue then
-        -- Si el valor de rebirth ha cambiado y el jugador está en el lugar objetivo
-        if isInTargetPlace() then
-            if not hasReinitialized then
-                ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
-                previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
-                hasReinitialized = true  -- Marcar que se ha reiniciado
-                saveRebirthData()  -- Guardar el tiempo y el rebirth
-            end
-        end
+        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
+        previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
     end
 
-    -- Verificar si el jugador está fuera del lugar específico para restablecer la bandera
-    if not isInTargetPlace() then
+    -- Verificar si el jugador está en el lugar específico
+    if isInTargetPlace() then
+        if not hasReinitialized then
+            ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
+            previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
+            hasReinitialized = true  -- Marcar que se ha reiniciado
+        end
+    else
+        -- Si el jugador no está en el lugar, restablecer la bandera
         hasReinitialized = false
     end
+
+    saveRebirthData()  -- Guardar el tiempo y el rebirth cada segundo
 end)
 
 -- Iniciar la animación de color del texto
@@ -156,3 +158,5 @@ spawn(animateTextColor)
 
 -- Cargar el tiempo y el rebirth al unirse al juego
 loadRebirthData()
+
+
