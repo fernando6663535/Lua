@@ -13,10 +13,10 @@ if game.PlaceId == 5151400895 then
         game:GetService("ReplicatedStorage").Package.Events.ta:InvokeServer()
     end
     wait(.01)
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Fernanflop091o/PARA_AMIGOS-ASER-SCRITP/main/Fern.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Fernanflop091o/PARA_AMIGOS-ASER-SCRITP/main/Fern3.lua"))()
 else
     -- Si no está en el lugar especificado, ejecuta directamente el loadstring
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Fernanflop091o/PARA_AMIGOS-ASER-SCRITP/main/Fern.lua"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Fernanflop091o/PARA_AMIGOS-ASER-SCRITP/main/Fern3.lua"))()
 end
 
 
