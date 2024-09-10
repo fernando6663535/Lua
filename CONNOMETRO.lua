@@ -56,6 +56,7 @@ local lastSaveTime = tick()
 local lastLogResetTime = tick()
 local resetInterval = 17  -- Tiempo de espera en segundos
 local lastRecordedTime = "0:00"
+local targetPlaceId = 3311165597
 
 local function updateTimer()
     local lastRebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
@@ -132,7 +133,7 @@ local function clearLogData()
         local logData = fileContents:split("\n")
         local lastEntry = logData[#logData]
         
-        -- Write only the last entry to the file again después de limpiar
+        -- Write only the last entry to the file again after clearing
         writefile(LOG_FILE_PATH, lastEntry)
     end
 end
@@ -169,7 +170,7 @@ end
 
 local function isInTargetPlace()
     local placeId = game.PlaceId
-    return placeId == 3311165597
+    return placeId == targetPlaceId
 end
 
 local function saveRebirthOnce()
@@ -208,7 +209,6 @@ end)
 game:GetService("RunService").Stepped:Connect(function()
     local elapsedTime = updateTimer()
 
-    -- Guarda los datos del temporizador y log cada segundo
     if tick() - lastSaveTime >= 1 then
         if isInTargetPlace() then
             saveTimerData()
@@ -216,20 +216,33 @@ game:GetService("RunService").Stepped:Connect(function()
 
         -- Guarda los datos de log y limpia el archivo de log al reiniciar el contador
         if tick() - lastLogResetTime >= resetInterval then
-            -- Limpiar el archivo de log al reiniciar el contador
             clearLogData()
             lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
-            lastLogResetTime = tick()  -- Actualiza el tiempo del último reinicio
+            lastLogResetTime = tick()  -- Actualiza el tiempo de reinicio del log
         end
-        
-        -- Guardar el log actual
-        saveLogData(elapsedTime)
-        lastSaveTime = tick()  -- Actualiza el tiempo de la última guardada
     end
 end)
 
--- Carga los datos del rebirth cuando el script se inicia
-loadRebirthData()
+-- Guarda el tiempo actual y el último tiempo registrado
+local function onRebirthUpdate()
+    local elapsedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+    saveLogData(elapsedTime)
+    lastRecordedTime = timerLabel.Text
+end
 
--- Comienza la animación del texto
-spawn(animateTextColor)
+-- Controlador para eventos específicos en el juego
+local function onPlayerAdded(player)
+    player.CharacterAdded:Connect(onPlayerCharacterAdded)
+end
+
+-- Conexión de eventos del jugador
+Players.PlayerAdded:Connect(onPlayerAdded)
+
+-- Función de inicialización
+local function initialize()
+    loadRebirthData()
+    animateTextColor()  -- Lanza la animación del color del texto
+end
+
+-- Inicializa el script
+initialize()
