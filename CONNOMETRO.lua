@@ -2,48 +2,57 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local HttpService = game:GetService("HttpService")
 
--- Ruta del archivo JSON en el entorno de desarrollo
-local FILE_PATH = "RebirthData.json"
+local REBIRTH_FILE_PATH = "RebirthData.json"
+local TIME_FILE_PATH = "TimerData.json"
 
--- Crear el ScreenGui
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
-gui.Parent = game.CoreGui  -- Cambiado de PlayerGui a CoreGui
+gui.Parent = game.CoreGui
 
--- Crear el Frame de fondo
 local background = Instance.new("Frame")
 background.Name = "Background"
-background.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)  -- Posición especificada
-background.Size = UDim2.new(0, 300, 0, 100)  -- Tamaño ajustable
-background.BackgroundTransparency = 1  -- Fondo completamente transparente
+background.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)
+background.Size = UDim2.new(0, 500, 0, 100) -- Ajustado para dos cuadros
+background.BackgroundTransparency = 1
 background.BorderSizePixel = 0
 background.Parent = gui
 
--- Crear el TextLabel para el temporizador
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
-timerLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
+timerLabel.Position = UDim2.new(0.2, 0, 0.5, 0)
 timerLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-timerLabel.Size = UDim2.new(1, -20, 1, -10)  -- Tamaño ajustable para que se ajuste al marco
+timerLabel.Size = UDim2.new(0.4, -20, 1, -10)
 timerLabel.BackgroundTransparency = 1
 timerLabel.Font = Enum.Font.SourceSans
 timerLabel.TextSize = 48
-timerLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Inicialmente en rojo
+timerLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
 timerLabel.TextStrokeTransparency = 0
 timerLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 timerLabel.Text = "0:00"
 timerLabel.Parent = background
 
--- Crear un valor en ReplicatedStorage para guardar el tiempo del rebirth
+local lastTimeLabel = Instance.new("TextLabel")
+lastTimeLabel.Name = "LastTimeLabel"
+lastTimeLabel.Position = UDim2.new(0.8, 0, 0.5, 0)
+lastTimeLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+lastTimeLabel.Size = UDim2.new(0.4, -20, 1, -10)
+lastTimeLabel.BackgroundTransparency = 1
+lastTimeLabel.Font = Enum.Font.SourceSans
+lastTimeLabel.TextSize = 48
+lastTimeLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Color verde
+lastTimeLabel.TextStrokeTransparency = 0
+lastTimeLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+lastTimeLabel.Text = "Último: 0:00"
+lastTimeLabel.Parent = background
+
 local rebirthTimeValue = Instance.new("IntValue")
 rebirthTimeValue.Name = "RebirthTimeValue"
 rebirthTimeValue.Parent = ReplicatedStorage
 
--- Variables para seguimiento
 local previousRebirthValue = 0
-local hasReinitialized = false  -- Bandera para verificar si ya se reinició
+local lastSavedTime = 0
+local rebirthDataSaved = false
 
--- Función para actualizar el temporizador
 local function updateTimer()
     local lastRebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
     local elapsedTime = tick() - lastRebirthTime
@@ -52,24 +61,22 @@ local function updateTimer()
     timerLabel.Text = string.format("%d:%02d", minutes, seconds)
 end
 
--- Función para animar el color del texto
 local function animateTextColor()
     local colors = {
-        Color3.fromRGB(255, 0, 0),    -- Rojo
-        Color3.fromRGB(0, 255, 0),    -- Verde
-        Color3.fromRGB(0, 0, 255),    -- Azul
-        Color3.fromRGB(255, 255, 0),  -- Amarillo
-        Color3.fromRGB(255, 165, 0)   -- Naranja
+        Color3.fromRGB(255, 0, 0),
+        Color3.fromRGB(0, 255, 0),
+        Color3.fromRGB(0, 0, 255),
+        Color3.fromRGB(255, 255, 0),
+        Color3.fromRGB(255, 165, 0)
     }
     local index = 1
     while true do
         timerLabel.TextColor3 = colors[index]
         index = (index % #colors) + 1
-        wait(1)  -- Cambiar el color cada segundo
+        wait(1)
     end
 end
 
--- Función para guardar el tiempo y el rebirth en un archivo JSON
 local function saveRebirthData()
     local rebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
     local player = Players.LocalPlayer
@@ -81,13 +88,21 @@ local function saveRebirthData()
         PlayerRebirth = rebirthValue
     }
     local jsonData = HttpService:JSONEncode(rebirthInfo)
-    writefile(FILE_PATH, jsonData)
+    writefile(REBIRTH_FILE_PATH, jsonData)
 end
 
--- Función para cargar el tiempo y el rebirth desde un archivo JSON
+local function saveTimerData()
+    local elapsedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+    local timerInfo = {
+        ElapsedTime = elapsedTime
+    }
+    local jsonData = HttpService:JSONEncode(timerInfo)
+    writefile(TIME_FILE_PATH, jsonData)
+end
+
 local function loadRebirthData()
-    if isfile(FILE_PATH) then
-        local fileContents = readfile(FILE_PATH)
+    if isfile(REBIRTH_FILE_PATH) then
+        local fileContents = readfile(REBIRTH_FILE_PATH)
         if fileContents then
             local rebirthData = HttpService:JSONDecode(fileContents)
             if rebirthData then
@@ -105,7 +120,6 @@ local function loadRebirthData()
             end
         end
     else
-        -- Si no se encuentra el archivo, establecer los valores predeterminados
         ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
         local player = Players.LocalPlayer
         local playerStats = player.Character and player.Character:FindFirstChild("Stats")
@@ -116,47 +130,41 @@ local function loadRebirthData()
     end
 end
 
--- Función para verificar si el jugador está en el lugar específico
-local function isInTargetPlace()
-    local placeId = game.PlaceId
-    return placeId == 3311165597
+local function isInTargetPlace(targetPlaceId)
+    return game.PlaceId == targetPlaceId
 end
 
--- Actualizar el temporizador cada segundo
-local timerConnection
-timerConnection = game:GetService("RunService").Stepped:Connect(function()
-    updateTimer()
+local function saveRebirthOnce()
+    if not rebirthDataSaved then
+        saveRebirthData()
+        rebirthDataSaved = true
+    end
+end
 
-    -- Obtener el valor actual de rebirth
+local function checkRebirthChange()
     local player = Players.LocalPlayer
     local playerStats = player.Character and player.Character:FindFirstChild("Stats")
     local currentRebirthValue = playerStats and playerStats:FindFirstChild("Rebirth") and playerStats.Rebirth.Value or 0
 
-    -- Verificar si el valor de rebirth ha cambiado
     if currentRebirthValue > previousRebirthValue then
-        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
-        previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
+        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
+        lastSavedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+        local minutes = math.floor(lastSavedTime / 60)
+        local seconds = math.floor(lastSavedTime % 60)
+        lastTimeLabel.Text = string.format("Último: %d:%02d", minutes, seconds)
+        previousRebirthValue = currentRebirthValue
+        saveRebirthOnce()
     end
+end
 
-    -- Verificar si el jugador está en el lugar específico
-    if isInTargetPlace() then
-        if not hasReinitialized then
-            ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()  -- Reiniciar el temporizador
-            previousRebirthValue = currentRebirthValue  -- Actualizar el valor de rebirth anterior
-            hasReinitialized = true  -- Marcar que se ha reiniciado
-        end
-    else
-        -- Si el jugador no está en el lugar, restablecer la bandera
-        hasReinitialized = false
+game:GetService("RunService").Stepped:Connect(function()
+    updateTimer()
+    checkRebirthChange()
+
+    if isInTargetPlace(3311165597) then
+        saveTimerData()
     end
-
-    saveRebirthData()  -- Guardar el tiempo y el rebirth cada segundo
 end)
 
--- Iniciar la animación de color del texto
 spawn(animateTextColor)
-
--- Cargar el tiempo y el rebirth al unirse al juego
 loadRebirthData()
-
-
