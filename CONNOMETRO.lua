@@ -12,7 +12,7 @@ gui.Parent = game.CoreGui
 local background = Instance.new("Frame")
 background.Name = "Background"
 background.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)
-background.Size = UDim2.new(0, 500, 0, 100) -- Ajustado para dos cuadros
+background.Size = UDim2.new(0, 500, 0, 100)
 background.BackgroundTransparency = 1
 background.BorderSizePixel = 0
 background.Parent = gui
@@ -39,7 +39,7 @@ lastTimeLabel.Size = UDim2.new(0.4, -20, 1, -10)
 lastTimeLabel.BackgroundTransparency = 1
 lastTimeLabel.Font = Enum.Font.SourceSans
 lastTimeLabel.TextSize = 48
-lastTimeLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Color verde
+lastTimeLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
 lastTimeLabel.TextStrokeTransparency = 0
 lastTimeLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 lastTimeLabel.Text = "Último: 0:00"
@@ -93,11 +93,13 @@ end
 
 local function saveTimerData()
     local elapsedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-    local timerInfo = {
-        ElapsedTime = elapsedTime
-    }
-    local jsonData = HttpService:JSONEncode(timerInfo)
-    writefile(TIME_FILE_PATH, jsonData)
+    if elapsedTime >= 10 then  -- Guardar solo si han pasado 10 segundos o más
+        local timerInfo = {
+            ElapsedTime = elapsedTime
+        }
+        local jsonData = HttpService:JSONEncode(timerInfo)
+        writefile(TIME_FILE_PATH, jsonData)
+    end
 end
 
 local function loadRebirthData()
