@@ -4,7 +4,6 @@ local HttpService = game:GetService("HttpService")
 
 local REBIRTH_FILE_PATH = "RebirthData.json"
 local TIME_FILE_PATH = "TimerData.json"
-local INTERVAL_FILE_PATH = "IntervalData.json"
 local LOG_FILE_PATH = "LogData.txt"
 
 local gui = Instance.new("ScreenGui")
@@ -23,7 +22,7 @@ local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Position = UDim2.new(0.5, 0, 0.3, 0)
 timerLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-timerLabel.Size = UDim2.new(1, -20, 1, -10)
+timerLabel.Size = UDim2.new(1, -20, 0.4, -10)
 timerLabel.BackgroundTransparency = 1
 timerLabel.Font = Enum.Font.SourceSans
 timerLabel.TextSize = 48
@@ -37,11 +36,11 @@ local lastLogLabel = Instance.new("TextLabel")
 lastLogLabel.Name = "LastLogLabel"
 lastLogLabel.Position = UDim2.new(0.5, 0, 0.7, 0)
 lastLogLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-lastLogLabel.Size = UDim2.new(1, -20, 0, 30)
+lastLogLabel.Size = UDim2.new(1, -20, 0.4, -10)
 lastLogLabel.BackgroundTransparency = 1
 lastLogLabel.Font = Enum.Font.SourceSans
-lastLogLabel.TextSize = 24
-lastLogLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+lastLogLabel.TextSize = 36
+lastLogLabel.TextColor3 = Color3.fromRGB(0, 255, 0)
 lastLogLabel.TextStrokeTransparency = 0
 lastLogLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 lastLogLabel.Text = "Último Tiempo: 0:00"
@@ -53,10 +52,10 @@ rebirthTimeValue.Parent = ReplicatedStorage
 
 local previousRebirthValue = 0
 local rebirthDataSaved = false
-local lastRecordedTime = "0:00"
 local lastSaveTime = tick()
-local lastResetTime = tick()
-local resetInterval = 17  -- Intervalo para reiniciar el registro en segundos
+local lastLogResetTime = tick()
+local resetInterval = 17  -- Tiempo de espera en segundos
+local lastRecordedTime = "0:00"
 
 local function updateTimer()
     local lastRebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
@@ -128,7 +127,13 @@ end
 
 local function clearLogData()
     if isfile(LOG_FILE_PATH) then
-        delfile(LOG_FILE_PATH)
+        -- Preserve the last entry until después de 17 segundos
+        local fileContents = readfile(LOG_FILE_PATH)
+        local logData = fileContents:split("\n")
+        local lastEntry = logData[#logData]
+        
+        -- Write only the last entry to the file again after clearing
+        writefile(LOG_FILE_PATH, lastEntry)
     end
 end
 
@@ -162,6 +167,18 @@ local function loadRebirthData()
     end
 end
 
+local function isInTargetPlace()
+    local placeId = game.PlaceId
+    return placeId == 3311165597
+end
+
+local function saveRebirthOnce()
+    if not rebirthDataSaved then
+        saveRebirthData()
+        rebirthDataSaved = true
+    end
+end
+
 local function checkRebirthChange()
     local player = Players.LocalPlayer
     local playerStats = player.Character and player.Character:FindFirstChild("Stats")
@@ -170,43 +187,54 @@ local function checkRebirthChange()
     if currentRebirthValue > previousRebirthValue then
         ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
         previousRebirthValue = currentRebirthValue
-        saveRebirthData()
-        lastResetTime = tick()  -- Marca el tiempo del último reinicio
+        saveRebirthOnce()
     end
 end
 
-local function handleLogReset()
-    local elapsedTime = tick() - lastResetTime
-    if elapsedTime >= resetInterval then
-        -- Borra el archivo de log solo después de 17 segundos del último reinicio
-        if isfile(LOG_FILE_PATH) then
-            delfile(LOG_FILE_PATH)
+local function onPlayerCharacterAdded(character)
+    local playerStats = character:FindFirstChild("Stats")
+    if playerStats then
+        local rebirth = playerStats:FindFirstChild("Rebirth")
+        if rebirth then
+            rebirth.Changed:Connect(checkRebirthChange)
         end
-        -- Actualiza el último tiempo registrado
-        if isfile(LOG_FILE_PATH) then
-            local fileContents = readfile(LOG_FILE_PATH)
-            local logData = fileContents:split("\n")
-            lastRecordedTime = logData[#logData] or "0:00"
-            lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
-        end
-        lastResetTime = tick()  -- Actualiza el tiempo del último reset
     end
 end
 
-local intervalTime = 1  -- Guardar cada segundo
-local lastIntervalSave = tick()
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(onPlayerCharacterAdded)
+end)
+
 
 game:GetService("RunService").Stepped:Connect(function()
     local elapsedTime = updateTimer()
-    checkRebirthChange()
 
-    if tick() - lastIntervalSave >= intervalTime then
-        saveTimerData()
-        lastIntervalSave = tick()
+    -- Guarda los datos del temporizador y log cada segundo
+    if tick() - lastSaveTime >= 1 then
+        if isInTargetPlace() then
+            saveTimerData()
+        end
+
+        -- Guarda los datos de log y limpia el archivo de log al reiniciar el contador
+        if tick() - lastLogResetTime >= resetInterval then
+            clearLogData()
+            lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
+            lastLogResetTime = tick()  -- Actualiza el tiempo del último reinicio
+        end
+
+        saveLogData(elapsedTime)
+        lastSaveTime = tick()
     end
-
-    handleLogReset()
 end)
 
+-- Carga los datos de renacimiento y de tiempo desde el archivo .txt
 spawn(animateTextColor)
 loadRebirthData()
+
+-- Inicializa el valor del último tiempo registrado antes de reiniciar
+if isfile(LOG_FILE_PATH) then
+    local fileContents = readfile(LOG_FILE_PATH)
+    local logData = fileContents:split("\n")
+    lastRecordedTime = logData[#logData] or "0:00"
+    lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
+end
