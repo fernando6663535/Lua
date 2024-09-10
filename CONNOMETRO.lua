@@ -51,6 +51,7 @@ rebirthTimeValue.Parent = ReplicatedStorage
 
 local previousRebirthValue = 0
 local lastSavedTime = 0
+local lastSavedTimeDisplay = "0:00"
 local rebirthDataSaved = false
 
 local function updateTimer()
@@ -83,22 +84,28 @@ local function saveRebirthData()
     local playerStats = player.Character and player.Character:FindFirstChild("Stats")
     local rebirthValue = playerStats and playerStats:FindFirstChild("Rebirth") and playerStats.Rebirth.Value or 0
 
-    local rebirthInfo = {
-        LastRebirthTime = rebirthTime,
-        PlayerRebirth = rebirthValue
-    }
-    local jsonData = HttpService:JSONEncode(rebirthInfo)
-    writefile(REBIRTH_FILE_PATH, jsonData)
+    if rebirthValue > 0 then
+        local rebirthInfo = {
+            LastRebirthTime = rebirthTime,
+            PlayerRebirth = rebirthValue
+        }
+        local jsonData = HttpService:JSONEncode(rebirthInfo)
+        writefile(REBIRTH_FILE_PATH, jsonData)
+        rebirthDataSaved = true
+    end
 end
 
 local function saveTimerData()
     local elapsedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-    if elapsedTime >= 10 then  -- Guardar solo si han pasado 10 segundos o más
+    if elapsedTime >= 10 then
         local timerInfo = {
             ElapsedTime = elapsedTime
         }
         local jsonData = HttpService:JSONEncode(timerInfo)
         writefile(TIME_FILE_PATH, jsonData)
+        local minutes = math.floor(elapsedTime / 60)
+        local seconds = math.floor(elapsedTime % 60)
+        lastSavedTimeDisplay = string.format("%d:%02d", minutes, seconds)
     end
 end
 
@@ -136,13 +143,6 @@ local function isInTargetPlace(targetPlaceId)
     return game.PlaceId == targetPlaceId
 end
 
-local function saveRebirthOnce()
-    if not rebirthDataSaved then
-        saveRebirthData()
-        rebirthDataSaved = true
-    end
-end
-
 local function checkRebirthChange()
     local player = Players.LocalPlayer
     local playerStats = player.Character and player.Character:FindFirstChild("Stats")
@@ -150,12 +150,15 @@ local function checkRebirthChange()
 
     if currentRebirthValue > previousRebirthValue then
         ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
-        lastSavedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-        local minutes = math.floor(lastSavedTime / 60)
-        local seconds = math.floor(lastSavedTime % 60)
-        lastTimeLabel.Text = string.format("Último: %d:%02d", minutes, seconds)
+        local elapsedTime = tick() - ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+        if elapsedTime >= 10 then
+            local minutes = math.floor(elapsedTime / 60)
+            local seconds = math.floor(elapsedTime % 60)
+            lastSavedTimeDisplay = string.format("%d:%02d", minutes, seconds)
+            lastTimeLabel.Text = "Último: " .. lastSavedTimeDisplay
+        end
         previousRebirthValue = currentRebirthValue
-        saveRebirthOnce()
+        saveRebirthData()
     end
 end
 
