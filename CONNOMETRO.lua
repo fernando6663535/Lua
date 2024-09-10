@@ -132,7 +132,7 @@ local function clearLogData()
         local logData = fileContents:split("\n")
         local lastEntry = logData[#logData]
         
-        -- Write only the last entry to the file again after clearing
+        -- Write only the last entry to the file again después de limpiar
         writefile(LOG_FILE_PATH, lastEntry)
     end
 end
@@ -205,7 +205,6 @@ Players.PlayerAdded:Connect(function(player)
     player.CharacterAdded:Connect(onPlayerCharacterAdded)
 end)
 
-
 game:GetService("RunService").Stepped:Connect(function()
     local elapsedTime = updateTimer()
 
@@ -217,24 +216,20 @@ game:GetService("RunService").Stepped:Connect(function()
 
         -- Guarda los datos de log y limpia el archivo de log al reiniciar el contador
         if tick() - lastLogResetTime >= resetInterval then
+            -- Limpiar el archivo de log al reiniciar el contador
             clearLogData()
             lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
             lastLogResetTime = tick()  -- Actualiza el tiempo del último reinicio
         end
-
+        
+        -- Guardar el log actual
         saveLogData(elapsedTime)
-        lastSaveTime = tick()
+        lastSaveTime = tick()  -- Actualiza el tiempo de la última guardada
     end
 end)
 
--- Carga los datos de renacimiento y de tiempo desde el archivo .txt
-spawn(animateTextColor)
+-- Carga los datos del rebirth cuando el script se inicia
 loadRebirthData()
 
--- Inicializa el valor del último tiempo registrado antes de reiniciar
-if isfile(LOG_FILE_PATH) then
-    local fileContents = readfile(LOG_FILE_PATH)
-    local logData = fileContents:split("\n")
-    lastRecordedTime = logData[#logData] or "0:00"
-    lastLogLabel.Text = "Último Tiempo: " .. lastRecordedTime
-end
+-- Comienza la animación del texto
+spawn(animateTextColor)
