@@ -455,7 +455,7 @@ local function updateRebirth()
             local currentRebirths = ldata.Rebirth.Value
             local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
             local strength = ldata.Strength.Value
-            rebirthLabel.Text = string.format("Req. Rebirth:\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
+            rebirthLabel.Text = string.format( \n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
         else
             warn("Error al actualizar el rebirth: ", ldata)
             rebirthLabel.Text = "Error"
@@ -472,7 +472,7 @@ local function updateStrength()
         if success then
             strengthLabel.Size = UDim2.new(0.8930841106, 0, 0.409148958, 0 )
             strengthLabel.Position = UDim2.new(0.0630841106, 0, 0.599148958, 0 )
-            strengthLabel.Text = "stats: " .. formatNumber(tonumber(strength) or 0)
+            strengthLabel.Text = "stat: " .. formatNumber(tonumber(strength) or 0)
         else
             warn("Error al actualizar la fuerza: ", strength)
             strengthLabel.Text = "Error"
