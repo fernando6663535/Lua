@@ -10,11 +10,16 @@ gui.Parent = game.CoreGui
 
 local background = Instance.new("Frame")
 background.Name = "Background"
-background.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)
-background.Size = UDim2.new(0, 300, 0, 100)
-background.BackgroundTransparency = 1
+background.Position = UDim2.new(0.0116822431 + 0.66, 0, 0.0248226952, 0)
+background.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
+background.BackgroundTransparency = 0.5
+background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 background.BorderSizePixel = 0
 background.Parent = gui
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(1, 0) -- Ajusta este valor para hacer los bordes más o menos redondeados
+uiCorner.Parent = background
 
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
