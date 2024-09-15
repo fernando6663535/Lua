@@ -520,7 +520,7 @@ local function updateMission(player)
             return getMission(player)
         end)
         if success then
-            missionLabel.Text = "Misión:\n" .. mission
+            missionLabel.Text = "M:\n" .. mission
         else
             warn("Error al actualizar la misión: ", mission)
             missionLabel.Text = "Error"
