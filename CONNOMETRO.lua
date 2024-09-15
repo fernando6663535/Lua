@@ -110,13 +110,13 @@ frameMission.Parent = guiMission
 
 
 missionLabel.Name = "MissionLabel"
-missionLabel.Size = UDim2.new(0.997561566, 0, 0.993726964, 0) 
-missionLabel.Position = UDim2.new(0, 5, 0, 5) 
+missionLabel.Size = UDim2.new(0.856261566, 0, 0.590026964, 0) 
+missionLabel.Position = UDim2.new(0.100061566, 0, 0.110026964, 0) 
 missionLabel.BackgroundTransparency = 1
 missionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 missionLabel.TextStrokeTransparency = 0
 missionLabel.Font = Enum.Font.SourceSans
-missionLabel.TextSize = 18
+missionLabel.TextSize = 9.9
 missionLabel.TextWrapped = true 
 missionLabel.TextXAlignment = Enum.TextXAlignment.Center 
 missionLabel.TextYAlignment = Enum.TextYAlignment.Center 
@@ -163,13 +163,13 @@ frameRebirth.Parent = guiRebirth
 
 
 rebirthLabel.Name = "RebirthLabel"
-rebirthLabel.Size = UDim2.new(1, -10, 0.8, -10)
-rebirthLabel.Position = UDim2.new(0, 5, 0, 5)
+rebirthLabel.Size = UDim2.new(0.856261566, 0, 0.790026964, 0)
+rebirthLabel.Position = UDim2.new(0.100061566, 0, 0.129026964, 0)
 rebirthLabel.BackgroundTransparency = 1
 rebirthLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 rebirthLabel.TextStrokeTransparency = 0
 rebirthLabel.Font = Enum.Font.SourceSans
-rebirthLabel.TextSize = 14
+rebirthLabel.TextSize = 17
 rebirthLabel.TextScaled = true
 rebirthLabel.TextWrapped = true
 rebirthLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -182,13 +182,13 @@ cornerRebirth.Parent = frameRebirth
 
 
 strengthLabel.Name = "StrengthLabel"
-strengthLabel.Size = UDim2.new(1, -10, 0.8, -10)
-strengthLabel.Position = UDim2.new(0, 5, 0.5, 5)
+strengthLabel.Size = UDim2.new(0.856261566, 0, 0.590026964, 0)
+strengthLabel.Position = UDim2.new(0.100061566, 0, 0.009026964, 0)
 strengthLabel.BackgroundTransparency = 1
 strengthLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 strengthLabel.TextStrokeTransparency = 0
 strengthLabel.Font = Enum.Font.SourceSans
-strengthLabel.TextSize = 14
+strengthLabel.TextSize = 17
 strengthLabel.TextScaled = true
 strengthLabel.TextWrapped = true
 strengthLabel.TextXAlignment = Enum.TextXAlignment.Center
@@ -410,7 +410,7 @@ end)
 
 local function updateRebirthDisplay()
     local success, errorMessage = pcall(function()
-        textLabel.Text = "Rebirths: " .. rebirthValue.Value
+        textLabel.Text = " " .. rebirthValue.Value
     end)
     
     if not success then
@@ -437,7 +437,7 @@ local function updateTransformation(player)
             return getTransformation(player)
         end)
         if success then
-            transformationLabel.Text = "For: " .. transformation
+            transformationLabel.Text = "" .. transformation
         else
             warn("Error al actualizar la transformación: ", transformation)
             transformationLabel.Text = "Error"
@@ -455,7 +455,7 @@ local function updateRebirth()
             local currentRebirths = ldata.Rebirth.Value
             local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
             local strength = ldata.Strength.Value
-            rebirthLabel.Text = string.format("R:\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
+            rebirthLabel.Text = string.format("\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
         else
             warn("Error al actualizar el rebirth: ", ldata)
             rebirthLabel.Text = "Error"
@@ -470,8 +470,6 @@ local function updateStrength()
             return getStrength()
         end)
         if success then
-            strengthLabel.Size = UDim2.new(0.8930841106, 0, 0.409148958, 0 )
-            strengthLabel.Position = UDim2.new(0.0630841106, 0, 0.599148958, 0 )
             strengthLabel.Text = "stat: " .. formatNumber(tonumber(strength) or 0)
         else
             warn("Error al actualizar la fuerza: ", strength)
@@ -520,7 +518,7 @@ local function updateMission(player)
             return getMission(player)
         end)
         if success then
-            missionLabel.Text = "M:\n" .. mission
+            missionLabel.Text = "\n" .. mission
         else
             warn("Error al actualizar la misión: ", mission)
             missionLabel.Text = "Error"
