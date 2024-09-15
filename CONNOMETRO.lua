@@ -455,7 +455,7 @@ local function updateRebirth()
             local currentRebirths = ldata.Rebirth.Value
             local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
             local strength = ldata.Strength.Value
-            rebirthLabel.Text = string.format("\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
+            rebirthLabel.Text = string.format("R:\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
         else
             warn("Error al actualizar el rebirth: ", ldata)
             rebirthLabel.Text = "Error"
