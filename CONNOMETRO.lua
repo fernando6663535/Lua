@@ -110,7 +110,7 @@ frameMission.Parent = guiMission
 
 
 missionLabel.Name = "MissionLabel"
-missionLabel.Size = UDim2.new(1, -10, 1, -10) 
+missionLabel.Size = UDim2.new(0.997561566, 0, 0.993726964, 0) 
 missionLabel.Position = UDim2.new(0, 5, 0, 5) 
 missionLabel.BackgroundTransparency = 1
 missionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
