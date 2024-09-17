@@ -1,293 +1,145 @@
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Stats = game:GetService("Stats")
-local RunService = game:GetService("RunService")
 local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local HttpService = game:GetService("HttpService")
+local RunService = game:GetService("RunService")
+local FILE_PATH = "RebirthData.json"
 local player = Players.LocalPlayer
-local frame = Instance.new("Frame")
-local pingLabel = Instance.new("TextLabel")
-local corner = Instance.new("UICorner")
-local frameMission = Instance.new("Frame")
-local cornerMission = Instance.new("UICorner")
-local missionLabel = Instance.new("TextLabel")
-local frameFPS = Instance.new("Frame")
-local cornerFPS = Instance.new("UICorner")
-local fpsLabel = Instance.new("TextLabel")
-local rebirthLabel = Instance.new("TextLabel")
-local cornerRebirth = Instance.new("UICorner")
-local strengthLabel = Instance.new("TextLabel")
-local frameTransformation = Instance.new("Frame")
-local cornerTransformation = Instance.new("UICorner")
-local transformationLabel = Instance.new("TextLabel")
-local frameR = Instance.new("Frame")
-local uiCorner = Instance.new("UICorner")
-local textLabel = Instance.new("TextLabel")
 
+local gui = Instance.new("ScreenGui")
+gui.Name = "DisplayGui"
+gui.Parent = game.CoreGui
 
 local function getNextRebirthPrice(currentRebirths)
     local basePrice = 3e6
     local additionalPrice = 2e6
-    local nextPrice = (currentRebirths + 1) * basePrice + additionalPrice
-    return nextPrice
+    return (currentRebirths + 1) * basePrice + additionalPrice
 end
 
 local function formatNumber(number)
     local suffixes = {"", "K", "M", "B", "T", "QD"}
     local suffix_index = 1
-
     while math.abs(number) >= 1000 and suffix_index < #suffixes do
         number = number / 1000.0
         suffix_index = suffix_index + 1
     end
-
     return string.format("%.2f%s", number, suffixes[suffix_index])
 end
 
-local function getStrength()
-    local player = Players.LocalPlayer
-    if player and player.Character and player.Character:FindFirstChild("Humanoid") and player.Character:FindFirstChild("HumanoidRootPart") then
-        local statsFolder = player.Character:FindFirstChild("Stats")
-        if statsFolder and statsFolder:FindFirstChild("Strength") then
-            return statsFolder.Strength.Value
-        end
+local function getPing()
+    local success, pingValue = pcall(function()
+        return game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
+    end)
+    return success and pingValue or "Error"
+end
+
+local function getMission()
+    local success, mission = pcall(function()
+        return ReplicatedStorage.Datas[player.UserId].Quest.Value
+    end)
+    return success and mission or "Error"
+end
+
+local function getAdditionalStrength()
+    local statsFolder = player.Character and player.Character:FindFirstChild("Stats")
+    if statsFolder and statsFolder:FindFirstChild("Strength") then
+        return statsFolder.Strength.Value
     end
-    return "Error"
+    return 0
 end
 
-
-local gui = Instance.new("ScreenGui")
-gui.Name = "PingDisplayGui"
-gui.Parent = game.CoreGui
-
-local guiMission = Instance.new("ScreenGui")
-guiMission.Name = "MissionDisplayGui"
-guiMission.Parent = game.CoreGui
-
-local guiFPS = Instance.new("ScreenGui")
-guiFPS.Name = "FPSDisplayGui"
-guiFPS.Parent = game.CoreGui
-
-local guiRebirth = Instance.new("ScreenGui")
-guiRebirth.Name = "RebirthDisplayGui"
-guiRebirth.Parent = game.CoreGui
-
-local guiTransformation = Instance.new("ScreenGui")
-guiTransformation.Name = "TransformationDisplayGui"
-guiTransformation.Parent = game.CoreGui
-
-local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "RebirthMenu"
-screenGui.Parent = game.CoreGui
-
-frame.Name = "PingFrame"
-frame.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frame.Position = UDim2.new(0.0116822431, 0, 0.0248226952, 0)
-frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frame.BackgroundTransparency = 0.5
-frame.Parent = gui
-
-
-pingLabel.Name = "PingLabel"
-pingLabel.Size = UDim2.new(1, 0, 1, 0)
-pingLabel.Position = UDim2.new(0, 0, 0, 0)
-pingLabel.BackgroundTransparency = 1
-pingLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-pingLabel.TextStrokeTransparency = 0
-pingLabel.Font = Enum.Font.SourceSans
-pingLabel.TextSize = 18
-pingLabel.Parent = frame
-
-corner.CornerRadius = UDim.new(1, 0)
-corner.Parent = frame
-
-
-frameMission.Name = "MissionFrame"
-frameMission.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frameMission.Position = UDim2.new(0.0116822431 + 0.11, 0, 0.0248226952, 0) 
-frameMission.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frameMission.BackgroundTransparency = 0.5
-frameMission.ClipsDescendants = true  
-frameMission.Parent = guiMission
-
-
-missionLabel.Name = "MissionLabel"
-missionLabel.Size = UDim2.new(0.856261566, 0, 0.590026964, 0) 
-missionLabel.Position = UDim2.new(0.100061566, 0, 0.110026964, 0) 
-missionLabel.BackgroundTransparency = 1
-missionLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-missionLabel.TextStrokeTransparency = 0
-missionLabel.Font = Enum.Font.SourceSans
-missionLabel.TextSize = 9.9
-missionLabel.TextWrapped = true 
-missionLabel.TextXAlignment = Enum.TextXAlignment.Center 
-missionLabel.TextYAlignment = Enum.TextYAlignment.Center 
-missionLabel.Parent = frameMission
-
-cornerMission.CornerRadius = UDim.new(1, 0) 
-cornerMission.Parent = frameMission
-
-
-frameFPS.Name = "FPSFrame"
-frameFPS.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frameFPS.Position = UDim2.new(0.0116822431 + 0.22, 0, 0.0248226952, 0) -- Posición al lado del cuadro de la misión
-frameFPS.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frameFPS.BackgroundTransparency = 0.5
-frameFPS.ClipsDescendants = true
-frameFPS.Parent = guiFPS
-
-
-
-fpsLabel.Name = "FPSLabel"
-fpsLabel.Size = UDim2.new(1, -10, 1, -10)
-fpsLabel.Position = UDim2.new(0, 5, 0, 5)
-fpsLabel.BackgroundTransparency = 1
-fpsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-fpsLabel.TextStrokeTransparency = 0
-fpsLabel.Font = Enum.Font.SourceSans
-fpsLabel.TextSize = 18
-fpsLabel.TextWrapped = true
-fpsLabel.TextXAlignment = Enum.TextXAlignment.Center
-fpsLabel.TextYAlignment = Enum.TextYAlignment.Center
-fpsLabel.Parent = frameFPS
-
-cornerFPS.CornerRadius = UDim.new(1, 0)
-cornerFPS.Parent = frameFPS
-
-local frameRebirth = Instance.new("Frame")
-frameRebirth.Name = "RebirthFrame"
-frameRebirth.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frameRebirth.Position = UDim2.new(0.0116822431 + 0.33, 0, 0.0248226952, 0)
-frameRebirth.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frameRebirth.BackgroundTransparency = 0.5
-frameRebirth.ClipsDescendants = true
-frameRebirth.Parent = guiRebirth
-
-
-rebirthLabel.Name = "RebirthLabel"
-rebirthLabel.Size = UDim2.new(0.856261566, 0, 0.790026964, 0)
-rebirthLabel.Position = UDim2.new(0.100061566, 0, 0.129026964, 0)
-rebirthLabel.BackgroundTransparency = 1
-rebirthLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-rebirthLabel.TextStrokeTransparency = 0
-rebirthLabel.Font = Enum.Font.SourceSans
-rebirthLabel.TextSize = 17
-rebirthLabel.TextScaled = true
-rebirthLabel.TextWrapped = true
-rebirthLabel.TextXAlignment = Enum.TextXAlignment.Center
-rebirthLabel.TextYAlignment = Enum.TextYAlignment.Center
-rebirthLabel.ClipsDescendants = true
-rebirthLabel.Parent = frameRebirth
-
-cornerRebirth.CornerRadius = UDim.new(1, 0)
-cornerRebirth.Parent = frameRebirth
-
-
-strengthLabel.Name = "StrengthLabel"
-strengthLabel.Size = UDim2.new(0.856261566, 0, 0.590026964, 0)
-strengthLabel.Position = UDim2.new(0.100061566, 0, 0.009026964, 0)
-strengthLabel.BackgroundTransparency = 1
-strengthLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-strengthLabel.TextStrokeTransparency = 0
-strengthLabel.Font = Enum.Font.SourceSans
-strengthLabel.TextSize = 17
-strengthLabel.TextScaled = true
-strengthLabel.TextWrapped = true
-strengthLabel.TextXAlignment = Enum.TextXAlignment.Center
-strengthLabel.TextYAlignment = Enum.TextYAlignment.Center
-strengthLabel.ClipsDescendants = true
-strengthLabel.Parent = frameRebirth
-
-
-
-frameTransformation.Name = "TransformationFrame"
-frameTransformation.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frameTransformation.Position = UDim2.new(0.0116822431 + 0.44, 0, 0.0248226952, 0) 
-frameTransformation.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frameTransformation.BackgroundTransparency = 0.5
-frameTransformation.ClipsDescendants = true  
-frameTransformation.Parent = guiTransformation
-
-cornerTransformation.CornerRadius = UDim.new(1, 0) 
-cornerTransformation.Parent = frameTransformation
-
-transformationLabel.Name = "TransformationLabel"
-transformationLabel.Size = UDim2.new(1, -10, 1, -10) 
-transformationLabel.Position = UDim2.new(0, 5, 0, 5) 
-transformationLabel.BackgroundTransparency = 1
-transformationLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-transformationLabel.TextStrokeTransparency = 0
-transformationLabel.Font = Enum.Font.SourceSans
-transformationLabel.TextSize = 18
-transformationLabel.TextWrapped = true 
-transformationLabel.TextXAlignment = Enum.TextXAlignment.Center 
-transformationLabel.TextYAlignment = Enum.TextYAlignment.Center 
-transformationLabel.Parent = frameTransformation
-
-local success, playerData = pcall(function()
-    return ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-end)
-if not success then
-    warn("No se pudo obtener datos del jugador")
-    return
-end
-success, rebirthValue = pcall(function()
-    return playerData:WaitForChild("Rebirth")
-end)
-if not success then
-    warn("No se pudo obtener el valor de rebirth")
-    return
+local function getTransformation()
+    local success, transformation = pcall(function()
+        return player.Status and player.Status.Transformation and player.Status.Transformation.Value
+    end)
+    return success and transformation or "Error"
 end
 
-frameR.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-frameR.Position = UDim2.new(0.0116822431 + 0.55, 0, 0.0248226952, 0)
-frameR.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-frameR.BackgroundTransparency = 0.5
-frameR.Parent = screenGui
+local function getRebirths()
+    local success, rebirths = pcall(function()
+        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+        return folderData.Rebirth.Value
+    end)
+    return success and rebirths or "Error"
+end
 
-uiCorner.CornerRadius = UDim.new(1, 0)
-uiCorner.Parent = frameR
+local function createFrame(positionOffset, text, textSize)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
+    frame.Position = UDim2.new(0.0116822431 + positionOffset, 0, 0.0248226952, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BackgroundTransparency = 0.5
+    frame.ClipsDescendants = true
+    frame.Parent = gui
 
-textLabel.Size = UDim2.new(1, 0, 1, 0)
-textLabel.Text = "Rebirths: " .. rebirthValue.Value
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-textLabel.BackgroundTransparency = 1
-textLabel.TextScaled = true
-textLabel.TextStrokeTransparency = 0.8
-textLabel.Parent = frameR
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = frame
 
-local HttpService = game:GetService("HttpService")
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, -10, 1, -10)
+    label.Position = UDim2.new(0, 5, 0, 5)
+    label.BackgroundTransparency = 1
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextStrokeTransparency = 0
+    label.Font = Enum.Font.SourceSans
+    label.TextSize = textSize or 18
+    label.TextWrapped = true
+    label.TextScaled = true
+    label.TextXAlignment = Enum.TextXAlignment.Center
+    label.TextYAlignment = Enum.TextYAlignment.Center
+    label.ClipsDescendants = true
+    label.Text = text
+    label.Parent = frame
 
-local FILE_PATH = "RebirthData.json"
+    return label
+end
+
+local pingLabel = createFrame(0, "Ping: Loading...", 18)
+local missionLabel = createFrame(0.11, "Loading...", 14)
+local fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
+local rebirthLabel = createFrame(0.33, "Loading...", 18)
+local transformationLabel = createFrame(0.44, "For: Loading...", 18)
+local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
+
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
 gui.Parent = game.CoreGui
 
-local background = Instance.new("Frame")
-background.Name = "Background"
-background.Position = UDim2.new(0.0116822431 + 0.66, 0, 0.0248226952, 0)
-background.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-background.BackgroundTransparency = 0.5
-background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-background.BorderSizePixel = 0
-background.Parent = gui
+-- Función para crear un frame y un TextLabel
+local function createLabel(name, text, position, size, textSize, textColor)
+    local frame = Instance.new("Frame")
+    frame.Name = name .. "Frame"
+    frame.Position = position
+    frame.Size = size
+    frame.BackgroundTransparency = 0.5
+    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    frame.BorderSizePixel = 0
+    frame.Parent = gui
 
-local uiCorner = Instance.new("UICorner")
-uiCorner.CornerRadius = UDim.new(1, 0) -- Ajusta este valor para hacer los bordes más o menos redondeados
-uiCorner.Parent = background
+    local corner = Instance.new("UICorner")
+    corner.CornerRadius = UDim.new(1, 0)
+    corner.Parent = frame
 
-local timerLabel = Instance.new("TextLabel")
-timerLabel.Name = "TimerLabel"
-timerLabel.Position = UDim2.new(0.5, 0, 0.5, 0)
-timerLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-timerLabel.Size = UDim2.new(1, -20, 1, -10)
-timerLabel.BackgroundTransparency = 1
-timerLabel.Font = Enum.Font.SourceSans
-timerLabel.TextSize = 48
-timerLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-timerLabel.TextStrokeTransparency = 0
-timerLabel.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
-timerLabel.Text = "0:00"
-timerLabel.Parent = background
+    local label = Instance.new("TextLabel")
+    label.Name = name .. "Label"
+    label.Size = UDim2.new(1, -20, 1, -10)
+    label.Position = UDim2.new(0.5, 0, 0.5, 0)
+    label.AnchorPoint = Vector2.new(0.5, 0.5)
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.SourceSans
+    label.TextSize = textSize
+    label.TextColor3 = textColor
+    label.TextStrokeTransparency = 0
+    label.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
+    label.Text = text
+    label.Parent = frame
+
+    return label
+end
+
+-- Crear los labels con la función simplificada
+local timerLabel = createLabel("Timer", "0:00", UDim2.new(0.0116822431 + 0.66, 0, 0.0248226952, 0), UDim2.new(0.100, 0, 0.100, 0), 48, Color3.fromRGB(255, 0, 0))
 
 local rebirthTimeValue = Instance.new("IntValue")
 rebirthTimeValue.Name = "RebirthTimeValue"
@@ -377,12 +229,10 @@ local function loadRebirthData()
 end
 
 local function isInTargetPlace()
-    local placeId = game.PlaceId
-    return placeId == 3311165597
+    return game.PlaceId == 3311165597
 end
 
-local timerConnection
-timerConnection = game:GetService("RunService").Stepped:Connect(function()
+RunService.Stepped:Connect(function()
     updateTimer()
 
     local player = Players.LocalPlayer
@@ -407,162 +257,29 @@ timerConnection = game:GetService("RunService").Stepped:Connect(function()
     saveRebirthData()
 end)
 
-
-
-local function updateRebirthDisplay()
-    local success, errorMessage = pcall(function()
-        textLabel.Text = " " .. rebirthValue.Value
-    end)
-    
-    if not success then
-        warn("Error al actualizar el valor de rebirth: " .. errorMessage)
-    end
-end
-
-local player = game.Players.LocalPlayer
-
-local function safeCall(func)
-    local success, err = pcall(func)
-    if not success then
-        warn("Error: " .. tostring(err))
-    end
-end
-
-local function createBillboardGui()
-    safeCall(function()
-        local head = player.Character:WaitForChild("Head")
-        local billboardGui = Instance.new("BillboardGui")
-        local textLabel = Instance.new("TextLabel")
-
-        billboardGui.Adornee = head
-        billboardGui.Parent = player.PlayerGui
-        billboardGui.Size = UDim2.new(0, 150, 0, 75)
-        billboardGui.StudsOffset = Vector3.new(0, 2, 0)
-        billboardGui.AlwaysOnTop = true
-
-        textLabel.Parent = billboardGui
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.Text = "Clan_SoS"
-        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        textLabel.TextSize = 24
-        textLabel.Font = Enum.Font.SourceSansBold
-        textLabel.BackgroundTransparency = 1
-        textLabel.TextStrokeTransparency = 0.8
-
-        local rainbowColors = {
-            Color3.fromRGB(255, 0, 0),
-            Color3.fromRGB(0, 0, 255),
-            Color3.fromRGB(0, 255, 0),
-            Color3.fromRGB(255, 20, 147),
-            Color3.fromRGB(75, 0, 130),
-            Color3.fromRGB(0, 0, 0)
-        }
-
-        local function rainbowEffect()
-            local colorIndex = 1
-            local transitionSpeed = 0.01
-            while true do
-                local currentColor = rainbowColors[colorIndex]
-                local nextColor = rainbowColors[(colorIndex % #rainbowColors) + 1]
-
-                for i = 0, 1, transitionSpeed do
-                    textLabel.TextColor3 = currentColor:lerp(nextColor, i)
-                    wait(0.01)
-                end
-
-                colorIndex = (colorIndex % #rainbowColors) + 1
-            end
-        end
-
-        spawn(function()
-            safeCall(rainbowEffect)
-        end)
-    end)
-end
-
-local function checkPlayerConditions()
-    while true do
-        safeCall(function()
-            if player.Character 
-                and player.Character:FindFirstChild("Humanoid") 
-                and player.Character.Humanoid.Health > 0 
-                and player.Character:FindFirstChild("HumanoidRootPart") then
-                if not player.PlayerGui:FindFirstChild("BillboardGui") then
-                    createBillboardGui()
-                end
-            end
-        end)
-        wait(0.6)
-    end
-end
-
-
-local function getTransformation(player)
-    local success, transformation = pcall(function()
-        return player.Status.Transformation.Value  -- Suponiendo que la transformación esté almacenada en este lugar
-    end)
-    if success then
-        return transformation
-    else
-        warn("Error al obtener la transformación: ", transformation)  -- Registra el error
-        return "Error"
-    end
-end
-
-local function updateTransformation(player)
-    while true do
-        local success, transformation = pcall(function()
-            return getTransformation(player)
-        end)
-        if success then
-            transformationLabel.Text = "" .. transformation
-        else
-            warn("Error al actualizar la transformación: ", transformation)
-            transformationLabel.Text = "Error"
-        end
-        wait(0.05)
-    end
-end
-
-local function updateRebirth()
-    while true do
-        local success, ldata = pcall(function()
-            return ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-        end)
-        if success then
-            local currentRebirths = ldata.Rebirth.Value
-            local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
-            local strength = ldata.Strength.Value
-            rebirthLabel.Text = string.format("\n%s / %s", formatNumber(nextRebirthPrice), formatNumber(strength))
-        else
-            warn("Error al actualizar el rebirth: ", ldata)
-            rebirthLabel.Text = "Error"
-        end
-        wait(0.5)
-    end
-end
-
-local function updateStrength()
-    while true do
-        local success, strength = pcall(function()
-            return getStrength()
-        end)
-        if success then
-            strengthLabel.Text = "stat: " .. formatNumber(tonumber(strength) or 0)
-        else
-            warn("Error al actualizar la fuerza: ", strength)
-            strengthLabel.Text = "Error"
-        end
-        wait(0.2)
-    end
-end
-
 local lastUpdate = tick()
 local frameCount = 0
 
-local function updateFPS()
+local function updateDisplay()
     while true do
-        frameCount = frameCount + 1
+        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+        local currentRebirths = folderData.Rebirth.Value
+        local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
+        local strength = folderData.Strength.Value
+        local additionalStrength = getAdditionalStrength()
+        local formattedStrength = formatNumber(strength)
+        local formattedAdditionalStrength = formatNumber(additionalStrength)
+        local ping = getPing()
+        local mission = getMission()
+        local transformation = getTransformation()
+        local rebirths = getRebirths()
+
+        pingLabel.Text = "Ping: " .. formatNumber(ping)
+        missionLabel.Text = mission
+        rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
+        transformationLabel.Text = "For: " .. transformation
+        rebirthFrameLabel.Text = "Rebirths: " .. formatNumber(rebirths)
+
         local currentTime = tick()
         if currentTime - lastUpdate >= 1 then
             local fps = frameCount / (currentTime - lastUpdate)
@@ -570,7 +287,9 @@ local function updateFPS()
             frameCount = 0
             lastUpdate = currentTime
         end
-        wait(0.03)  -- Esperar un corto intervalo para permitir la actualización de la UI
+
+        frameCount = frameCount + 1
+        wait(0.1)
     end
 end
 
@@ -578,80 +297,6 @@ RunService.RenderStepped:Connect(function()
     frameCount = frameCount + 1
 end)
 
-local function getMission(player)
-    local success, mission = pcall(function()
-        return ReplicatedStorage.Datas[player.UserId].Quest.Value
-    end)
-    if success then
-        return mission
-    else
-        warn("Error al obtener la misión: ", mission)
-        return "Error"
-    end
-end
-
-local function updateMission(player)
-    while true do
-        local success, mission = pcall(function()
-            return getMission(player)
-        end)
-        if success then
-            missionLabel.Text = "\n" .. mission
-        else
-            warn("Error al actualizar la misión: ", mission)
-            missionLabel.Text = "Error"
-        end
-        wait(0.05)
-    end
-end
-
-local function getPing()
-    local success, pingValue = pcall(function()
-        return Stats.Network.ServerStatsItem["Data Ping"]:GetValue()
-    end)
-    if success then
-        return pingValue
-    else
-        warn("Error al obtener el ping: ", pingValue)
-        return "Error"
-    end
-end
-
-local function formatPing(ping)
-    if type(ping) == "number" then
-        if ping >= 1000 then
-            return string.format("%.1fk ms", ping / 1000)
-        else
-            return string.format("%d ms", ping)
-        end
-    else
-        return ping
-    end
-end
-
-local function updatePing()
-    while true do
-        local success, ping = pcall(function()
-            return getPing()
-        end)
-        if success then
-            pingLabel.Text = "Ping: " .. formatPing(ping)
-        else
-            warn("Error al actualizar el ping: ", ping)
-            pingLabel.Text = "Error"
-        end
-        wait(.05)
-    end
-end
-
-spawn(checkPlayerConditions)
 spawn(animateTextColor)
 loadRebirthData()
-rebirthValue.Changed:Connect(updateRebirthDisplay)
-updateRebirthDisplay()
-spawn(function() updateTransformation(player) end)
-spawn(updateRebirth)
-spawn(updateStrength)
-spawn(function() updateMission(player) end)
-spawn(updatePing)
-spawn(updateFPS)
+spawn(updateDisplay)
