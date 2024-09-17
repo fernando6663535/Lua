@@ -418,6 +418,7 @@ local function updateRebirthDisplay()
         warn("Error al actualizar el valor de rebirth: " .. errorMessage)
     end
 end
+
 local player = game.Players.LocalPlayer
 
 local function safeCall(func)
@@ -448,30 +449,33 @@ local function createBillboardGui()
         textLabel.BackgroundTransparency = 1
         textLabel.TextStrokeTransparency = 0.8
 
-        local uiGradient = Instance.new("UIGradient", textLabel)
-        uiGradient.Color = ColorSequence.new({
-            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-            ColorSequenceKeypoint.new(0.25, Color3.fromRGB(255, 105, 180)),
-            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
-            ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 255, 0)),
-            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
-        })
-        uiGradient.Rotation = 90
+        local rainbowColors = {
+            Color3.fromRGB(255, 0, 0),
+            Color3.fromRGB(0, 0, 255),
+            Color3.fromRGB(0, 255, 0),
+            Color3.fromRGB(255, 20, 147),
+            Color3.fromRGB(75, 0, 130),
+            Color3.fromRGB(0, 0, 0)
+        }
 
-        local function pulsarColor()
-            local pulseColors = {Color3.fromRGB(255, 0, 0), Color3.fromRGB(0, 255, 0), Color3.fromRGB(0, 0, 255), Color3.fromRGB(255, 255, 0)}
+        local function rainbowEffect()
+            local colorIndex = 1
+            local transitionSpeed = 0.01
             while true do
-                for _, color in pairs(pulseColors) do
-                    textLabel.TextColor3 = color
-                    wait(.5)
+                local currentColor = rainbowColors[colorIndex]
+                local nextColor = rainbowColors[(colorIndex % #rainbowColors) + 1]
+
+                for i = 0, 1, transitionSpeed do
+                    textLabel.TextColor3 = currentColor:lerp(nextColor, i)
+                    wait(0.01)
                 end
-                textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-                wait(.5)
+
+                colorIndex = (colorIndex % #rainbowColors) + 1
             end
         end
 
         spawn(function()
-            safeCall(pulsarColor)
+            safeCall(rainbowEffect)
         end)
     end)
 end
@@ -488,12 +492,9 @@ local function checkPlayerConditions()
                 end
             end
         end)
-        wait(.05) 
+        wait(0.6)
     end
 end
-
-
-
 
 
 local function getTransformation(player)
