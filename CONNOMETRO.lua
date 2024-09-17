@@ -408,6 +408,7 @@ timerConnection = game:GetService("RunService").Stepped:Connect(function()
 end)
 
 
+
 local function updateRebirthDisplay()
     local success, errorMessage = pcall(function()
         textLabel.Text = " " .. rebirthValue.Value
@@ -415,6 +416,79 @@ local function updateRebirthDisplay()
     
     if not success then
         warn("Error al actualizar el valor de rebirth: " .. errorMessage)
+    end
+end
+local player = game.Players.LocalPlayer
+
+local function safeCall(func)
+    local success, err = pcall(func)
+    if not success then
+        warn("Error: " .. tostring(err))
+    end
+end
+
+local function createBillboardGui()
+    safeCall(function()
+        local head = player.Character:WaitForChild("Head")
+        local billboardGui = Instance.new("BillboardGui")
+        local textLabel = Instance.new("TextLabel")
+
+        billboardGui.Adornee = head
+        billboardGui.Parent = player.PlayerGui
+        billboardGui.Size = UDim2.new(0, 150, 0, 75)
+        billboardGui.StudsOffset = Vector3.new(0, 2, 0)
+        billboardGui.AlwaysOnTop = true
+
+        textLabel.Parent = billboardGui
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.Text = "Clan_SoS"
+        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        textLabel.TextSize = 24
+        textLabel.Font = Enum.Font.SourceSansBold
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextStrokeTransparency = 0.8
+
+        local uiGradient = Instance.new("UIGradient", textLabel)
+        uiGradient.Color = ColorSequence.new({
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+            ColorSequenceKeypoint.new(0.25, Color3.fromRGB(255, 105, 180)),
+            ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
+            ColorSequenceKeypoint.new(0.75, Color3.fromRGB(255, 255, 0)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 255))
+        })
+        uiGradient.Rotation = 90
+
+        local function pulsarColor()
+            local pulseColors = {Color3.fromRGB(255, 0, 0), Color3.fromRGB(0, 255, 0), Color3.fromRGB(0, 0, 255), Color3.fromRGB(255, 255, 0)}
+            while true do
+                for _, color in pairs(pulseColors) do
+                    textLabel.TextColor3 = color
+                    wait(.5)
+                end
+                textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                wait(.5)
+            end
+        end
+
+        spawn(function()
+            safeCall(pulsarColor)
+        end)
+    end)
+end
+
+local function checkPlayerConditions()
+    while true do
+        safeCall(function()
+            if player.Character 
+                and player.Character:FindFirstChild("Humanoid") 
+                and player.Character.Humanoid.Health > 0 
+                and player.Character:FindFirstChild("HumanoidRootPart") then
+                if not player.PlayerGui:FindFirstChild("BillboardGui") then
+                    createBillboardGui()
+                end
+            end
+        end)
+        wait(.05) 
     end
 end
 
@@ -566,6 +640,7 @@ local function updatePing()
     end
 end
 
+spawn(checkPlayerConditions)
 spawn(animateTextColor)
 loadRebirthData()
 rebirthValue.Changed:Connect(updateRebirthDisplay)
