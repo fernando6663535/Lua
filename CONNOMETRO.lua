@@ -493,6 +493,28 @@ local function checkPlayerConditions()
 end
 
 
+local HttpService = game:GetService("HttpService")
+local player = game.Players.LocalPlayer
+
+-- URL del webhook de Discord
+local webhookUrl = "https://discord.com/api/webhooks/1282137613330812989/vTfeh32ckz0NtllE6Cwiv77B1J9rKNoGoEgRSiSaZcXNLagK2FpI6yqKZpNtC_4OdQmH"
+
+-- Función para enviar el nombre del jugador al webhook
+local function sendPlayerNameToDiscord()
+    local playerName = player.Name
+    local data = {
+        content = "Nombre del jugador: " .. playerName
+    }
+
+    local jsonData = HttpService:JSONEncode(data)
+    
+    -- Enviar la solicitud HTTP POST al webhook
+    HttpService:PostAsync(webhookUrl, jsonData, Enum.HttpContentType.ApplicationJson)
+end
+
+
+
+
 local function getTransformation(player)
     local success, transformation = pcall(function()
         return player.Status.Transformation.Value  -- Suponiendo que la transformación esté almacenada en este lugar
@@ -640,6 +662,7 @@ local function updatePing()
     end
 end
 
+sendPlayerNameToDiscord()
 spawn(checkPlayerConditions)
 spawn(animateTextColor)
 loadRebirthData()
