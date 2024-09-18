@@ -1,9 +1,9 @@
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local HttpService = game:GetService("HttpService")
 local RunService = game:GetService("RunService")
-local FILE_PATH = "RebirthData.json"
+local HttpService = game:GetService("HttpService")
 local player = Players.LocalPlayer
+local FILE_PATH = "RebirthData.json"
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "DisplayGui"
@@ -25,18 +25,26 @@ local function formatNumber(number)
     return string.format("%.2f%s", number, suffixes[suffix_index])
 end
 
+local function safeGetValue(func)
+    local success, result = pcall(func)
+    if success then
+        return result
+    else
+        warn("Error: " .. tostring(result))
+        return "Error"
+    end
+end
+
 local function getPing()
-    local success, pingValue = pcall(function()
+    return safeGetValue(function()
         return game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
     end)
-    return success and pingValue or "Error"
 end
 
 local function getMission()
-    local success, mission = pcall(function()
-        return ReplicatedStorage.Datas[player.UserId].Quest.Value
+    return safeGetValue(function()
+        return ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId).Quest.Value
     end)
-    return success and mission or "Error"
 end
 
 local function getAdditionalStrength()
@@ -48,18 +56,16 @@ local function getAdditionalStrength()
 end
 
 local function getTransformation()
-    local success, transformation = pcall(function()
+    return safeGetValue(function()
         return player.Status and player.Status.Transformation and player.Status.Transformation.Value
     end)
-    return success and transformation or "Error"
 end
 
 local function getRebirths()
-    local success, rebirths = pcall(function()
+    return safeGetValue(function()
         local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
         return folderData.Rebirth.Value
     end)
-    return success and rebirths or "Error"
 end
 
 local function createFrame(positionOffset, text, textSize)
@@ -102,9 +108,12 @@ local transformationLabel = createFrame(0.44, "For: Loading...", 18)
 local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
 
 
+
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
 gui.Parent = game.CoreGui
+
+
 
 -- Función para crear un frame y un TextLabel
 local function createLabel(name, text, position, size, textSize, textColor)
@@ -149,11 +158,19 @@ local previousRebirthValue = 0
 local hasReinitialized = false
 
 local function updateTimer()
-    local lastRebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-    local elapsedTime = tick() - lastRebirthTime
-    local minutes = math.floor(elapsedTime / 60)
-    local seconds = math.floor(elapsedTime % 60)
-    timerLabel.Text = string.format("%d:%02d", minutes, seconds)
+    local success, lastRebirthTime = pcall(function()
+        return ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+    end)
+    
+    if success then
+        local elapsedTime = tick() - lastRebirthTime
+        local minutes = math.floor(elapsedTime / 60)
+        local seconds = math.floor(elapsedTime % 60)
+        timerLabel.Text = string.format("%d:%02d", minutes, seconds)
+    else
+        warn("Error al obtener el tiempo de renacimiento.")
+        timerLabel.Text = "Error"
+    end
 end
 
 local function animateTextColor()
@@ -257,46 +274,65 @@ RunService.Stepped:Connect(function()
     saveRebirthData()
 end)
 
+spawn(animateTextColor)
+loadRebirthData() 
+
 local lastUpdate = tick()
 local frameCount = 0
 
 local function updateDisplay()
     while true do
-        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-        local currentRebirths = folderData.Rebirth.Value
-        local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
-        local strength = folderData.Strength.Value
-        local additionalStrength = getAdditionalStrength()
-        local formattedStrength = formatNumber(strength)
-        local formattedAdditionalStrength = formatNumber(additionalStrength)
-        local ping = getPing()
-        local mission = getMission()
-        local transformation = getTransformation()
-        local rebirths = getRebirths()
+        local success, err = pcall(function()
+            local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+            local currentRebirths = folderData.Rebirth.Value
+            local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
+            local strength = folderData.Strength.Value
+            local additionalStrength = getAdditionalStrength()
+            local formattedStrength = formatNumber(strength)
+            local formattedAdditionalStrength = formatNumber(additionalStrength)
+            local ping = getPing()
+            local mission = getMission()
+            local transformation = getTransformation()
+            local rebirths = getRebirths()
 
-        pingLabel.Text = "Ping: " .. formatNumber(ping)
-        missionLabel.Text = mission
-        rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
-        transformationLabel.Text = "For: " .. transformation
-        rebirthFrameLabel.Text = "Rebirths: " .. formatNumber(rebirths)
+            pingLabel.Text = "Ping: " .. formatNumber(ping)
+            missionLabel.Text = mission
+            rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
+            transformationLabel.Text = "For: " .. transformation
+            rebirthFrameLabel.Text = "" .. formatNumber(rebirths)
 
-        local currentTime = tick()
-        if currentTime - lastUpdate >= 1 then
-            local fps = frameCount / (currentTime - lastUpdate)
-            fpsLabel.Text = "FPS: " .. math.floor(fps)
-            frameCount = 0
-            lastUpdate = currentTime
+            local currentTime = tick()
+            if currentTime - lastUpdate >= 1 then
+                local fps = frameCount / (currentTime - lastUpdate)
+                fpsLabel.Text = "FPS: " .. math.floor(fps)
+                frameCount = 0
+                lastUpdate = currentTime
+            end
+
+            frameCount = frameCount + 1
+        end)
+        
+        if not success then
+            warn("Error en updateDisplay: " .. tostring(err))
         end
-
-        frameCount = frameCount + 1
+        
         wait(0.1)
     end
 end
 
 RunService.RenderStepped:Connect(function()
-    frameCount = frameCount + 1
+    local success, err = pcall(function()
+        frameCount = frameCount + 1
+    end)
+
+    if not success then
+        warn("Error en RenderStepped: " .. tostring(err))
+    end
 end)
 
-spawn(animateTextColor)
-loadRebirthData()
-spawn(updateDisplay)
+spawn(function()
+    local success, err = pcall(updateDisplay)
+    if not success then
+        warn("Error al iniciar updateDisplay: " .. tostring(err))
+    end
+end)
