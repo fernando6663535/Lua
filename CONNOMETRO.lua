@@ -4,6 +4,7 @@ local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local player = Players.LocalPlayer
 local FILE_PATH = "RebirthData.json"
+local TIME_FILE_PATH = "RebirthTime.txt"
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "DisplayGui"
@@ -113,8 +114,6 @@ local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
 gui.Parent = game.CoreGui
 
-
-
 -- Función para crear un frame y un TextLabel
 local function createLabel(name, text, position, size, textSize, textColor)
     local frame = Instance.new("Frame")
@@ -158,19 +157,11 @@ local previousRebirthValue = 0
 local hasReinitialized = false
 
 local function updateTimer()
-    local success, lastRebirthTime = pcall(function()
-        return ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-    end)
-    
-    if success then
-        local elapsedTime = tick() - lastRebirthTime
-        local minutes = math.floor(elapsedTime / 60)
-        local seconds = math.floor(elapsedTime % 60)
-        timerLabel.Text = string.format("%d:%02d", minutes, seconds)
-    else
-        warn("Error al obtener el tiempo de renacimiento.")
-        timerLabel.Text = "Error"
-    end
+    local lastRebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+    local elapsedTime = tick() - lastRebirthTime
+    local minutes = math.floor(elapsedTime / 60)
+    local seconds = math.floor(elapsedTime % 60)
+    timerLabel.Text = string.format("%d:%02d", minutes, seconds)
 end
 
 local function animateTextColor()
@@ -274,11 +265,10 @@ RunService.Stepped:Connect(function()
     saveRebirthData()
 end)
 
-spawn(animateTextColor)
-loadRebirthData() 
-
 local lastUpdate = tick()
 local frameCount = 0
+
+
 
 local function updateDisplay()
     while true do
