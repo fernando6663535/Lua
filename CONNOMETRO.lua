@@ -5,7 +5,6 @@ local HttpService = game:GetService("HttpService")
 local player = Players.LocalPlayer
 local FILE_PATH = "RebirthData.json"
 
-
 local gui = Instance.new("ScreenGui")
 gui.Name = "DisplayGui"
 gui.Parent = game.CoreGui
@@ -42,9 +41,14 @@ local function getPing()
     end)
 end
 
-local function getMission()
+local function getMastery()
     return safeGetValue(function()
-        return ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId).Quest.Value
+        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+        local transformation = player.Status and player.Status.Transformation and player.Status.Transformation.Value
+        if transformation and folderData:FindFirstChild(transformation) then
+            return folderData[transformation].Value
+        end
+        return 0
     end)
 end
 
@@ -102,14 +106,14 @@ local function createFrame(positionOffset, text, textSize)
 end
 
 local pingLabel = createFrame(0, "Ping: Loading...", 18)
-local missionLabel = createFrame(0.11, "Loading...", 14)
+local masteryLabel = createFrame(0.11, "Loading Mastery...", 14) -- Cambiado a "masteryLabel"
 local fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
 local rebirthLabel = createFrame(0.33, "Loading...", 18)
 local transformationLabel = createFrame(0.44, "For: Loading...", 18)
 local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
 
-
-
+local lastUpdate = tick()
+local frameCount = 0
 
 
 local gui = Instance.new("ScreenGui")
@@ -280,10 +284,8 @@ end)
 spawn(animateTextColor)
 loadRebirthData() 
 
-local lastUpdate = tick()
+local lastxUpdate = tick()
 local frameCount = 0
-
-
 
 local function updateDisplay()
     while true do
@@ -296,12 +298,12 @@ local function updateDisplay()
             local formattedStrength = formatNumber(strength)
             local formattedAdditionalStrength = formatNumber(additionalStrength)
             local ping = getPing()
-            local mission = getMission()
+            local mastery = getMastery()  -- Obtener maestría
             local transformation = getTransformation()
             local rebirths = getRebirths()
 
             pingLabel.Text = "Ping: " .. formatNumber(ping)
-            missionLabel.Text = mission
+            masteryLabel.Text = "%" .. formatNumber(mastery) -- Mostrar maestría
             rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
             transformationLabel.Text = "For: " .. transformation
             rebirthFrameLabel.Text = "" .. formatNumber(rebirths)
@@ -341,3 +343,5 @@ spawn(function()
         warn("Error al iniciar updateDisplay: " .. tostring(err))
     end
 end)
+
+
