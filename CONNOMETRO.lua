@@ -12,7 +12,9 @@ gui.Parent = game.CoreGui
 local function getNextRebirthPrice(currentRebirths)
     local basePrice = 3e6
     local additionalPrice = 2e6
-    return (currentRebirths + 1) * basePrice + additionalPrice
+    local multiplier = 0.950
+    local nextPrice = basePrice * (currentRebirths + 1) * multiplier + additionalPrice
+    return nextPrice
 end
 
 local function formatNumber(number)
