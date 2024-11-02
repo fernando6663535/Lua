@@ -106,7 +106,7 @@ local function createFrame(positionOffset, text, textSize)
 end
 
 local pingLabel = createFrame(0, "Ping: Loading...", 18)
-local masteryLabel = createFrame(0.11, "Loading Mastery...", 14) -- Cambiado a "masteryLabel"
+local masteryLabel = createFrame(0.11, "Loading Mastery...", 14)
 local fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
 local rebirthLabel = createFrame(0.33, "Loading...", 18)
 local transformationLabel = createFrame(0.44, "For: Loading...", 18)
@@ -114,7 +114,6 @@ local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
 
 local lastUpdate = tick()
 local frameCount = 0
-
 
 local gui = Instance.new("ScreenGui")
 gui.Name = "RebirthTimerGui"
@@ -287,6 +286,12 @@ loadRebirthData()
 local lastxUpdate = tick()
 local frameCount = 0
 
+
+
+local function calculatePercentage(currentValue, maxValue)
+    return math.floor((currentValue / maxValue) * 100)
+end
+
 local function updateDisplay()
     while true do
         local success, err = pcall(function()
@@ -301,9 +306,10 @@ local function updateDisplay()
             local mastery = getMastery()  -- Obtener maestría
             local transformation = getTransformation()
             local rebirths = getRebirths()
+            local maxMastery = 332526  -- Valor máximo para el cálculo de porcentaje
 
             pingLabel.Text = "Ping: " .. formatNumber(ping)
-            masteryLabel.Text = "%" .. formatNumber(mastery) -- Mostrar maestría
+            masteryLabel.Text = "%" .. formatNumber(mastery) .. " (" .. calculatePercentage(mastery, maxMastery) .. "%)"  -- Mostrar maestría con porcentaje
             rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
             transformationLabel.Text = "For: " .. transformation
             rebirthFrameLabel.Text = "" .. formatNumber(rebirths)
@@ -343,5 +349,3 @@ spawn(function()
         warn("Error al iniciar updateDisplay: " .. tostring(err))
     end
 end)
-
-
