@@ -193,7 +193,7 @@ local function animateTextColor()
     while true do
         timerLabel.TextColor3 = colors[index]
         index = (index % #colors) + 1
-        wait(1)
+        task.wait(1)
     end
 end
 
@@ -331,7 +331,7 @@ local function updateDisplay()
             warn("Error en updateDisplay: " .. tostring(err))
         end
         
-        wait(0.1)
+        task.wait(.8)
     end
 end
 
