@@ -111,7 +111,7 @@ local pingLabel = createFrame(0, "Ping: Loading...", 18)
 local masteryLabel = createFrame(0.11, "Loading Mastery...", 14)
 local fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
 local rebirthLabel = createFrame(0.33, "Loading...", 18)
-local transformationLabel = createFrame(0.44, "For: Loading...", 18)
+local transformationLabel = createFrame(0.44, "Hora del juego: Loading...", 18)
 local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
 
 local lastUpdate = tick()
@@ -285,13 +285,35 @@ end)
 spawn(animateTextColor)
 loadRebirthData() 
 
-local lastxUpdate = tick()
-local frameCount = 0
-
-
-
 local function calculatePercentage(currentValue, maxValue)
     return math.floor((currentValue / maxValue) * 100)
+end
+
+local function getGameTime()
+    local currentHour = math.floor(game.Lighting.ClockTime)
+    local currentMinute = math.floor((game.Lighting.ClockTime % 1) * 60)
+    local timeOfDay = (currentHour >= 6 and currentHour < 18) and "Día" or "Noche"
+    return string.format("Hora actual: %02d:%02d\nEstado: %s", currentHour, currentMinute, timeOfDay)
+end
+
+local function updateDisplay()
+    while true do
+        local success, err = pcall(function()
+            local gameTime = getGameTime()
+            transformationLabel.Text = gameTime
+        end)
+
+        if not success then
+            warn("Error en updateDisplay: " .. tostring(err))
+        end
+
+        task.wait(.1)
+    end
+end
+
+local function getSystemTime()
+    local currentTime = os.date("*t")
+    return string.format("%02d:%02d:%02d", currentTime.hour, currentTime.min, currentTime.sec)
 end
 
 local function updateDisplay()
@@ -305,16 +327,17 @@ local function updateDisplay()
             local formattedStrength = formatNumber(strength)
             local formattedAdditionalStrength = formatNumber(additionalStrength)
             local ping = getPing()
-            local mastery = getMastery()  -- Obtener maestría
-            local transformation = getTransformation()
+            local mastery = getMastery()
             local rebirths = getRebirths()
-            local maxMastery = 332526  -- Valor máximo para el cálculo de porcentaje
+            local maxMastery = 332526  
 
             pingLabel.Text = "Ping: " .. formatNumber(ping)
-            masteryLabel.Text = "%" .. formatNumber(mastery) .. " (" .. calculatePercentage(mastery, maxMastery) .. "%)"  -- Mostrar maestría con porcentaje
+            masteryLabel.Text = "Hora del sistema: " .. getSystemTime()
             rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
-            transformationLabel.Text = "For: " .. transformation
             rebirthFrameLabel.Text = "" .. formatNumber(rebirths)
+
+            local gameTime = getGameTime()
+            transformationLabel.Text = "Hora del juego: " .. gameTime
 
             local currentTime = tick()
             if currentTime - lastUpdate >= 1 then
@@ -326,11 +349,11 @@ local function updateDisplay()
 
             frameCount = frameCount + 1
         end)
-        
+
         if not success then
             warn("Error en updateDisplay: " .. tostring(err))
         end
-        
+
         task.wait(.8)
     end
 end
