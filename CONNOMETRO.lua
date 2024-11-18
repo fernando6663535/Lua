@@ -1,34 +1,15 @@
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local RunService = game:GetService("RunService")
-local HttpService = game:GetService("HttpService")
-local player = Players.LocalPlayer
-local FILE_PATH = "RebirthData.json"
+game:GetService("Players")
+game:GetService("ReplicatedStorage")
+game:GetService("RunService")
+player = game.Players.LocalPlayer
+FILE_PATH = "RebirthData.json"
 
-local gui = Instance.new("ScreenGui")
+gui = Instance.new("ScreenGui")
 gui.Name = "DisplayGui"
 gui.Parent = game.CoreGui
 
-local function getNextRebirthPrice(currentRebirths)
-    local basePrice = 3e6
-    local additionalPrice = 2e6
-    local multiplier = 0.950
-    local nextPrice = basePrice * (currentRebirths + 1) * multiplier + additionalPrice
-    return nextPrice
-end
-
-local function formatNumber(number)
-    local suffixes = {"", "K", "M", "B", "T", "QD"}
-    local suffix_index = 1
-    while math.abs(number) >= 1000 and suffix_index < #suffixes do
-        number = number / 1000.0
-        suffix_index = suffix_index + 1
-    end
-    return string.format("%.2f%s", number, suffixes[suffix_index])
-end
-
-local function safeGetValue(func)
-    local success, result = pcall(func)
+function safeGetValue(func)
+    success, result = pcall(func)
     if success then
         return result
     else
@@ -37,20 +18,104 @@ local function safeGetValue(func)
     end
 end
 
-local function getPing()
+data = safeGetValue(function() return game.ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId) end)
+
+function getrebprice()
+    success, result = pcall(function()
+        return (data.Rebirth.Value * 3e6) + 2e6
+    end)
+    if success then
+        return result
+    else
+        warn("Error al obtener el precio de rebirth: " .. tostring(result))
+        return 0
+    end
+end
+
+function formatNumber(number)
+    success, result = pcall(function()
+        suffixes = {"", "K", "M", "B", "T", "QD"}
+        suffix_index = 1
+        while math.abs(number) >= 1000 and suffix_index < #suffixes do
+            number = number / 1000.0
+            suffix_index = suffix_index + 1
+        end
+        return string.format("%.2f%s", number, suffixes[suffix_index])
+    end)
+    if success then
+        return result
+    else
+        warn("Error al formatear número: " .. tostring(result))
+        return tostring(number)
+    end
+end
+
+function calculatePercentage(currentValue, maxValue)
+    success, result = pcall(function()
+        return math.floor((currentValue / maxValue) * 100)
+    end)
+    if success then
+        return result
+    else
+        warn("Error al calcular porcentaje: " .. tostring(result))
+        return 0
+    end
+end
+
+function getPing()
     return safeGetValue(function()
         return game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
     end)
 end
 
-local function getMastery()
+function getMastery()
     return safeGetValue(function()
-        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-        local transformation = player.Status and player.Status.Transformation and player.Status.Transformation.Value
+        local folderData = game.ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+        local transformation = game.PlaceId == 5151400895 and 
+            safeGetValue(function() return game.Workspace.Living[player.Name].Status.Transformation.Value end) or
+            player.Status and player.Status.Transformation and player.Status.Transformation.Value
         if transformation and folderData:FindFirstChild(transformation) then
             return folderData[transformation].Value
         end
         return 0
+    end)
+end
+
+function getTransformation()
+    local player = game:GetService("Players").LocalPlayer
+    if game.PlaceId == 5151400895 then
+        return safeGetValue(function() return game.Workspace.Living[player.Name].Status.Transformation.Value end)
+    else
+        return safeGetValue(function() return player.Status and player.Status.Transformation and player.Status.Transformation.Value end)
+    end
+end
+
+local function getGameTime()
+    local currentHour = math.floor(game.Lighting.ClockTime)
+    local currentMinute = math.floor((game.Lighting.ClockTime % 1) * 60)
+    local timeOfDay = (currentHour >= 6 and currentHour < 18) and "Día" or "Noche"
+    return string.format("Hora actual: %02d:%02d\nEstado: %s", currentHour, currentMinute, timeOfDay)
+end
+
+local function updateDisplay()
+    while true do
+        local success, err = pcall(function()
+            local gameTime = getGameTime()
+            transformationLabel.Text = gameTime
+        end)
+
+        if not success then
+            warn("Error en updateDisplay: " .. tostring(err))
+        end
+
+        task.wait(.1)
+    end
+end
+
+function getRebirths()
+    return safeGetValue(function()
+        folderData = game.ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+        return folderData.Rebirth.Value
     end)
 end
 
@@ -62,69 +127,77 @@ local function getAdditionalStrength()
     return 0
 end
 
-local function getTransformation()
-    return safeGetValue(function()
-        return player.Status and player.Status.Transformation and player.Status.Transformation.Value
+folderData = game.ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
+
+local additionalStrength = getAdditionalStrength()
+
+function createFrame(positionOffset, text, textSize)
+    success, frame = pcall(function()
+        frame = Instance.new("Frame")
+        frame.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
+        frame.Position = UDim2.new(0.0116822431 + positionOffset, 0, 0.0248226952, 0)
+        frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        frame.BackgroundTransparency = 0.5
+        frame.ClipsDescendants = true
+        frame.Parent = gui
+
+        corner = Instance.new("UICorner")
+        corner.CornerRadius = UDim.new(1, 0)
+        corner.Parent = frame
+
+        label = Instance.new("TextLabel")
+        label.Size = UDim2.new(1, -10, 1, -10)
+        label.Position = UDim2.new(0, 5, 0, 5)
+        label.BackgroundTransparency = 1
+        label.TextColor3 = Color3.fromRGB(255, 255, 255)
+        label.TextStrokeTransparency = 0
+        label.Font = Enum.Font.SourceSans
+        label.TextSize = textSize or 18
+        label.TextWrapped = true
+        label.TextScaled = true
+        label.TextXAlignment = Enum.TextXAlignment.Center
+        label.TextYAlignment = Enum.TextYAlignment.Center
+        label.ClipsDescendants = true
+        label.Text = text
+        label.Parent = frame
+
+        return label
     end)
+
+    if success then
+        return frame
+    else
+        warn("Error al crear el frame: " .. tostring(frame))
+        return nil
+    end
 end
 
-local function getRebirths()
-    return safeGetValue(function()
-        local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-        return folderData.Rebirth.Value
-    end)
-end
+pingLabel = createFrame(0, "Ping: Loading...", 18)
+masteryLabel = createFrame(0.11, "Loading Mastery...", 14)
+fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
+rebirthLabel = createFrame(0.33, "Loading...", 18)
+ transformationLabel = createFrame(0.44, "Hora del juego: Loading...", 18)
+rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
 
-local function createFrame(positionOffset, text, textSize)
-    local frame = Instance.new("Frame")
-    frame.Size = UDim2.new(0.100061566, 0, 0.100026964, 0)
-    frame.Position = UDim2.new(0.0116822431 + positionOffset, 0, 0.0248226952, 0)
-    frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    frame.BackgroundTransparency = 0.5
-    frame.ClipsDescendants = true
-    frame.Parent = gui
+lastUpdate = tick()
+frameCount = 0
 
-    local corner = Instance.new("UICorner")
-    corner.CornerRadius = UDim.new(1, 0)
-    corner.Parent = frame
+game:GetService("HttpService")
 
-    local label = Instance.new("TextLabel")
-    label.Size = UDim2.new(1, -10, 1, -10)
-    label.Position = UDim2.new(0, 5, 0, 5)
-    label.BackgroundTransparency = 1
-    label.TextColor3 = Color3.fromRGB(255, 255, 255)
-    label.TextStrokeTransparency = 0
-    label.Font = Enum.Font.SourceSans
-    label.TextSize = textSize or 18
-    label.TextWrapped = true
-    label.TextScaled = true
-    label.TextXAlignment = Enum.TextXAlignment.Center
-    label.TextYAlignment = Enum.TextYAlignment.Center
-    label.ClipsDescendants = true
-    label.Text = text
-    label.Parent = frame
-
-    return label
-end
-
-local pingLabel = createFrame(0, "Ping: Loading...", 18)
-local masteryLabel = createFrame(0.11, "Loading Mastery...", 14)
-local fpsLabel = createFrame(0.22, "FPS: Loading...", 18)
-local rebirthLabel = createFrame(0.33, "Loading...", 18)
-local transformationLabel = createFrame(0.44, "Hora del juego: Loading...", 18)
-local rebirthFrameLabel = createFrame(0.55, "Rebirths: Loading...", 18)
-
-local lastUpdate = tick()
-local frameCount = 0
-
+local FILE_PATH = "Reta.json"
 local gui = Instance.new("ScreenGui")
+local timerLabel, rebirthTimeValue, previousRebirthValue
 gui.Name = "RebirthTimerGui"
 gui.Parent = game.CoreGui
 
+timerLabel = nil
+rebirthTimeValue = Instance.new("IntValue")
+rebirthTimeValue.Name = "RebirthTimeValue"
+rebirthTimeValue.Parent = game:GetService("ReplicatedStorage")
 
+previousRebirthValue = 0
 
--- Función para crear un frame y un TextLabel
-local function createLabel(name, text, position, size, textSize, textColor)
+function createLabel(name, text, position, size, textSize, textColor)
     local frame = Instance.new("Frame")
     frame.Name = name .. "Frame"
     frame.Position = position
@@ -155,19 +228,13 @@ local function createLabel(name, text, position, size, textSize, textColor)
     return label
 end
 
--- Crear los labels con la función simplificada
-local timerLabel = createLabel("Timer", "0:00", UDim2.new(0.0116822431 + 0.66, 0, 0.0248226952, 0), UDim2.new(0.100, 0, 0.100, 0), 48, Color3.fromRGB(255, 0, 0))
+timerLabel = createLabel("Timer", "0:00", UDim2.new(0.0116822431 + 0.66, 0, 0.0248226952, 0), UDim2.new(0.100, 0, 0.100, 0), 48, Color3.fromRGB(255, 0, 0))
 
-local rebirthTimeValue = Instance.new("IntValue")
-rebirthTimeValue.Name = "RebirthTimeValue"
-rebirthTimeValue.Parent = ReplicatedStorage
+local playerStats = game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("Stats")
 
-local previousRebirthValue = 0
-local hasReinitialized = false
-
-local function updateTimer()
+function updateTimer()
     local success, lastRebirthTime = pcall(function()
-        return ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
+        return game:GetService("ReplicatedStorage"):WaitForChild("RebirthTimeValue").Value
     end)
     
     if success then
@@ -181,34 +248,16 @@ local function updateTimer()
     end
 end
 
-local function animateTextColor()
-    local colors = {
-        Color3.fromRGB(255, 0, 0),
-        Color3.fromRGB(0, 255, 0),
-        Color3.fromRGB(0, 0, 255),
-        Color3.fromRGB(255, 255, 0),
-        Color3.fromRGB(255, 165, 0)
-    }
-    local index = 1
-    while true do
-        timerLabel.TextColor3 = colors[index]
-        index = (index % #colors) + 1
-        task.wait(1)
-    end
-end
-
-local function saveRebirthData()
+function saveRebirthData()
     local success, errorMsg = pcall(function()
-        local rebirthTime = ReplicatedStorage:WaitForChild("RebirthTimeValue").Value
-        local player = Players.LocalPlayer
-        local playerStats = player.Character and player.Character:FindFirstChild("Stats")
+        local rebirthTime = game:GetService("ReplicatedStorage"):WaitForChild("RebirthTimeValue").Value
         local rebirthValue = playerStats and playerStats:FindFirstChild("Rebirth") and playerStats.Rebirth.Value or 0
 
         local rebirthInfo = {
             LastRebirthTime = rebirthTime,
             PlayerRebirth = rebirthValue
         }
-        local jsonData = HttpService:JSONEncode(rebirthInfo)
+        local jsonData = game:GetService("HttpService"):JSONEncode(rebirthInfo)
         writefile(FILE_PATH, jsonData)
     end)
     
@@ -217,34 +266,26 @@ local function saveRebirthData()
     end
 end
 
-local function loadRebirthData()
+function loadRebirthData()
     local success, errorMsg = pcall(function()
         if isfile(FILE_PATH) then
             local fileContents = readfile(FILE_PATH)
             if fileContents then
-                local rebirthData = HttpService:JSONDecode(fileContents)
+                local rebirthData = game:GetService("HttpService"):JSONDecode(fileContents)
                 if rebirthData then
                     if rebirthData.LastRebirthTime then
-                        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = rebirthData.LastRebirthTime
+                        game:GetService("ReplicatedStorage"):WaitForChild("RebirthTimeValue").Value = rebirthData.LastRebirthTime
                     end
                     if rebirthData.PlayerRebirth then
-                        local player = Players.LocalPlayer
-                        local playerStats = player.Character and player.Character:FindFirstChild("Stats")
-                        if playerStats and playerStats:FindFirstChild("Rebirth") then
-                            playerStats.Rebirth.Value = rebirthData.PlayerRebirth
-                            previousRebirthValue = playerStats.Rebirth.Value
-                        end
+                        playerStats.Rebirth.Value = rebirthData.PlayerRebirth
+                        previousRebirthValue = rebirthData.PlayerRebirth
                     end
                 end
             end
         else
-            ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
-            local player = Players.LocalPlayer
-            local playerStats = player.Character and player.Character:FindFirstChild("Stats")
-            if playerStats and playerStats:FindFirstChild("Rebirth") then
-                playerStats.Rebirth.Value = 0
-                previousRebirthValue = 0
-            end
+            game:GetService("ReplicatedStorage"):WaitForChild("RebirthTimeValue").Value = tick()
+            playerStats.Rebirth.Value = 0
+            previousRebirthValue = 0
         end
     end)
     
@@ -253,95 +294,52 @@ local function loadRebirthData()
     end
 end
 
-local function isInTargetPlace()
-    return game.PlaceId == 3311165597
-end
-
-RunService.Stepped:Connect(function()
+game:GetService("RunService").Stepped:Connect(function()
     updateTimer()
 
-    local player = Players.LocalPlayer
-    local playerStats = player.Character and player.Character:FindFirstChild("Stats")
-    local currentRebirthValue = playerStats and playerStats:FindFirstChild("Rebirth") and playerStats.Rebirth.Value or 0
+    local currentRebirthValue = playerStats and playerStats.Rebirth.Value or 0
 
     if currentRebirthValue > previousRebirthValue then
-        ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
+        game:GetService("ReplicatedStorage"):WaitForChild("RebirthTimeValue").Value = tick()
         previousRebirthValue = currentRebirthValue
-    end
-
-    if isInTargetPlace() then
-        if not hasReinitialized then
-            ReplicatedStorage:WaitForChild("RebirthTimeValue").Value = tick()
-            previousRebirthValue = currentRebirthValue
-            hasReinitialized = true
-        end
-    else
-        hasReinitialized = false
     end
 
     saveRebirthData()
 end)
 
-spawn(animateTextColor)
-loadRebirthData() 
+loadRebirthData()
 
-local function calculatePercentage(currentValue, maxValue)
-    return math.floor((currentValue / maxValue) * 100)
-end
 
-local function getGameTime()
-    local currentHour = math.floor(game.Lighting.ClockTime)
-    local currentMinute = math.floor((game.Lighting.ClockTime % 1) * 60)
-    local timeOfDay = (currentHour >= 6 and currentHour < 18) and "Día" or "Noche"
-    return string.format("Hora actual: %02d:%02d\nEstado: %s", currentHour, currentMinute, timeOfDay)
-end
-
-local function updateDisplay()
+function updateDisplay()
     while true do
-        local success, err = pcall(function()
-            local gameTime = getGameTime()
-            transformationLabel.Text = gameTime
-        end)
+        success, err = pcall(function()
+        
+            currentRebirths = safeGetValue(function() return folderData.Rebirth.Value end)
+            nextRebirthPrice = getrebprice()
+            strength = safeGetValue(function() return folderData.Strength.Value end)
+            
+            formattedStrength = formatNumber(strength)
+            formattedAdditionalStrength = formatNumber(getAdditionalStrength())  -- Actualización aquí
 
-        if not success then
-            warn("Error en updateDisplay: " .. tostring(err))
-        end
+            ping = getPing()
+            mastery = getMastery()
+            transformation = getTransformation()
+            rebirths = getRebirths()
+            maxMastery = 332526
 
-        task.wait(.1)
-    end
-end
 
-local function getSystemTime()
-    local currentTime = os.date("*t")
-    return string.format("%02d:%02d:%02d", currentTime.hour, currentTime.min, currentTime.sec)
-end
+local gameTime = getGameTime()
 
-local function updateDisplay()
-    while true do
-        local success, err = pcall(function()
-            local folderData = ReplicatedStorage:WaitForChild("Datas"):WaitForChild(player.UserId)
-            local currentRebirths = folderData.Rebirth.Value
-            local nextRebirthPrice = getNextRebirthPrice(currentRebirths)
-            local strength = folderData.Strength.Value
-            local additionalStrength = getAdditionalStrength()
-            local formattedStrength = formatNumber(strength)
-            local formattedAdditionalStrength = formatNumber(additionalStrength)
-            local ping = getPing()
-            local mastery = getMastery()
-            local rebirths = getRebirths()
-            local maxMastery = 332526  
-
+            transformationLabel.Text = "Hora del juego: " .. gameTime
             pingLabel.Text = "Ping: " .. formatNumber(ping)
-            masteryLabel.Text = "Hora del sistema: " .. getSystemTime()
+            masteryLabel.Text = "%" .. formatNumber(mastery) .. " (" .. calculatePercentage(mastery, maxMastery) .. "%)"
             rebirthLabel.Text = formatNumber(nextRebirthPrice) .. " / " .. formattedStrength .. "\n" .. formattedAdditionalStrength
+            
             rebirthFrameLabel.Text = "" .. formatNumber(rebirths)
 
-            local gameTime = getGameTime()
-            transformationLabel.Text = "Hora del juego: " .. gameTime
-
-            local currentTime = tick()
+            currentTime = tick()
             if currentTime - lastUpdate >= 1 then
-                local fps = frameCount / (currentTime - lastUpdate)
+                fps = frameCount / (currentTime - lastUpdate)
                 fpsLabel.Text = "FPS: " .. math.floor(fps)
                 frameCount = 0
                 lastUpdate = currentTime
@@ -349,17 +347,17 @@ local function updateDisplay()
 
             frameCount = frameCount + 1
         end)
-
+        
         if not success then
             warn("Error en updateDisplay: " .. tostring(err))
         end
-
-        task.wait(.8)
+        
+        task.wait(0.4)
     end
 end
 
-RunService.RenderStepped:Connect(function()
-    local success, err = pcall(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+    success, err = pcall(function()
         frameCount = frameCount + 1
     end)
 
@@ -369,7 +367,7 @@ RunService.RenderStepped:Connect(function()
 end)
 
 spawn(function()
-    local success, err = pcall(updateDisplay)
+    success, err = pcall(updateDisplay)
     if not success then
         warn("Error al iniciar updateDisplay: " .. tostring(err))
     end
